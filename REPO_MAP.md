@@ -44,7 +44,7 @@ The latest program's `core.py` retains a historical default output path ending i
 
 `confirmatory_srn/model.py` defines the original tanh SRN and separate execution policy. `src/context_sequence/evaluation/rollout.py:Model.step` is the frozen float32 evaluator. `src/context_sequence/provenance/` validates registry identities and hashes. The latest adapters use `experiments/context_mixing_sequence_continuity/source_adapter.py` and predecessor loaders; do not replace them with a new SRN implementation.
 
-Original High checkpoints: `outputs/confirmatory_srn_final/High_monotonic_seed_*.pt`, selected by the registry at update170, seeds0–19. Exact paths and hashes are in latest `tables/r0_checkpoints.csv`. Primary tokens are seven teacher-forced inputs; physical Mixed=(.5,.5,0). Low, C0–C3, later architectures and D3 endpoints are separate cohorts.
+Original High checkpoints: `outputs/confirmatory_srn_final/confirmatory_checkpoints/High_monotonic_seed_*.pt`, selected by the registry at update170, seeds0–19. Exact paths and hashes are in latest `tables/r0_checkpoints.csv`. Primary tokens are seven teacher-forced inputs; physical Mixed=(.5,.5,0). Low, C0–C3, later architectures and D3 endpoints are separate cohorts.
 
 Latest evidence: `tables/r0_reuse_registry.csv` → `r1_branch_rollouts.csv`/`r1_cells.csv` → `r2_bases.csv`/`r2_future_sensitivity.csv`/`r2_natural_gap_components.csv` → `r3_interventions.csv`/`r3_reverse.csv`/`r3_seed_contrasts.csv` → `r5_claim_sources.csv` and reports. Primary figures live in `figures/`; RED/GREEN/REFACTOR evidence in `audit/`. Never infer independent sample size from transitions or reference rows: the trained seed is the unit.
 

@@ -1,0 +1,41 @@
+import numpy as np
+import pytest
+from context_sequence.evaluation.rollout import Model
+from experiments.output_compatible_trajectories.state_geometry import output_spaces,assert_equivalent,output_values
+from experiments.output_compatible_trajectories.nullspace import source_head_audit
+from experiments.context_failure_selective_repair.geometry import future_jacobian, sensitivity_basis, require_references, chain_jacobian, source_fd
+
+
+def model(delayed=False):
+ rng=np.random.default_rng(31);m=Model((rng.normal(size=(8,7))*.1).astype('f'),(rng.normal(size=(8,8))*.15).astype('f'),np.zeros(8,'f'),rng.normal(size=(4,8)).astype('f'),np.zeros(4,'f'))
+ return m
+
+
+def test_full_right_svd_and_complete_distribution():
+ m=model();s=output_spaces(m);N=s['N'];V=s['R'];assert (s['rank'],s['nullity'])==(3,5)
+ assert np.max(abs(V.T@N))<1e-12 and np.max(abs(V@V.T+N@N.T-np.eye(8)))<1e-12
+ a=np.zeros(8);b=.1*N[:,0];assert assert_equivalent(m,a,b)['softmax_max_difference']<1e-12
+ source_head_audit(m,a,b,0)
+ with pytest.raises(ValueError):assert_equivalent(m,a,.1*V[:,0])
+ m.output[:]=0;assert output_spaces(m)['nullity']==8
+
+
+def test_source_jacobian_chain_and_fd():
+ m=model();h=np.linspace(-.2,.2,8);g=future_jacobian(m,h,3,'A');a=chain_jacobian(m,h,3,'A')
+ assert g.shape==(16,8);assert np.max(abs(g-a))<1e-12
+ for eps in [1e-3,1e-4]:
+  fd,ns=source_fd(m,h,3,'A',eps);assert ns==0 and np.max(abs(fd-g))<.003
+ with pytest.raises(ValueError):future_jacobian(m,h,3,'Mixed')
+ with pytest.raises(TypeError):future_jacobian(m,h,3,'A',targets=[0]*4)
+
+
+def test_fixed_rank_degeneracy_and_no_best_reference():
+ m=model();N=output_spaces(m)['N'];G=np.zeros((32,8));G[:5]=np.diag([5.,4.,1.,.5,.1])@N.T
+ b=sensitivity_basis(G,N);assert b['status']=='identifiable'
+ U,W=b['U'],b['W'];assert U.shape==(8,2) and W.shape==(8,3)
+ assert np.max(abs(U.T@W))<1e-12 and np.max(abs(m.output.mean(0)@U-(m.output@U).mean(0)))<1e-12
+ assert sensitivity_basis(np.zeros_like(G),N)['status']=='not_identifiable'
+ G[:5]=np.diag([5.,1.,1.,.5,.1])@N.T;assert sensitivity_basis(G,N)['status']=='not_identifiable'
+ with pytest.raises(ValueError):require_references(['A'])
+ with pytest.raises(ValueError):require_references(['best'])
+ assert require_references(['A','B'])

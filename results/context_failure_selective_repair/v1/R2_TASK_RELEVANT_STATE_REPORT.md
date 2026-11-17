@@ -1,0 +1,7 @@
+# R2 — current-output geometry and familiar future sensitivity
+
+All20 original heads have centered output rank3 and nullity5. V and N are the full-right-SVD row/kernel bases. d=reference−Mixed decomposes into VVᵀd+NNᵀd. The complete current softmax is invariant under NNᵀd because centered output changes vanish; raw logits may shift by a common constant. Algebraic full-gap proof does not assert a feasible tanh-interior placement. Double all-four-probability identity and source float32 roundoff are exported separately.
+
+G contains derivatives of future centered logits under familiar A and B continuations only. Known input tokens and frozen weights enter; no correct labels, Mixed losses or optimization enters basis construction. Exact double autodiff agrees with an independently coded chain rule; source float32 finite differences at both fixed scales and one-sided boundary flags are exported, including nonlinear/saturation discrepancies. Jacobians describe local sensitivity, not sequence information or CE mediation.
+
+Top two right singular vectors of G_fam N define U; W is the other three kernel dimensions. Fixed rank2, absolute1e-8/relative1e-4 singular threshold plus top-two gap test. Identifiable seed/k geometries: 40/40. All singular spectra, bases and label-free Jacobian entries are saved; no dimension tuning. Both factorial A/B references and separate natural-full-A/B diagnostics retained. Viability joined after decomposition; no chosen-best reference. Norm fractions are not fractions of CE caused.

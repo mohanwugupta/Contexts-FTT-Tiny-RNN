@@ -1,0 +1,41 @@
+FFF                                                                      [100%]
+=================================== FAILURES ===================================
+_____________ test_complete_factorial_rejects_duplicate_or_missing _____________
+
+    def test_complete_factorial_rejects_duplicate_or_missing():
+     f=pool();assert validate_factorial(f)
+     for bad in [f.iloc[:-1],pd.concat([f,f.iloc[[0]]])]:
+>     with pytest.raises(ValueError):validate_factorial(bad)
+E     Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/context_failure_selective_repair/test_r1.py:13: Failed
+_____________________ test_separate_windows_and_threshold ______________________
+
+    def test_separate_windows_and_threshold():
+     t=pd.DataFrame({'transition':[3,4,5,6,7],'lag':[0,1,2,3,4],'raw_ce':[100.,.2,.2,.2,.2]})
+     r=({'raw_ce':np.full(7,.1)},{'raw_ce':np.full(7,.1)})
+>    q=summarize(t,r);assert q['current_ce']==100 and q['future_ce']==.2 and q['n_future']==4
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E    assert (0 == 100)
+
+tests/context_failure_selective_repair/test_r1.py:23: AssertionError
+_____________________ test_k1_no_history_and_seed_cluster ______________________
+
+    def test_k1_no_history_and_seed_cluster():
+>    for name in ['A','B','Mixed']:assert np.array_equal(history_prestate(np.ones((7,8)),1),np.zeros(8))
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E    assert False
+E     +  where False = <function array_equal at 0x109860e70>(array([1., 1., 1., 1., 1., 1., 1., 1.]), array([0., 0., 0., 0., 0., 0., 0., 0.]))
+E     +    where <function array_equal at 0x109860e70> = np.array_equal
+E     +    and   array([1., 1., 1., 1., 1., 1., 1., 1.]) = history_prestate(array([[1., 1., 1., 1., 1., 1., 1., 1.],\n       [1., 1., 1., 1., 1., 1., 1., 1.],\n       [1., 1., 1., 1., 1., 1., 1., ...   [1., 1., 1., 1., 1., 1., 1., 1.],\n       [1., 1., 1., 1., 1., 1., 1., 1.],\n       [1., 1., 1., 1., 1., 1., 1., 1.]]), 1)
+E     +      where array([[1., 1., 1., 1., 1., 1., 1., 1.],\n       [1., 1., 1., 1., 1., 1., 1., 1.],\n       [1., 1., 1., 1., 1., 1., 1., ...   [1., 1., 1., 1., 1., 1., 1., 1.],\n       [1., 1., 1., 1., 1., 1., 1., 1.],\n       [1., 1., 1., 1., 1., 1., 1., 1.]]) = <function ones at 0x1098eb240>((7, 8))
+E     +        where <function ones at 0x1098eb240> = np.ones
+E     +    and   array([0., 0., 0., 0., 0., 0., 0., 0.]) = <built-in function zeros>(8)
+E     +      where <built-in function zeros> = np.zeros
+
+tests/context_failure_selective_repair/test_r1.py:29: AssertionError
+=========================== short test summary info ============================
+FAILED tests/context_failure_selective_repair/test_r1.py::test_complete_factorial_rejects_duplicate_or_missing
+FAILED tests/context_failure_selective_repair/test_r1.py::test_separate_windows_and_threshold
+FAILED tests/context_failure_selective_repair/test_r1.py::test_k1_no_history_and_seed_cluster
+3 failed in 3.35s

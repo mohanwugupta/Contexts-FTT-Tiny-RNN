@@ -1,0 +1,7 @@
+{
+  "path": "/Users/mg9965/Library/CloudStorage/Box-Box/ResearchProjects/RI-EVC/Contexts-FTT-Tiny-RNN/experiments/output_compatible_trajectories/continuation.py",
+  "line": 66,
+  "source": "def future_summary(trace,reference=None):\n    f=trace[trace.lag.gt(0)]\n    if not len(f):return {'n_future':0,'future_ce':np.nan,'worst_future_ce':np.nan,'zero_future':True}\n    q={'n_future':len(f),'future_ce':float(f.raw_ce.mean()),'worst_future_ce':float(f.raw_ce.max()),'zero_future':False}\n    if reference is not None:\n        a,b=reference;k=int(trace.transition.iloc[0]);end=(a['raw_ce'][k:]+b['raw_ce'][k:])/2\n        bound=float(end.mean());worse=float(np.maximum(a['raw_ce'][k:],b['raw_ce'][k:]).mean())\n        q.update(familiar_bound=bound,worse_endpoint_bound=worse,viable_continuation=q['future_ce']<=bound+.10,viable_strict=q['future_ce']<=bound,viable_worse_endpoint=q['future_ce']<=worse+.10)\n        lost=f.raw_ce.to_numpy()>end+.10;q['first_criterion_loss_lag']=int(np.flatnonzero(lost)[0]+1) if lost.any() else np.nan\n    return q\n",
+  "sha256": "68a958fb11f37e19e28622a0dddec1ff42a4de242be58702643f69a277a42b14",
+  "formula": "mean(CE[k+1:7]) <= mean((A.raw_ce[k:]+B.raw_ce[k:])/2)+0.10"
+}

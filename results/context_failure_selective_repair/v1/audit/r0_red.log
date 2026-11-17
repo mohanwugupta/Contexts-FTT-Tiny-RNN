@@ -1,0 +1,116 @@
+FFFFFFFF.....F                                                           [100%]
+=================================== FAILURES ===================================
+__________________ test_reject_bad_reuse[schedule-persistent] __________________
+
+field = 'schedule', value = 'persistent'
+
+    @pytest.mark.parametrize('field,value',[('schedule','persistent'),('token',3),('target',3),('cue_0',.5),('cue_2',1),('condition','Low_monotonic'),('checkpoint_sha256','bad')])
+    def test_reject_bad_reuse(field,value):
+        q=fixture();q.loc[q.index[-1],field]=value
+>       with pytest.raises(ValueError):validate_rows(q,records())
+E       Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/context_failure_selective_repair/test_r0.py:16: Failed
+________________________ test_reject_bad_reuse[token-3] ________________________
+
+field = 'token', value = 3
+
+    @pytest.mark.parametrize('field,value',[('schedule','persistent'),('token',3),('target',3),('cue_0',.5),('cue_2',1),('condition','Low_monotonic'),('checkpoint_sha256','bad')])
+    def test_reject_bad_reuse(field,value):
+        q=fixture();q.loc[q.index[-1],field]=value
+>       with pytest.raises(ValueError):validate_rows(q,records())
+E       Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/context_failure_selective_repair/test_r0.py:16: Failed
+_______________________ test_reject_bad_reuse[target-3] ________________________
+
+field = 'target', value = 3
+
+    @pytest.mark.parametrize('field,value',[('schedule','persistent'),('token',3),('target',3),('cue_0',.5),('cue_2',1),('condition','Low_monotonic'),('checkpoint_sha256','bad')])
+    def test_reject_bad_reuse(field,value):
+        q=fixture();q.loc[q.index[-1],field]=value
+>       with pytest.raises(ValueError):validate_rows(q,records())
+E       Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/context_failure_selective_repair/test_r0.py:16: Failed
+_______________________ test_reject_bad_reuse[cue_0-0.5] _______________________
+
+field = 'cue_0', value = 0.5
+
+    @pytest.mark.parametrize('field,value',[('schedule','persistent'),('token',3),('target',3),('cue_0',.5),('cue_2',1),('condition','Low_monotonic'),('checkpoint_sha256','bad')])
+    def test_reject_bad_reuse(field,value):
+        q=fixture();q.loc[q.index[-1],field]=value
+>       with pytest.raises(ValueError):validate_rows(q,records())
+E       Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/context_failure_selective_repair/test_r0.py:16: Failed
+________________________ test_reject_bad_reuse[cue_2-1] ________________________
+
+field = 'cue_2', value = 1
+
+    @pytest.mark.parametrize('field,value',[('schedule','persistent'),('token',3),('target',3),('cue_0',.5),('cue_2',1),('condition','Low_monotonic'),('checkpoint_sha256','bad')])
+    def test_reject_bad_reuse(field,value):
+        q=fixture();q.loc[q.index[-1],field]=value
+>       with pytest.raises(ValueError):validate_rows(q,records())
+E       Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/context_failure_selective_repair/test_r0.py:16: Failed
+________________ test_reject_bad_reuse[condition-Low_monotonic] ________________
+
+field = 'condition', value = 'Low_monotonic'
+
+    @pytest.mark.parametrize('field,value',[('schedule','persistent'),('token',3),('target',3),('cue_0',.5),('cue_2',1),('condition','Low_monotonic'),('checkpoint_sha256','bad')])
+    def test_reject_bad_reuse(field,value):
+        q=fixture();q.loc[q.index[-1],field]=value
+>       with pytest.raises(ValueError):validate_rows(q,records())
+E       Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/context_failure_selective_repair/test_r0.py:16: Failed
+_________________ test_reject_bad_reuse[checkpoint_sha256-bad] _________________
+
+field = 'checkpoint_sha256', value = 'bad'
+
+    @pytest.mark.parametrize('field,value',[('schedule','persistent'),('token',3),('target',3),('cue_0',.5),('cue_2',1),('condition','Low_monotonic'),('checkpoint_sha256','bad')])
+    def test_reject_bad_reuse(field,value):
+        q=fixture();q.loc[q.index[-1],field]=value
+>       with pytest.raises(ValueError):validate_rows(q,records())
+E       Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/context_failure_selective_repair/test_r0.py:16: Failed
+_______________________ test_good_schedule_and_bad_cues ________________________
+
+    def test_good_schedule_and_bad_cues():
+        assert validate_rows(fixture(),records())
+        assert validate_cues({'A':[1,0,0],'B':[0,1,0],'Mixed':[1,1,0]})
+        for bad in [[.5,.5,0],[1,1,1]]:
+>           with pytest.raises(ValueError):validate_cues({'A':[1,0,0],'B':[0,1,0],'Mixed':bad})
+E           Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/context_failure_selective_repair/test_r0.py:22: Failed
+_____________________ test_replay_tolerance_not_zero_fill ______________________
+
+    def test_replay_tolerance_not_zero_fill():
+        a=pd.DataFrame({'hidden_0':[.3],'logit_0':[1.],'probability_0':[.25]})
+        assert fidelity(a,a)['passed']
+        b=a.copy();b.loc[0,'probability_0']+=1e-5
+>       with pytest.raises(ValueError):fidelity(a,b)
+E       Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/context_failure_selective_repair/test_r0.py:37: Failed
+=============================== warnings summary ===============================
+tests/context_failure_selective_repair/test_r0.py::test_reject_bad_reuse[cue_0-0.5]
+  /Users/mg9965/Library/CloudStorage/Box-Box/ResearchProjects/RI-EVC/Contexts-FTT-Tiny-RNN/tests/context_failure_selective_repair/test_r0.py:15: FutureWarning: Setting an item of incompatible dtype is deprecated and will raise an error in a future version of pandas. Value '0.5' has dtype incompatible with int64, please explicitly cast to a compatible dtype first.
+    q=fixture();q.loc[q.index[-1],field]=value
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/context_failure_selective_repair/test_r0.py::test_reject_bad_reuse[schedule-persistent]
+FAILED tests/context_failure_selective_repair/test_r0.py::test_reject_bad_reuse[token-3]
+FAILED tests/context_failure_selective_repair/test_r0.py::test_reject_bad_reuse[target-3]
+FAILED tests/context_failure_selective_repair/test_r0.py::test_reject_bad_reuse[cue_0-0.5]
+FAILED tests/context_failure_selective_repair/test_r0.py::test_reject_bad_reuse[cue_2-1]
+FAILED tests/context_failure_selective_repair/test_r0.py::test_reject_bad_reuse[condition-Low_monotonic]
+FAILED tests/context_failure_selective_repair/test_r0.py::test_reject_bad_reuse[checkpoint_sha256-bad]
+FAILED tests/context_failure_selective_repair/test_r0.py::test_good_schedule_and_bad_cues
+FAILED tests/context_failure_selective_repair/test_r0.py::test_replay_tolerance_not_zero_fill
+9 failed, 5 passed, 1 warning in 3.59s
