@@ -1,0 +1,56 @@
+FFFF                                                                     [100%]
+=================================== FAILURES ===================================
+________________ test_exact_tables_and_no_transition_bootstrap _________________
+
+    def test_exact_tables_and_no_transition_bootstrap():
+>    q=audit_tables(OUT);assert q['r1_cells']==360 and q['seed_unit']=='seed' and q['all20_retained']
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E    assert (0 == 360)
+
+tests/context_failure_selective_repair/test_r5.py:15: AssertionError
+__________________ test_five_figures_deterministic_table_only __________________
+
+tmp_path = PosixPath('/private/var/folders/zt/vtsl21k13z9bd24ft4trvf140000gq/T/pytest-of-mg9965/pytest-237/test_five_figures_deterministi0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x12382ad10>
+
+    def test_five_figures_deterministic_table_only(tmp_path,monkeypatch):
+     import experiments.context_failure_selective_repair.core as core
+     monkeypatch.setattr(core,'load_original',lambda *a,**k: (_ for _ in ()).throw(AssertionError('No scientific model calls in regeneration')))
+     for name in ['a','b']:
+      p=tmp_path/name;p.mkdir();generate(OUT,p)
+>    files=sorted((tmp_path/'a').glob('*'));assert len(list((tmp_path/'a').glob('*.png')))==5
+                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E    AssertionError: assert 0 == 5
+E     +  where 0 = len([])
+E     +    where [] = list(<generator object Path.glob at 0x123ef2ac0>)
+E     +      where <generator object Path.glob at 0x123ef2ac0> = glob('*.png')
+E     +        where glob = (PosixPath('/private/var/folders/zt/vtsl21k13z9bd24ft4trvf140000gq/T/pytest-of-mg9965/pytest-237/test_five_figures_deterministi0') / 'a').glob
+
+tests/context_failure_selective_repair/test_r5.py:24: AssertionError
+_____________ test_seal_detects_extra_missing_and_modified_science _____________
+
+tmp_path = PosixPath('/private/var/folders/zt/vtsl21k13z9bd24ft4trvf140000gq/T/pytest-of-mg9965/pytest-237/test_seal_detects_extra_missin0')
+
+    def test_seal_detects_extra_missing_and_modified_science(tmp_path):
+     p=tmp_path/'x.csv';p.write_text('x\n1\n');m={'x.csv':sha256(p)};assert verify_outputs(tmp_path,m)
+     extra=tmp_path/'extra.csv';extra.write_text('unregistered');
+>    with pytest.raises(ValueError):verify_outputs(tmp_path,m)
+E    Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/context_failure_selective_repair/test_r5.py:33: Failed
+_________________ test_claim_sources_and_regeneration_products _________________
+
+tmp_path = PosixPath('/private/var/folders/zt/vtsl21k13z9bd24ft4trvf140000gq/T/pytest-of-mg9965/pytest-237/test_claim_sources_and_regener0')
+
+    def test_claim_sources_and_regeneration_products(tmp_path):
+     q=products(OUT,tmp_path,figures=False)
+>    assert 'FINAL_CONTEXT_FAILURE_SELECTIVE_REPAIR_REPORT.md' in q
+E    AssertionError: assert 'FINAL_CONTEXT_FAILURE_SELECTIVE_REPAIR_REPORT.md' in []
+
+tests/context_failure_selective_repair/test_r5.py:43: AssertionError
+=========================== short test summary info ============================
+FAILED tests/context_failure_selective_repair/test_r5.py::test_exact_tables_and_no_transition_bootstrap
+FAILED tests/context_failure_selective_repair/test_r5.py::test_five_figures_deterministic_table_only
+FAILED tests/context_failure_selective_repair/test_r5.py::test_seal_detects_extra_missing_and_modified_science
+FAILED tests/context_failure_selective_repair/test_r5.py::test_claim_sources_and_regeneration_products
+4 failed in 2.21s

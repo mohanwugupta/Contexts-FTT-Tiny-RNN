@@ -1,0 +1,21 @@
+{
+  "returncode": 0,
+  "files": [
+    "tests/output_compatible_trajectories/test_output_nullspace.py",
+    "tests/output_compatible_trajectories/test_nullspace_intervention.py",
+    "tests/output_compatible_trajectories/test_cue_branches.py",
+    "tests/output_compatible_trajectories/test_patch_and_continuation.py",
+    "tests/output_compatible_trajectories/test_state_index_and_teacher_forcing.py",
+    "tests/output_compatible_trajectories/test_valid_hidden_state.py",
+    "tests/output_compatible_trajectories/test_analysis_and_export.py",
+    "tests/output_compatible_trajectories/test_final_analysis.py",
+    "tests/output_compatible_trajectories/test_source_and_replay.py",
+    "tests/context_mixing_sequence_continuity/test_d0_source.py",
+    "tests/context_mixing_sequence_continuity/test_d1_mixing.py",
+    "tests/context_mixing_sequence_continuity/test_d2_information.py",
+    "tests/context_mixing_sequence_continuity/test_d4_reporting.py",
+    "tests/context_cue_access/test_s0.py",
+    "tests/context_cue_access/test_s3.py",
+    "tests/context_cue_access/test_s4.py"
+  ]
+}

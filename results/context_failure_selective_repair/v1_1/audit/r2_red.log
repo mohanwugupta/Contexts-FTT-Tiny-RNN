@@ -1,0 +1,25 @@
+.FF                                                                      [100%]
+=================================== FAILURES ===================================
+______________________ test_source_jacobian_chain_and_fd _______________________
+
+    def test_source_jacobian_chain_and_fd():
+     m=model();h=np.linspace(-.2,.2,8);g=future_jacobian(m,h,3,'A');a=chain_jacobian(m,h,3,'A')
+>    assert g.shape==(16,8);assert np.max(abs(g-a))<1e-12
+            ^^^^^^^
+E    AttributeError: 'NoneType' object has no attribute 'shape'
+
+tests/context_failure_selective_repair/test_r2.py:25: AttributeError
+_______________ test_fixed_rank_degeneracy_and_no_best_reference _______________
+
+    def test_fixed_rank_degeneracy_and_no_best_reference():
+     m=model();N=output_spaces(m)['N'];G=np.zeros((32,8));G[:5]=np.diag([5.,4.,1.,.5,.1])@N.T
+     b=sensitivity_basis(G,N);assert b['status']=='identifiable'
+>    U,W=b['U'],b['W'];assert U.shape==(8,2) and W.shape==(8,3)
+                              ^^^^^^^
+E    AttributeError: 'NoneType' object has no attribute 'shape'
+
+tests/context_failure_selective_repair/test_r2.py:35: AttributeError
+=========================== short test summary info ============================
+FAILED tests/context_failure_selective_repair/test_r2.py::test_source_jacobian_chain_and_fd
+FAILED tests/context_failure_selective_repair/test_r2.py::test_fixed_rank_degeneracy_and_no_best_reference
+2 failed, 1 passed in 1.00s

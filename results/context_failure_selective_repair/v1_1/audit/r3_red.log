@@ -1,0 +1,52 @@
+FFFF                                                                     [100%]
+=================================== FAILURES ===================================
+__________________ test_geometric_norm_match_and_no_clipping ___________________
+
+    def test_geometric_norm_match_and_no_clipping():
+     N=np.eye(8)[:,3:];U=N[:,:2];W=N[:,2:];d=np.arange(8)*.01
+     vec,identity=directions(d,U,W,N,0,3,'A')
+>    a,status=joint_scale(np.zeros(8),[vec[q] for q in ['U','W','random']]);assert status=='valid' and a==.95
+                                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E    AssertionError: assert ('valid' == 'valid'
+E      
+E        valid and 1.0 == 0.95)
+
+tests/context_failure_selective_repair/test_r3.py:21: AssertionError
+________ test_current_equality_delayed_effect_and_visible_only_negative ________
+
+    def test_current_equality_delayed_effect_and_visible_only_negative():
+     for delayed in [False,True]:
+      m=toy(delayed);h=np.zeros(8);v=h.copy();v[1]=.2;before=m.digest()
+      assert_equivalent(m,h,v)
+      a=patch_trace(m,h,3,'Mixed');b=patch_trace(m,v,3,'Mixed')
+>     assert a.token.tolist()==b.token.tolist() and np.array_equal(a[['cue_0','cue_1','cue_2']],b[['cue_0','cue_1','cue_2']])
+             ^^^^^^^
+E     AttributeError: 'NoneType' object has no attribute 'token'
+
+tests/context_failure_selective_repair/test_r3.py:35: AttributeError
+________________ test_reverse_is_fixed_and_familiar_future_kept ________________
+
+    def test_reverse_is_fixed_and_familiar_future_kept():
+     r=np.arange(8)*.01;d=np.arange(8)*.02
+>    assert np.allclose(fixed_reverse(r,d,.4),r-.4*d)
+E    assert False
+E     +  where False = <function allclose at 0x1078b72b0>(array([0.   , 0.018, 0.036, 0.054, 0.072, 0.09 , 0.108, 0.126]), (array([0.  , 0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07]) - (0.4 * array([0.  , 0.02, 0.04, 0.06, 0.08, 0.1 , 0.12, 0.14]))))
+E     +    where <function allclose at 0x1078b72b0> = np.allclose
+E     +    and   array([0.   , 0.018, 0.036, 0.054, 0.072, 0.09 , 0.108, 0.126]) = fixed_reverse(array([0.  , 0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07]), array([0.  , 0.02, 0.04, 0.06, 0.08, 0.1 , 0.12, 0.14]), 0.4)
+
+tests/context_failure_selective_repair/test_r3.py:45: AssertionError
+___________ test_nonspecific_improvement_missing_and_fixed_protocol ____________
+
+    def test_nonspecific_improvement_missing_and_fixed_protocol():
+>    stats=pd.DataFrame([dict(contrast=c,ci_high=.1,mean=-.2,n_valid=20) for c in ['U_minus_W','U_minus_random']]);assert not selective_gate(stats,0)
+                                                                                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E    assert not True
+E     +  where True = selective_gate(         contrast  ci_high  mean  n_valid\n0       U_minus_W      0.1  -0.2       20\n1  U_minus_random      0.1  -0.2       20, 0)
+
+tests/context_failure_selective_repair/test_r3.py:51: AssertionError
+=========================== short test summary info ============================
+FAILED tests/context_failure_selective_repair/test_r3.py::test_geometric_norm_match_and_no_clipping
+FAILED tests/context_failure_selective_repair/test_r3.py::test_current_equality_delayed_effect_and_visible_only_negative
+FAILED tests/context_failure_selective_repair/test_r3.py::test_reverse_is_fixed_and_familiar_future_kept
+FAILED tests/context_failure_selective_repair/test_r3.py::test_nonspecific_improvement_missing_and_fixed_protocol
+4 failed in 1.06s

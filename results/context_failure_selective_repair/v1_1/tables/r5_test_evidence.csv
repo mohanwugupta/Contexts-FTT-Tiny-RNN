@@ -1,0 +1,30 @@
+log,sha256,last_lines
+audit/phase1k_collection_diagnostic.log,e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855,
+audit/phase1k_isolated_plugins.log,06428c06fc7da726309d5b44f882a10c416bbc3ff10bf9c8d170c387624e1b4b,startup | before pytest
+audit/phase1k_readonly_fresh_cache.log,e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855,
+audit/phase1k_unbuffered_diagnostic.log,0c83df9c51b4383425f9948142c186588dfc870d3951bb7d1abd496bbea69c93,import 'confirmatory_srn.pipeline' # <_frozen_importlib_external.SourceFileLoader object at 0x11bc13850> | import 'confirmatory_srn' # <_frozen_importlib_external.SourceFileLoader object at 0x10e5d4650>
+audit/predecessor_readonly_green.log,04878c533a3db3aeeb70192721139b21baa82647dd9577ab2ec9306094fb9700,.........................................................                [100%] | 57 passed in 13.51s
+audit/predecessor_regression.log,81887f0cc8795225c9eb7c7c8a161e783bee62d0d5d3329fa8fd91ae4d96e38a,(to show a full traceback on KeyboardInterrupt use --full-trace) | no tests ran in 434.53s (0:07:14)
+audit/r0_green.log,d7d6ad62ccc88777f4582c9a3fbe69e20a60fd462c8ce8dea6212dae5e6bf132,"FAILED tests/context_failure_selective_repair/test_r0.py::test_reject_bad_reuse[target-3] | 1 failed, 13 passed in 2.29s"
+audit/r0_green_corrected.log,cfca134b9c01184c77a3fc0e6cc014cc7aaef4bb1b1bc94754f6377243e039a5,..............                                                           [100%] | 14 passed in 2.20s
+audit/r0_red.log,7c4cbfc42533d5d7214c67c1bf95b0e573137efcaa7e2913632642d73be925d7,"FAILED tests/context_failure_selective_repair/test_r0.py::test_replay_tolerance_not_zero_fill | 9 failed, 5 passed, 1 warning in 3.59s"
+audit/r0_refactor.log,746bf6b56e589420af6fedf731b4d57fd2b9c543de8486d867bbca85131dc32d,..............                                                           [100%] | 14 passed in 1.93s
+audit/r1_green.log,6052d1f384289098975fa32a11203458dad731472b291856568796188b55f905,.................                                                        [100%] | 17 passed in 3.23s
+audit/r1_red.log,e47a7ffd4d42b3ed61f3b9212105d2158828fc159f07828fa554eac7d6f0ba7a,FAILED tests/context_failure_selective_repair/test_r1.py::test_k1_no_history_and_seed_cluster | 3 failed in 3.35s
+audit/r1_refactor.log,445b1a1c0145e404b032a69dc73e087704e94cd06d766b60e87343a7e45301b7,.................                                                        [100%] | 17 passed in 3.07s
+audit/r2_green.log,33ac092d2a3f2e3ce4ac41d990d581ee53fd849ad1e0908323299eea13ca0574,"FAILED tests/context_failure_selective_repair/test_r2.py::test_fixed_rank_degeneracy_and_no_best_reference | 1 failed, 19 passed in 3.37s"
+audit/r2_green_corrected.log,c90f6e29408bd9e20a8d17b09e3cc307279771263fab43d320b5b9b51677a797,....................                                                     [100%] | 20 passed in 3.56s
+audit/r2_red.log,a242a6c1c84fba33d24ee19281c79129b228198cfd48bff091f851a0865355d1,"FAILED tests/context_failure_selective_repair/test_r2.py::test_fixed_rank_degeneracy_and_no_best_reference | 2 failed, 1 passed in 1.00s"
+audit/r2_refactor.log,7d83c46747ad9e6885179cf136c796e9589583133a6cc34d955819f8af78170f,"FAILED tests/context_failure_selective_repair/test_r2.py::test_fixed_rank_degeneracy_and_no_best_reference | 1 failed, 19 passed in 3.13s"
+audit/r2_refactor_corrected.log,0ff472391b48a417859248e4e0a134e5c6886dba8ad6a702cad949423f43610b,....................                                                     [100%] | 20 passed in 3.21s
+audit/r3_green.log,e399fd547507d40b46a1cebcc9eb9f9ad88dcedb3910c3b5591dd5ccfd99990f,........................                                                 [100%] | 24 passed in 3.68s
+audit/r3_red.log,3b6055a0ef21323348903da7955a04c7b02dde7d212533919e4b1f722b8fd37b,FAILED tests/context_failure_selective_repair/test_r3.py::test_nonspecific_improvement_missing_and_fixed_protocol | 4 failed in 1.06s
+audit/r3_refactor.log,2ae55cbc9408cf3f5cec7e56c4df2667f0c19d4dd01131831d79f86d44c9121a,........................                                                 [100%] | 24 passed in 3.28s
+audit/r4_green.log,9e119421737163e036adbd1cb661e8b47b5ccfc7e355d590ffb8194582d83aff,..............................                                           [100%] | 30 passed in 3.80s
+audit/r4_red.log,30ebc513e678f373100e170ecc87477f42d59db900e5bccbdc3500167b7ea48f,FAILED tests/context_failure_selective_repair/test_r4.py::test_unsupported_labels_rejected[attractor] | 6 failed in 0.06s
+audit/r4_refactor.log,99af8ac30b4f087d07c19e2e73c53438de6e2a8a92d1123edea0cd249aa7d40b,..............................                                           [100%] | 30 passed in 3.54s
+audit/r5_green.log,385b6627dc4481266cc170cbf5900c723a8f25a0f7e80fba5a2cf34f41f56704,..................................                                       [100%] | 34 passed in 9.28s
+audit/r5_green_final.log,2334f351a2de0cab4439c9bf92c280c0c1fefef998ecdbe234aa1cb3a23920db,..................................                                       [100%] | 34 passed in 9.35s
+audit/r5_guard_refactor.log,1fb7adbdd9ba30d7c30d8e7d1378c6ee890968762bdd60d6540e44a90ac4790c,..................................                                       [100%] | 34 passed in 9.51s
+audit/r5_red.log,c223b96835debee0a801b7187601eda789b50e70c2926ab1b66cf52563eeea9a,FAILED tests/context_failure_selective_repair/test_r5.py::test_claim_sources_and_regeneration_products | 4 failed in 2.21s
+audit/r5_refactor.log,4e0452b571ca7f508dacf84d44e1bb54ade1d278a44e7fa2e975c093a9c402f1,..................................                                       [100%] | 34 passed in 9.83s

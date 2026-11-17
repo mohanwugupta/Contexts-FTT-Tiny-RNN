@@ -1,0 +1,12 @@
+{
+  "r1_cells": 360,
+  "r1_transition_rows": 1440,
+  "all20_retained": true,
+  "seed_unit": "seed",
+  "matched_k3_seed_count": 1,
+  "reverse_valid_cells": 0,
+  "actual_new_patch_rollouts": 33,
+  "paired_differences_recomputed": true,
+  "bootstrap_recomputed": true,
+  "source_calls": 0
+}

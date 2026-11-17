@@ -1,0 +1,6 @@
+{
+  "recommendation": "no_new_training",
+  "scientific_updates": 0,
+  "design_only": true,
+  "diagnostic": "First audit the fixed intervention rays against the tanh-interior tangent cone, from saved states/bases only, to distinguish absence of an admissible matched intervention from absence of a useful computation. Any new intervention geometry needs a separate fixed protocol; do not relax margin or retune U here."
+}

@@ -1,0 +1,112 @@
+{
+  "stage": "r4",
+  "code": {
+    "experiments/context_failure_selective_repair/audit.py": "004749cd123c33777388d2f215dbfe8c6868930835e874b3b5f003bce6728677",
+    "experiments/context_failure_selective_repair/core.py": "8d742ff48ea5ccc131bf5dcbbb6e75460052211d2f57df990b08b49fcc577935",
+    "experiments/context_failure_selective_repair/decision.py": "f5f1d1c38fd9896d3ce96ac012d5aed394ca2ad9577543ab1d13fb90ddd58983",
+    "experiments/context_failure_selective_repair/factorial.py": "def961c3538941f447b26e5c62b9fd02384f39424bd3a3b5e3a5ff055b157f47",
+    "experiments/context_failure_selective_repair/geometry.py": "797ef58b940324c27b5ac4635590f52c7dd58d9668f09022a2dcb4675ccbb414",
+    "experiments/context_failure_selective_repair/repair.py": "679ba210c94cfea566068c89e2a25d79befcc0aa7eea6981a973e373a83766bb",
+    "tests/context_failure_selective_repair/test_r0.py": "6412524a9030f406c6bbfd99a2b4796f7664c1a185151e8cdfff18100c068c61",
+    "tests/context_failure_selective_repair/test_r1.py": "98cdd9733c4f06be74f49eee506cf771f300f6855c84e7f9c63708b504e36a13",
+    "tests/context_failure_selective_repair/test_r2.py": "b530df29717aae909b7c9c94cffe0b0432730987ff82d63ba9a822c1fe5ebd11",
+    "tests/context_failure_selective_repair/test_r3.py": "b8306884952ecfe8102d6771938817972bd88f011955319251db5c54ab55c9e8",
+    "tests/context_failure_selective_repair/test_r4.py": "fbc2a1edf1c7e2aa9302e5bbda511ee10d22e33f8e600f09e3a61f7947f9c5ec"
+  },
+  "contract": {
+    "version": "v1",
+    "seeds": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ],
+    "k": [
+      3,
+      5
+    ],
+    "sequence": [
+      0,
+      1,
+      2,
+      0,
+      3,
+      1,
+      2,
+      3
+    ],
+    "cue": {
+      "A": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "B": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "Mixed": [
+        0.5,
+        0.5,
+        0.0
+      ]
+    },
+    "rank": 2,
+    "absolute_rank_tolerance": 1e-08,
+    "relative_rank_tolerance": 0.0001,
+    "margin": 1e-06,
+    "box_tolerance": 1e-10,
+    "identity_tolerance": 1e-10,
+    "zero_tolerance": 1e-12,
+    "fd_scales": [
+      0.001,
+      0.0001
+    ],
+    "safety": 0.95,
+    "maximum_amplitude": 1.0,
+    "random_seed": 20261113,
+    "bootstrap_seed": 20260925,
+    "bootstrap_draws": 10000,
+    "model_updates": 0,
+    "optimization_steps": 0,
+    "primary": "Mixed k3",
+    "references": [
+      "A_history_Mixed_update",
+      "B_history_Mixed_update"
+    ],
+    "claim_requires_all20": true,
+    "sha256": "0dc34d9c4662a0195e348fe7a962b7526bd6483a24259d00686fca72a7ba7cf6"
+  },
+  "timestamp_utc": "2026-11-13T22:21:56.627160+00:00",
+  "git_commit": "ef43aedaad2009cd168801faa0cfa7150c271d88",
+  "python": "3.11.8 (main, Aug 21 2025, 14:08:53) [Clang 17.0.0 (clang-1700.0.13.3)]",
+  "torch": "2.8.0",
+  "numpy": "2.2.6",
+  "pandas": "2.3.2",
+  "platform": "macOS-26.7.2-arm64-arm-64bit",
+  "device": "cpu",
+  "executed_command": [
+    "/Users/mg9965/Library/CloudStorage/Box-Box/ResearchProjects/RI-EVC/Contexts-FTT-Tiny-RNN/experiments/context_failure_selective_repair/core.py",
+    "--stage",
+    "r4",
+    "--output",
+    "results/context_failure_selective_repair/v1_1"
+  ]
+}

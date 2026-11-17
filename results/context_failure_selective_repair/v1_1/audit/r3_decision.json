@@ -1,0 +1,12 @@
+{
+  "selective_mechanism_gate": false,
+  "softmax_violations": 0,
+  "new_patch_rollouts": 33,
+  "planned_forward_cells": 560,
+  "planned_reverse_cells": 320,
+  "planned_familiar_cells": 1280,
+  "training_updates": 0,
+  "optimization_steps": 0,
+  "primary": "Mixed k3",
+  "all20_retained": true
+}

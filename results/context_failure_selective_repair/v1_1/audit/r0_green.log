@@ -1,0 +1,16 @@
+..F...........                                                           [100%]
+=================================== FAILURES ===================================
+_______________________ test_reject_bad_reuse[target-3] ________________________
+
+field = 'target', value = 3
+
+    @pytest.mark.parametrize('field,value',[('schedule','persistent'),('token',3),('target',3),('cue_0',.7),('cue_2',1),('condition','Low_monotonic'),('checkpoint_sha256','bad')])
+    def test_reject_bad_reuse(field,value):
+        q=fixture();q.loc[q.index[-1],field]=value
+>       with pytest.raises(ValueError):validate_rows(q,records())
+E       Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/context_failure_selective_repair/test_r0.py:16: Failed
+=========================== short test summary info ============================
+FAILED tests/context_failure_selective_repair/test_r0.py::test_reject_bad_reuse[target-3]
+1 failed, 13 passed in 2.29s

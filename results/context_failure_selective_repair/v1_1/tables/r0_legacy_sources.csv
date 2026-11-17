@@ -1,0 +1,3 @@
+path,status,observed_sha,reason
+analysis/phase1k/phase1k_local_cue_branches.csv,unavailable_cloud_optional,,Exact P4 supersedes; Phase1K local geometry alone is not CE; native-restoring pulse is not common Mixed future.
+analysis/phase1k/phase1k_pulse_transition_metrics.csv,unavailable_cloud_optional,,Exact P4 supersedes; Phase1K local geometry alone is not CE; native-restoring pulse is not common Mixed future.

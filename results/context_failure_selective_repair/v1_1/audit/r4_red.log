@@ -1,0 +1,71 @@
+FFFFFF                                                                   [100%]
+=================================== FAILURES ===================================
+_____________________ test_negative_mechanism_no_training ______________________
+
+    def test_negative_mechanism_no_training():
+>    r=recommendation({'selective_mechanism_gate':False});assert r['recommendation']=='no_new_training' and r['scientific_updates']==0
+                                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E    AssertionError: assert ('train_more' == 'no_new_training'
+E      
+E      - no_new_training
+E      + train_more)
+
+tests/context_failure_selective_repair/test_r4.py:6: AssertionError
+_____________ test_unsupported_labels_rejected[natural retrieval] ______________
+
+claim = 'natural retrieval'
+
+    @pytest.mark.parametrize('claim',['natural retrieval','lost sequence information','global unreachability','human mechanism','attractor'])
+    def test_unsupported_labels_rejected(claim):
+>    with pytest.raises(ValueError):validate_claim({'asserts':[claim]})
+E    Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/context_failure_selective_repair/test_r4.py:11: Failed
+_________ test_unsupported_labels_rejected[lost sequence information] __________
+
+claim = 'lost sequence information'
+
+    @pytest.mark.parametrize('claim',['natural retrieval','lost sequence information','global unreachability','human mechanism','attractor'])
+    def test_unsupported_labels_rejected(claim):
+>    with pytest.raises(ValueError):validate_claim({'asserts':[claim]})
+E    Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/context_failure_selective_repair/test_r4.py:11: Failed
+___________ test_unsupported_labels_rejected[global unreachability] ____________
+
+claim = 'global unreachability'
+
+    @pytest.mark.parametrize('claim',['natural retrieval','lost sequence information','global unreachability','human mechanism','attractor'])
+    def test_unsupported_labels_rejected(claim):
+>    with pytest.raises(ValueError):validate_claim({'asserts':[claim]})
+E    Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/context_failure_selective_repair/test_r4.py:11: Failed
+______________ test_unsupported_labels_rejected[human mechanism] _______________
+
+claim = 'human mechanism'
+
+    @pytest.mark.parametrize('claim',['natural retrieval','lost sequence information','global unreachability','human mechanism','attractor'])
+    def test_unsupported_labels_rejected(claim):
+>    with pytest.raises(ValueError):validate_claim({'asserts':[claim]})
+E    Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/context_failure_selective_repair/test_r4.py:11: Failed
+_________________ test_unsupported_labels_rejected[attractor] __________________
+
+claim = 'attractor'
+
+    @pytest.mark.parametrize('claim',['natural retrieval','lost sequence information','global unreachability','human mechanism','attractor'])
+    def test_unsupported_labels_rejected(claim):
+>    with pytest.raises(ValueError):validate_claim({'asserts':[claim]})
+E    Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/context_failure_selective_repair/test_r4.py:11: Failed
+=========================== short test summary info ============================
+FAILED tests/context_failure_selective_repair/test_r4.py::test_negative_mechanism_no_training
+FAILED tests/context_failure_selective_repair/test_r4.py::test_unsupported_labels_rejected[natural retrieval]
+FAILED tests/context_failure_selective_repair/test_r4.py::test_unsupported_labels_rejected[lost sequence information]
+FAILED tests/context_failure_selective_repair/test_r4.py::test_unsupported_labels_rejected[global unreachability]
+FAILED tests/context_failure_selective_repair/test_r4.py::test_unsupported_labels_rejected[human mechanism]
+FAILED tests/context_failure_selective_repair/test_r4.py::test_unsupported_labels_rejected[attractor]
+6 failed in 0.06s
