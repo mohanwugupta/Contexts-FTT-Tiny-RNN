@@ -1,0 +1,18 @@
+{
+  "analysis_version": "episodic-meta-learning-capacity-v2-1.0.0",
+  "repo_root": "..",
+  "output_dir": "outputs/episodic_meta_learning_capacity_v2",
+  "conditions": ["P2_ordinary", "P2_meta", "P1_shuffled_meta"],
+  "primary_hidden_size": 64,
+  "initialization_scale": 2.0,
+  "meta": {"inner_steps": 3, "inner_learning_rate": 0.01, "outer_optimizer": "Adam", "outer_learning_rate": 0.001, "copy_weight": 0.25, "gradient_clip": 1.0},
+  "ordinary": {"optimizer": "Adam", "learning_rate": 0.001, "gradient_clip": 1.0},
+  "pilot": {"episodes": 5000, "seeds": [0, 1, 2, 3, 4], "required_seed_fraction": 0.8, "validation_families": 20},
+  "confirmatory": {"episodes": 50000, "seeds": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19], "required_seed_fraction": 0.8, "validation_families": 100},
+  "gate": {"minimum_copy_accuracy": 0.25, "maximum_asymmetric_query_NLL": 1.3862943611198906, "minimum_gradient_advantage": 0.0},
+  "human_transfer": {"environment": "G2_shared_x", "training_sequences": 170, "block_length": 10, "probe_checkpoints": [20, 50, 90, 170], "learning_rate": 0.005, "coordinate_registry": "human_svg_target_coordinates_v3.json", "coordinate_array_assignment": {"A": 0, "B": 1, "Mixed": 2, "Novel": 3}, "token_sequence": [0, 1, 2, 0, 3, 1, 2, 3], "lambda_execution": 0.2},
+  "human_gates": {"seed_fraction": 0.8, "minimum_P0_differentiation_ratio": 0.8, "minimum_RT_sawtooth": 0.0001},
+  "bootstrap": {"draws": 5000, "seed": 88103},
+  "generator_seed_offset": 240119,
+  "smoke": {"hidden_sizes": [8, 64], "seeds": [0], "episodes": 100, "validation_families": 3, "human_training_sequences": 20, "force_advance_for_integration_test": false}
+}

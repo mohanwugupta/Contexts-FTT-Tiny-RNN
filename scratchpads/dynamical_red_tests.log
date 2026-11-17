@@ -1,0 +1,49 @@
+
+==================================== ERRORS ====================================
+_______________ ERROR collecting tests/unit/test_e1_dynamics.py ________________
+ImportError while importing test module '/Users/mg9965/Library/CloudStorage/Box-Box/ResearchProjects/RI-EVC/Contexts-FTT-Tiny-RNN/tests/unit/test_e1_dynamics.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/Users/mg9965/.pyenv/versions/3.11.8/lib/python3.11/importlib/__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/unit/test_e1_dynamics.py:4: in <module>
+    from context_sequence.dynamics.closure import decompose, static_audit, single_patch_replay
+E   ModuleNotFoundError: No module named 'context_sequence.dynamics'
+_________________ ERROR collecting tests/unit/test_e2_grid.py __________________
+ImportError while importing test module '/Users/mg9965/Library/CloudStorage/Box-Box/ResearchProjects/RI-EVC/Contexts-FTT-Tiny-RNN/tests/unit/test_e2_grid.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/Users/mg9965/.pyenv/versions/3.11.8/lib/python3.11/importlib/__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/unit/test_e2_grid.py:4: in <module>
+    from context_sequence.evaluation.cue_grid import alpha_beta, vector_from_coordinates, grid_registry, verify_grid
+E   ModuleNotFoundError: No module named 'context_sequence.evaluation.cue_grid'
+_______________ ERROR collecting tests/unit/test_e3_factorial.py _______________
+ImportError while importing test module '/Users/mg9965/Library/CloudStorage/Box-Box/ResearchProjects/RI-EVC/Contexts-FTT-Tiny-RNN/tests/unit/test_e3_factorial.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/Users/mg9965/.pyenv/versions/3.11.8/lib/python3.11/importlib/__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/unit/test_e3_factorial.py:4: in <module>
+    from context_sequence.training.separation_regularizers import weak_loss, strong_loss, closure_loss
+E   ModuleNotFoundError: No module named 'context_sequence.training.separation_regularizers'
+_______________ ERROR collecting tests/unit/test_e4_sequences.py _______________
+ImportError while importing test module '/Users/mg9965/Library/CloudStorage/Box-Box/ResearchProjects/RI-EVC/Contexts-FTT-Tiny-RNN/tests/unit/test_e4_sequences.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/Users/mg9965/.pyenv/versions/3.11.8/lib/python3.11/importlib/__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/unit/test_e4_sequences.py:2: in <module>
+    from context_sequence.task.replication import sequence_registry, validate_sequences, equivalence_class
+E   ModuleNotFoundError: No module named 'context_sequence.task.replication'
+=========================== short test summary info ============================
+ERROR tests/unit/test_e1_dynamics.py
+ERROR tests/unit/test_e2_grid.py
+ERROR tests/unit/test_e3_factorial.py
+ERROR tests/unit/test_e4_sequences.py
+!!!!!!!!!!!!!!!!!!! Interrupted: 4 errors during collection !!!!!!!!!!!!!!!!!!!!
+4 errors in 11.77s

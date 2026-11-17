@@ -1,0 +1,4520 @@
+---
+title: "SRN Analysis"
+output: html_document
+date: "2022-08-14"
+---
+
+```{r setup, include=FALSE}
+library(jsonlite)
+library(tidyverse)
+library(lubridate)
+library(xtable)
+library(htmlTable)
+library(papaja)
+library(zoo)
+library(effectsize)
+library(ggpubr)
+require(RCurl)
+library(parallel)
+library(nlstools)
+library(minpack.lm)
+library(BayesFactor)
+library(gridExtra)
+library(tidyr)
+library(purrr)
+library(broom)
+library(lme4)
+library(minpack.lm)
+library(stringr)
+library(lmerTest)
+library(scales)
+
+knitr::opts_chunk$set(warning = FALSE, message = FALSE)
+
+clean_context <- function(x) {
+  x <- as.character(x)
+
+  dplyr::case_when(
+    is.na(x) ~ "NoContext",
+    tolower(x) %in% c("letters", "no context", "nocontext", "none", "na", "") ~ "NoContext",
+    tolower(x) == "maze" ~ "Maze",
+    tolower(x) == "melody" ~ "Melody",
+    TRUE ~ x
+  )
+}
+
+
+clean_model_type <- function(x) {
+  x <- as.character(x)
+
+  dplyr::case_when(
+    # Low-scale baseline
+    x %in% c(
+      "Poor", "Lazy", "Low", "Low-Scale", "Low Scale"
+    ) ~ "Low-Scale",
+
+    # High-scale baseline
+    x %in% c(
+      "Rich", "High", "High-Scale", "High Scale"
+    ) ~ "High-Scale",
+
+    # Low global scale + high context scale
+    x %in% c(
+      "Lazy-Rich-Contex",
+      "Lazy-Rich-Context",
+      "Lazy+RichCtx",
+      "Lazy Rich-Context",
+      "Low-High-Contex",
+      "Low-High-Context",
+      "Low+HighCtx",
+      "Low-Scale-High-Context",
+      "Low-Scale + High Context"
+    ) ~ "Low-Scale + High Context",
+
+    # High global scale + low context scale
+    x %in% c(
+      "Rich-Lazy-Contex",
+      "Rich-Lazy-Context",
+      "Rich+LazyCtx",
+      "Rich Lazy-Context",
+      "High-Low-Contex",
+      "High-Low-Context",
+      "High+LowCtx",
+      "High-Scale-Low-Context",
+      "High-Scale + Low Context"
+    ) ~ "High-Scale + Low Context",
+
+    TRUE ~ NA_character_
+  )
+}
+
+model_levels <- c(
+  "High-Scale",
+  "Low-Scale",
+  "Low-Scale + High Context",
+  "High-Scale + Low Context"
+)
+
+context_levels <- c("Maze", "Melody", "NoContext")
+
+context_cols <- c(
+  Maze = "blue",
+  Melody = "red",
+  NoContext = "black"
+)
+
+model_linetypes <- c(
+  "High-Scale" = "solid",
+  "Low-Scale" = "22",
+  "Low-Scale + High Context" = "dotdash",
+  "High-Scale + Low Context" = "longdash"
+)
+
+# Windows
+#learning dynamics
+# rich_poor_learning_dynamics  <- read_csv("C:/Users/sheik/Box/ResearchProjects/RI-EVC/SRN/CogSci/results_rich_poor_comparison/training_results.csv") %>%
+#   filter(global_step <= 90)
+# 
+# rich_poor_learning_dynamics_melody  <- read_csv("C:/Users/sheik/Box/ResearchProjects/RI-EVC/SRN/CogSci/results_melodyID_clean/training_results.csv") %>%
+#   filter(global_step <= 90)
+# 
+# rich_poor_learning_dynamics_maze  <- read_csv("C:/Users/sheik/Box/ResearchProjects/RI-EVC/SRN/CogSci/results_mazeID_clean/training_results.csv") %>%
+#   filter(global_step <= 90)
+# 
+# rich_poor_learning_dynamics_noContext  <- read_csv("C:/Users/sheik/Box/ResearchProjects/RI-EVC/SRN/CogSci/results_lettersID_clean/training_results.csv") %>%
+#   filter(global_step <= 90)
+# 
+# # context weight used
+# mech_metrics <- read_csv("C:/Users/sheik/Box/ResearchProjects/RI-EVC/SRN/CogSci/results_rich_poor_comparison/collapse_asymptote.csv")
+# 
+# mech_metrics_melody <- read_csv("C:/Users/sheik/Box/ResearchProjects/RI-EVC/SRN/CogSci/results_melodyID_clean/collapse_asymptote.csv")
+# 
+# mech_metrics_maze <- read_csv("C:/Users/sheik/Box/ResearchProjects/RI-EVC/SRN/CogSci/results_mazeID_clean/collapse_asymptote.csv")
+# 
+# 
+# # PCAs
+# pca <- read_csv("C:/Users/sheik/Box/ResearchProjects/RI-EVC/SRN/CogSci/results_rich_poor_comparison/shared_pca_trajectories.csv") %>%
+#   mutate(
+#     Context    = factor(Context, levels = c("Maze", "Melody")),
+#     Model_Type = factor(Model_Type, levels = c("Rich", "Poor"))
+#   )
+# 
+# pca_melody <- read_csv("C:/Users/sheik/Box/ResearchProjects/RI-EVC/SRN/CogSci/results_melodyID_clean/shared_pca_trajectories.csv") %>%
+#   mutate(
+#     Context    = factor(Context, levels = c("Maze", "Melody")),
+#     Model_Type = factor(Model_Type, levels = c("Rich", "Poor"))
+#   )
+# 
+# pca_maze <- read_csv("C:/Users/sheik/Box/ResearchProjects/RI-EVC/SRN/CogSci/results_mazeID_clean/shared_pca_trajectories.csv") %>%
+#   mutate(
+#     Context    = factor(Context, levels = c("Maze", "Melody")),
+#     Model_Type = factor(Model_Type, levels = c("Rich", "Poor"))
+#   )
+# 
+# pca_NoContext <- read_csv("C:/Users/sheik/Box/ResearchProjects/RI-EVC/SRN/CogSci/results_lettersID_clean/shared_pca_trajectories.csv") %>%
+#   mutate(
+#     Context    = factor(Context, levels = c("Letters")),
+#     Model_Type = factor(Model_Type, levels = c("Rich", "Poor"))
+#   )
+# 
+# mechanisticSweep <- read_csv("C:/Users/sheik/Box/ResearchProjects/RI-EVC/SRN/CogSci/results_mechanistic_sweep/mechanistic_sweep_results.csv")
+
+
+# matched analyses
+# matched_metrics <- read_csv("/Users/mg9965/Library/CloudStorage/Box-Box/ResearchProjects/RI-EVC/SRN/CogSci/results_mazeMelodyID_clean_all/matched_geometry_ce.csv") 
+# 
+# collapse_training <- read_csv("/Users/mg9965/Library/CloudStorage/Box-Box/ResearchProjects/RI-EVC/SRN/CogSci/results_mazeMelodyID_clean_all/collapse_asymptote.csv")
+
+# MAC
+# learning dynamics
+rich_poor_learning_dynamics  <- read_csv("/Users/mg9965/Library/CloudStorage/Box-Box/ResearchProjects/RI-EVC/SRN/CogSci/results_mazeMelodyID_clean_all/training_results.csv") %>%
+  filter(global_step <= 90)
+
+rich_poor_learning_dynamics_melody  <- read_csv("/Users/mg9965/Library/CloudStorage/Box-Box/ResearchProjects/RI-EVC/SRN/CogSci/results_melodyID_clean/training_results.csv") %>%
+  filter(global_step <= 90)
+
+rich_poor_learning_dynamics_maze  <- read_csv("/Users/mg9965/Library/CloudStorage/Box-Box/ResearchProjects/RI-EVC/SRN/CogSci/results_mazeID_clean/training_results.csv") %>%
+  filter(global_step <= 90)
+rich_poor_learning_dynamics_maze$context[rich_poor_learning_dynamics_maze$context == "Melody"] <- "Maze"
+
+rich_poor_learning_dynamics_noContext  <- read_csv("/Users/mg9965/Library/CloudStorage/Box-Box/ResearchProjects/RI-EVC/SRN/CogSci/results_lettersID_clean/training_results.csv") %>%
+  filter(global_step <= 90)
+
+# context weight used
+mech_metrics <- read_csv("/Users/mg9965/Library/CloudStorage/Box-Box/ResearchProjects/RI-EVC/SRN/CogSci/results_mazeMelodyID_clean_all/collapse_asymptote.csv")
+
+mech_metrics_melody <- read_csv("/Users/mg9965/Library/CloudStorage/Box-Box/ResearchProjects/RI-EVC/SRN/CogSci/results_melodyID_clean/collapse_asymptote.csv")
+
+mech_metrics_maze <- read_csv("/Users/mg9965/Library/CloudStorage/Box-Box/ResearchProjects/RI-EVC/SRN/CogSci/results_mazeID_clean/collapse_asymptote.csv")
+
+mech_metrics_NoContext <- read_csv("/Users/mg9965/Library/CloudStorage/Box-Box/ResearchProjects/RI-EVC/SRN/CogSci/results_lettersID_clean/collapse_asymptote.csv")
+
+
+# PCAs
+pca <- read_csv(
+  "/Users/mg9965/Library/CloudStorage/Box-Box/ResearchProjects/RI-EVC/SRN/CogSci/results_mazeMelodyID_clean_all/shared_pca_trajectories.csv",
+  show_col_types = FALSE
+) %>%
+  mutate(
+    Context = factor(
+      clean_context(context),
+      levels = context_levels
+    ),
+    Model_Type = factor(
+      clean_model_type(model_type),
+      levels = model_levels
+    )
+  ) %>%
+  filter(!is.na(Model_Type))
+
+
+pca_melody <- read_csv(
+  "/Users/mg9965/Library/CloudStorage/Box-Box/ResearchProjects/RI-EVC/SRN/CogSci/results_melodyID_clean/shared_pca_trajectories.csv",
+  show_col_types = FALSE
+) %>%
+  mutate(
+    Context = factor(
+      clean_context(context),
+      levels = context_levels
+    ),
+    Model_Type = factor(
+      clean_model_type(model_type),
+      levels = model_levels
+    )
+  ) %>%
+  filter(!is.na(Model_Type))
+
+
+pca_maze <- read_csv(
+  "/Users/mg9965/Library/CloudStorage/Box-Box/ResearchProjects/RI-EVC/SRN/CogSci/results_mazeID_clean/shared_pca_trajectories.csv",
+  show_col_types = FALSE
+) %>%
+  mutate(
+    Context = factor(
+      clean_context(context),
+      levels = context_levels
+    ),
+    Model_Type = factor(
+      clean_model_type(model_type),
+      levels = model_levels
+    )
+  ) %>%
+  filter(!is.na(Model_Type))
+
+
+pca_NoContext <- read_csv(
+  "/Users/mg9965/Library/CloudStorage/Box-Box/ResearchProjects/RI-EVC/SRN/CogSci/results_lettersID_clean/shared_pca_trajectories.csv",
+  show_col_types = FALSE
+) %>%
+  mutate(
+    Context = factor(
+      "NoContext",
+      levels = context_levels
+    ),
+    Model_Type = factor(
+      clean_model_type(model_type),
+      levels = model_levels
+    )
+  ) %>%
+  filter(!is.na(Model_Type))
+
+mechanisticSweep <- read_csv("/Users/mg9965/Library/CloudStorage/Box-Box/ResearchProjects/RI-EVC/SRN/CogSci/results_mazeMelodyID_clean_all/init_scale_sweep.csv")
+
+# matched analyses
+matched_metrics <- read_csv("/Users/mg9965/Library/CloudStorage/Box-Box/ResearchProjects/RI-EVC/SRN/CogSci/results_mazeMelodyID_clean_all/matched_geometry_ce.csv") 
+
+collapse_training <- read_csv("/Users/mg9965/Library/CloudStorage/Box-Box/ResearchProjects/RI-EVC/SRN/CogSci/results_mazeMelodyID_clean_all/collapse_asymptote.csv")
+
+mech_metrics_90 <- mech_metrics %>% 
+  filter(step_or_epoch == 90)
+
+```
+
+```{r LearningCurves, echo=FALSE}
+# =========================================================
+# Learning trajectory plots with 2 x 2 model conditions
+# Rich -> High-Scale
+# Lazy/Poor -> Low-Scale
+# =========================================================
+
+library(dplyr)
+library(ggplot2)
+library(ggpubr)
+
+# ---------- Helpers ----------
+
+minmax <- function(x) {
+  r <- range(x, na.rm = TRUE)
+  if (diff(r) == 0) return(rep(0.5, length(x)))
+  (x - r[1]) / diff(r)
+}
+
+
+# =========================================================
+# 1) Maze-Melody transfer plot
+# =========================================================
+
+human_use <- rich_poor_learning_dynamics %>%
+  filter(training_active == TRUE) %>%
+  filter(counterbalance == 1) %>%
+  filter(!is.na(rt)) %>%
+  mutate(
+    context = clean_context(context),
+    context = factor(context, levels = context_levels)
+  ) %>%
+  group_by(context, block_id, sequence_in_block, global_step) %>%
+  summarise(
+    rt = mean(rt, na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  group_by(context) %>%
+  mutate(rt_norm = minmax(rt)) %>%
+  ungroup()
+
+model_use <- rich_poor_learning_dynamics %>%
+  filter(training_active == TRUE) %>%
+  filter(!is.na(loss)) %>%
+  mutate(
+    model_type = clean_model_type(model_type),
+    context = clean_context(context)
+  ) %>%
+  filter(!is.na(model_type)) %>%
+  mutate(
+    model_type = factor(model_type, levels = model_levels),
+    context = factor(context, levels = context_levels)
+  ) %>%
+  group_by(model_type, context, block_id, sequence_in_block, global_step) %>%
+  summarise(
+    loss = mean(loss, na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  group_by(model_type) %>%
+  mutate(loss_norm = minmax(loss)) %>%
+  ungroup()
+
+model_line <- model_use %>%
+  group_by(model_type, global_step) %>%
+  summarise(
+    loss_norm = mean(loss_norm, na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  arrange(model_type, global_step)
+
+p_transfer <- ggplot() +
+  geom_line(
+    data = model_line,
+    aes(
+      x = global_step,
+      y = loss_norm,
+      linetype = model_type,
+      group = model_type
+    ),
+    color = "black",
+    linewidth = 3,
+    na.rm = TRUE
+  ) +
+  geom_line(
+    data = human_use,
+    aes(
+      x = global_step,
+      y = rt_norm,
+      group = interaction(context, block_id),
+      color = context
+    ),
+    linewidth = 2,
+    alpha = 0.6,
+    na.rm = TRUE
+  ) +
+  geom_point(
+    data = human_use,
+    aes(
+      x = global_step,
+      y = rt_norm,
+      color = context
+    ),
+    size = 5,
+    alpha = 0.90,
+    na.rm = TRUE
+  ) +
+  scale_color_manual(values = context_cols, drop = FALSE) +
+  scale_linetype_manual(values = model_linetypes, drop = FALSE) +
+  labs(
+    x = "Cumulative Sequence",
+    y = "Normalized Performance",
+    color = NULL,
+    linetype = NULL
+  ) +
+  theme_minimal() +
+  theme(
+    legend.title = element_blank(),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    axis.line = element_line(
+      colour = "black",
+      linewidth = 2,
+      linetype = "solid"
+    ),
+    legend.key.size = unit(1.3, "cm"),
+    legend.text = element_text(size = 26),
+    axis.text = element_text(size = 30),
+    axis.title = element_text(size = 34)
+  ) +
+  guides(
+    color = guide_legend(
+      override.aes = list(
+        shape = 16,
+        size = 7,
+        alpha = 1,
+        linewidth = 0
+      )
+    ),
+    linetype = guide_legend(
+      override.aes = list(linewidth = 3)
+    )
+  )
+
+p_transfer
+
+# =========================================================
+# 2) Reusable plotting function for single-context conditions
+# =========================================================
+
+make_transfer_plot <- function(df, title = NULL, common_legend = FALSE) {
+
+  if (!("context" %in% names(df))) {
+    df <- df %>% mutate(context = "NoContext")
+  }
+
+  df <- df %>%
+    mutate(context = clean_context(context))
+
+  # ---- Human ----
+  human_use <- df %>%
+    filter(training_active == TRUE) %>%
+    filter(!is.na(rt)) %>%
+    group_by(context, block_id, sequence_in_block, global_step) %>%
+    summarise(
+      rt = mean(rt, na.rm = TRUE),
+      .groups = "drop"
+    ) %>%
+    group_by(context) %>%
+    mutate(rt_norm = minmax(rt)) %>%
+    ungroup()
+
+  # ---- Model ----
+  model_use <- df %>%
+    filter(training_active == TRUE) %>%
+    filter(!is.na(loss)) %>%
+    mutate(model_type = clean_model_type(model_type)) %>%
+    filter(!is.na(model_type)) %>%
+    mutate(model_type = factor(model_type, levels = model_levels)) %>%
+    group_by(model_type, context, block_id, sequence_in_block, global_step) %>%
+    summarise(
+      loss = mean(loss, na.rm = TRUE),
+      .groups = "drop"
+    ) %>%
+    group_by(model_type) %>%
+    mutate(loss_norm = minmax(loss)) %>%
+    ungroup()
+
+  model_line <- model_use %>%
+    group_by(model_type, global_step) %>%
+    summarise(
+      loss_norm = mean(loss_norm, na.rm = TRUE),
+      .groups = "drop"
+    ) %>%
+    arrange(model_type, global_step)
+
+  # ---- Context color scale ----
+  if (common_legend) {
+    human_use <- human_use %>%
+      mutate(context = factor(context, levels = context_levels))
+
+    color_scale <- scale_color_manual(values = context_cols, drop = FALSE)
+
+  } else {
+    present_ctx <- sort(unique(as.character(human_use$context)))
+
+    human_use <- human_use %>%
+      mutate(context = factor(context, levels = present_ctx))
+
+    color_scale <- scale_color_manual(
+      values = context_cols[present_ctx],
+      drop = TRUE
+    )
+  }
+
+  ggplot() +
+    geom_line(
+      data = model_line,
+      aes(
+        x = global_step,
+        y = loss_norm,
+        linetype = model_type,
+        group = model_type
+      ),
+      color = "black",
+      linewidth = 3,
+      na.rm = TRUE
+    ) +
+    geom_line(
+      data = human_use,
+      aes(
+        x = global_step,
+        y = rt_norm,
+        group = interaction(context, block_id),
+        color = context
+      ),
+      linewidth = 2,
+      alpha = 0.6,
+      na.rm = TRUE
+    ) +
+    geom_point(
+      data = human_use,
+      aes(
+        x = global_step,
+        y = rt_norm,
+        color = context
+      ),
+      size = 5,
+      alpha = 0.90,
+      na.rm = TRUE
+    ) +
+    color_scale +
+    scale_linetype_manual(values = model_linetypes, drop = FALSE) +
+    labs(
+      title = title,
+      x = "Cumulative Sequence",
+      y = "Normalized Performance",
+      color = NULL,
+      linetype = NULL
+    ) +
+    theme_minimal() +
+    theme(
+      panel.grid.major = element_blank(),
+      panel.grid.minor = element_blank(),
+      axis.line = element_line(
+        colour = "black",
+        linewidth = 2,
+        linetype = "solid"
+      ),
+      legend.key.size = unit(1.3, "cm"),
+      legend.text = element_text(size = 26),
+      axis.text = element_text(size = 30),
+      axis.title = element_text(size = 34),
+      plot.title = element_text(
+        size = 26,
+        face = "bold",
+        hjust = 0.5
+      )
+    ) +
+    guides(
+      color = guide_legend(
+        override.aes = list(
+          shape = 16,
+          size = 7,
+          alpha = 1,
+          linewidth = 0
+        )
+      ),
+      linetype = guide_legend(
+        override.aes = list(linewidth = 3)
+      )
+    )
+}
+
+# =========================================================
+# 3) Make single-context plots
+# =========================================================
+
+p_transfer_noContext <- make_transfer_plot(
+  rich_poor_learning_dynamics_noContext,
+  "No Context",
+  common_legend = TRUE
+)
+
+p_transfer_melody <- make_transfer_plot(
+  rich_poor_learning_dynamics_melody,
+  "Single Context: Melody",
+  common_legend = TRUE
+)
+
+p_transfer_maze <- make_transfer_plot(
+  rich_poor_learning_dynamics_maze,
+  "Single Context: Maze",
+  common_legend = TRUE
+)
+
+p_transfer_melody
+p_transfer_maze
+p_transfer_noContext
+
+# Remove repeated axis labels for arranged figures
+p_transfer_melody <- p_transfer_melody +
+  labs(x = NULL, y = NULL)
+
+p_transfer_maze <- p_transfer_maze +
+  labs(x = NULL, y = NULL)
+
+p_transfer_noContext <- p_transfer_noContext +
+  labs(x = NULL, y = NULL)
+
+p_transfer_clean <- p_transfer +
+  labs(x = NULL, y = NULL)
+
+# =========================================================
+# 4) Arrange plots
+# =========================================================
+
+singleContextLearning <- ggarrange(
+  p_transfer_maze,
+  p_transfer_noContext,
+  p_transfer_melody,
+  labels = c("A", "B", "C"),
+  font.label = list(size = 24, face = "bold"),
+  ncol = 1,
+  nrow = 3,
+  common.legend = FALSE,
+  legend = "right",
+  align = "hv"
+)
+
+singleContextLearning <- annotate_figure(
+  singleContextLearning,
+  left = text_grob("Normalized Performance", rot = 90, size = 28),
+  bottom = text_grob("Cumulative Sequence", size = 28)
+)
+
+allLearningTrajs <- ggarrange(
+  p_transfer_clean,
+  p_transfer_noContext,
+  p_transfer_melody,
+  p_transfer_maze,
+  labels = c("A", "B", "C", "D"),
+  font.label = list(size = 24, face = "bold"),
+  ncol = 2,
+  nrow = 2,
+  common.legend = TRUE,
+  legend = "right",
+  align = "hv"
+)
+
+allLearningTrajs <- annotate_figure(
+  allLearningTrajs,
+  left = text_grob("Normalized Performance", rot = 90, size = 28),
+  bottom = text_grob("Cumulative Sequence", size = 28)
+)
+
+allLearningTrajs
+
+
+```
+
+```{r, echo=FALSE}
+ # =========================================================
+# SRN loss graph with 2 x 2 model conditions
+# Rich -> High-Scale
+# Lazy/Poor -> Low-Scale
+# =========================================================
+srn_theme <- theme(
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    axis.line = element_line(colour = "black", linewidth = 4),
+    strip.text = element_text(size = 36, face = "bold"),
+    legend.key.size = unit(1.3, "cm"),
+    legend.text = element_text(size = 26),
+    axis.text = element_text(size = 36),
+    axis.title = element_text(size = 36)
+  )
+model_use <- rich_poor_learning_dynamics %>%
+  filter(training_active == TRUE) %>%
+  filter(!is.na(loss)) %>%
+  mutate(
+    model_type = clean_model_type(model_type),
+    context = clean_context(context)
+  ) %>%
+  filter(!is.na(model_type)) %>%
+  mutate(
+    model_type = factor(model_type, levels = model_levels),
+    context = factor(context, levels = context_levels)
+  ) %>%
+  group_by(
+    participant_id, model_type, context, block_id,
+    sequence_in_block, global_step, counterbalance
+  ) %>%
+  summarise(
+    loss = mean(loss, na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  ungroup()
+
+model_line <- model_use %>%
+  filter(counterbalance == 1) %>%
+  group_by(model_type, context, global_step, block_id) %>%
+  summarise(
+    mean_loss = mean(loss, na.rm = TRUE),
+    se_loss = sd(loss, na.rm = TRUE) / sqrt(sum(!is.na(loss))),
+    .groups = "drop"
+  ) %>%
+  arrange(model_type, context, block_id, global_step)
+
+model_line <- model_line %>%
+  mutate(
+    model_type = factor(
+      model_type,
+      levels = c(
+        "Low-Scale",
+        "Low-Scale + High Context",
+        "High-Scale + Low Context",
+        "High-Scale"
+      )
+    )
+  )
+srnLossGraph <- ggplot(
+  model_line,
+  aes(
+    x = global_step,
+    y = mean_loss,
+    color = context,
+    fill = context,
+    group = interaction(context, block_id)
+  )
+) +
+  geom_ribbon(
+    aes(
+      ymin = mean_loss - se_loss,
+      ymax = mean_loss + se_loss
+    ),
+    alpha = 0.12,
+    linetype = 0,
+    na.rm = TRUE,
+    show.legend = FALSE
+  ) +
+  geom_line(
+    linewidth = 3,
+    na.rm = TRUE
+  ) +
+  facet_wrap(~ model_type, ncol = 1) +
+  scale_color_manual(values = context_cols, drop = FALSE) +
+  scale_fill_manual(values = context_cols, drop = FALSE) +
+  labs(
+    x = "Cumulative Sequence",
+    y = "Loss",
+    color = NULL,
+    fill = NULL
+  ) +
+  theme_minimal() +
+  srn_theme +
+  guides(
+    color = guide_legend(override.aes = list(linewidth = 3))
+  )
+
+srnLossGraph
+
+
+
+# no difference between maze & melody
+srnLossGraph_all <- ggplot(
+  model_line,
+  aes(
+    x = global_step,
+    y = mean_loss,
+    color = model_type,
+    fill = model_type,
+    group = interaction(model_type, context, block_id)
+  )
+) +
+  geom_ribbon(
+    aes(
+      ymin = mean_loss - se_loss,
+      ymax = mean_loss + se_loss
+    ),
+    alpha = 0.2,
+    linetype = 0,
+    na.rm = TRUE,
+    show.legend = FALSE
+  ) +
+  geom_line(
+    linewidth = 6,
+    na.rm = TRUE
+  ) +
+  scale_color_manual(values = model_cols, drop = FALSE) +
+  scale_fill_manual(values = model_cols, drop = FALSE) +
+  scale_linetype_manual(
+    values = c(
+      "Maze" = "solid",
+      "Melody" = "dashed",
+      "NoContext" = "dotted"
+    ),
+    drop = FALSE
+  ) +
+  labs(
+    x = "Cumulative Sequence",
+    y = "Loss",
+    color = NULL,
+    fill = NULL,
+    linetype = NULL
+  ) +
+  theme_minimal() +
+  srn_theme +
+  guides(
+    color = guide_legend(override.aes = list(linewidth = 3)),
+  ) + 
+  theme(legend.position = "none")
+
+srnLossGraph_all
+```
+
+```{r, ContextWeight echo=FALSE}
+# =========================================================
+# Dimensionality and context-weight bars
+# Rich -> High-Scale
+# Lazy/Poor -> Low-Scale
+# Includes hybrid context-scale conditions
+# =========================================================
+
+
+# ---------- Model label helpers ----------
+
+clean_model_type <- function(x) {
+  x <- as.character(x)
+
+  dplyr::case_when(
+    x %in% c(
+      "Poor", "Lazy", "Low", "Low-Scale", "Low Scale"
+    ) ~ "Low-Scale",
+
+    x %in% c(
+      "Rich", "High", "High-Scale", "High Scale"
+    ) ~ "High-Scale",
+
+    x %in% c(
+      "Lazy-Rich-Contex",
+      "Lazy-Rich-Context",
+      "Lazy+RichCtx",
+      "Lazy Rich-Context",
+      "Low-High-Contex",
+      "Low-High-Context",
+      "Low+HighCtx",
+      "Low-Scale-High-Context",
+      "Low-Scale + High Context"
+    ) ~ "Low-Scale + High Context",
+
+    x %in% c(
+      "Rich-Lazy-Contex",
+      "Rich-Lazy-Context",
+      "Rich+LazyCtx",
+      "Rich Lazy-Context",
+      "High-Low-Contex",
+      "High-Low-Context",
+      "High+LowCtx",
+      "High-Scale-Low-Context",
+      "High-Scale + Low Context"
+    ) ~ "High-Scale + Low Context",
+
+    TRUE ~ NA_character_
+  )
+}
+
+model_levels <- c(
+  "Low-Scale",
+  "Low-Scale + High Context",
+  "High-Scale + Low Context",
+  "High-Scale"
+)
+
+model_cols <- c(
+  "Low-Scale" = "red",
+  "Low-Scale + High Context" = "orange",
+  "High-Scale + Low Context" = "purple",
+  "High-Scale" = "blue"
+)
+
+prep_mech_metrics <- function(df) {
+  df %>%
+    mutate(
+      model_type = clean_model_type(model_type),
+      model_type = factor(model_type, levels = model_levels)
+    ) %>%
+    filter(!is.na(model_type))
+}
+
+# Apply cleaned labels
+mech_metrics_90_clean   <- prep_mech_metrics(mech_metrics_90)
+mech_metrics_maze_clean <- prep_mech_metrics(mech_metrics_maze)
+
+# ---------- Shared theme ----------
+
+bar_theme <- theme_minimal() +
+  theme(
+    legend.title = element_blank(),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    axis.line = element_line(
+      colour = "black",
+      linewidth = 2,
+      linetype = "solid"
+    ),
+    legend.key.size = unit(2, "cm"),
+    axis.text = element_text(size = 24),
+    axis.text.x = element_text(angle = 25, hjust = 1),
+    axis.title = element_text(size = 34),
+    plot.title = element_text(size = 34, face = "bold", hjust = 0.5)
+  )
+
+# =========================================================
+# 1) Dimensionality bar
+# =========================================================
+
+dimBar <- mech_metrics_90_clean %>%
+  ggplot(
+    aes(
+      y = effective_dimensionality,
+      x = model_type,
+      fill = model_type
+    )
+  ) +
+  geom_bar(
+    position = position_dodge(width = 2),
+    stat = "summary",
+    fun = "mean",
+    width = 0.8,
+    color = "black",
+    alpha = 0.7
+  ) +
+  stat_summary(
+    fun.data = mean_cl_normal,
+    geom = "linerange",
+    position = position_dodge(width = 1),
+    linewidth = 2
+  ) +
+  geom_jitter(
+    width = 0.25,
+    size = 2.5,
+    alpha = 0.4,
+    show.legend = FALSE
+  ) +
+  scale_fill_manual(values = model_cols, drop = FALSE) +
+  scale_color_manual(values = model_cols, drop = FALSE) +
+  labs(
+    y = "Dimensionality",
+    x = "Model Type",
+    title = ""
+  ) +
+  bar_theme +
+  guides(fill = "none")
+
+dimBar
+
+# =========================================================
+# 2) Context weight: switching contexts
+# =========================================================
+
+contextWeight <- mech_metrics_90_clean %>%
+  ggplot(
+    aes(
+      y = weight_ratio_cx_in,
+      x = model_type,
+      fill = model_type
+    )
+  ) +
+  geom_bar(
+    position = position_dodge(width = 2),
+    stat = "summary",
+    fun = "mean",
+    width = 0.85,
+    color = "black",
+    alpha = 0.7
+  ) +
+  stat_summary(
+    fun.data = mean_cl_normal,
+    geom = "linerange",
+    position = position_dodge(width = 1),
+    linewidth = 2
+  ) +
+  geom_jitter(
+    aes(color = model_type),
+    width = 0.25,
+    size = 2.5,
+    alpha = 0.4,
+    show.legend = FALSE
+  ) +
+  scale_fill_manual(values = model_cols, drop = FALSE) +
+  scale_color_manual(values = model_cols, drop = FALSE) +
+  coord_cartesian(ylim = c(0, 1)) +
+  labs(
+    y = "Relative Context Weight Strength",
+    x = "Model Type",
+    title = ""
+  ) +
+  theme_minimal() +
+  srn_theme +
+  guides(fill = "none")
+
+contextWeight
+
+# =========================================================
+# 3) Context weight: single-context Maze
+# =========================================================
+
+contextWeight_maze <- mech_metrics_maze_clean %>%
+  filter(step_or_epoch == 90) %>%
+  ggplot(
+    aes(
+      y = weight_ratio_cx_in,
+      x = model_type,
+      fill = model_type
+    )
+  ) +
+  geom_bar(
+    position = position_dodge(width = 2),
+    stat = "summary",
+    fun = "mean",
+    width = 0.99,
+    color = "black",
+    alpha = 0.7
+  ) +
+  stat_summary(
+    fun.data = mean_cl_normal,
+    geom = "linerange",
+    position = position_dodge(width = 1),
+    linewidth = 2
+  ) +
+  geom_jitter(
+    width = 0.25,
+    size = 2.5,
+    alpha = 0.4,
+    show.legend = FALSE
+  ) +
+  scale_fill_manual(values = model_cols, drop = FALSE) +
+  scale_color_manual(values = model_cols, drop = FALSE) +
+  coord_cartesian(ylim = c(0, 1)) +
+  labs(
+    y = "Relative Context Weight Strength",
+    x = "Model Type",
+    title = ""
+  ) +
+theme_minimal() +
+  srn_theme +  guides(fill = "none")
+
+contextWeight_maze
+
+# =========================================================
+# 4) Combine context-weight plots
+# =========================================================
+
+p1 <- contextWeight_maze +
+  ggtitle("Single Context") +
+  labs(x = NULL, y = NULL)
+
+p2 <- contextWeight +
+  ggtitle("Switching Contexts") +
+  labs(x = NULL, y = NULL)
+
+contextWeight_combo <- ggarrange(
+  p1,
+  p2,
+  ncol = 2,
+  nrow = 1,
+  labels = c("A", "B"),
+  font.label = list(size = 24, face = "bold"),
+  align = "hv"
+)
+
+contextWeight_combo <- annotate_figure(
+  contextWeight_combo,
+  left = text_grob(
+    "Relative Context Weight Strength",
+    rot = 90,
+    size = 28
+  )
+)
+
+contextWeight_combo
+
+```
+
+```{r, PCA echo=FALSE}
+# =========================================================
+# PCA plots with 2 x 2 model conditions
+# Rich -> High-Scale
+# Lazy/Poor -> Low-Scale
+# Includes hybrid context-scale conditions
+# =========================================================
+
+# ---------- Helpers ----------
+
+clean_model_type <- function(x) {
+  x <- as.character(x)
+
+  dplyr::case_when(
+    x %in% c(
+      "Poor", "Lazy", "Low", "Low-Scale", "Low Scale"
+    ) ~ "Low-Scale",
+
+    x %in% c(
+      "Rich", "High", "High-Scale", "High Scale"
+    ) ~ "High-Scale",
+
+    x %in% c(
+      "Lazy-Rich-Contex",
+      "Lazy-Rich-Context",
+      "Lazy+RichCtx",
+      "Lazy Rich-Context",
+      "Low-High-Contex",
+      "Low-High-Context",
+      "Low+HighCtx",
+      "Low-Scale-High-Context",
+      "Low-Scale + High Context"
+    ) ~ "Low-Scale + High Context",
+
+    x %in% c(
+      "Rich-Lazy-Contex",
+      "Rich-Lazy-Context",
+      "Rich+LazyCtx",
+      "Rich Lazy-Context",
+      "High-Low-Contex",
+      "High-Low-Context",
+      "High+LowCtx",
+      "High-Scale-Low-Context",
+      "High-Scale + Low Context"
+    ) ~ "High-Scale + Low Context",
+
+    TRUE ~ NA_character_
+  )
+}
+
+clean_context <- function(x) {
+  x <- as.character(x)
+
+  dplyr::case_when(
+    is.na(x) ~ "NoContext",
+    tolower(x) %in% c(
+      "letters", "no context", "nocontext", "none", "na", ""
+    ) ~ "NoContext",
+    tolower(x) == "maze" ~ "Maze",
+    tolower(x) == "melody" ~ "Melody",
+    TRUE ~ x
+  )
+}
+
+rescale_alpha <- function(x) {
+  if (length(unique(x[!is.na(x)])) <= 1) {
+    return(rep(1, length(x)))
+  }
+
+  scales::rescale(x, to = c(0.25, 1.0))
+}
+
+model_levels <- c(
+  "Low-Scale",
+  "Low-Scale + High Context",
+  "High-Scale + Low Context",
+  "High-Scale"
+)
+
+context_levels <- c("Maze", "Melody", "NoContext")
+
+context_cols <- c(
+  Maze = "blue",
+  Melody = "red",
+  NoContext = "black"
+)
+
+clean_pca_df <- function(df) {
+
+  if ("model_type" %in% names(df) && !("Model_Type" %in% names(df))) {
+    df <- df %>% rename(Model_Type = model_type)
+  }
+
+  if ("context" %in% names(df) && !("Context" %in% names(df))) {
+    df <- df %>% rename(Context = context)
+  }
+
+  df %>%
+    mutate(
+      Model_Type = clean_model_type(Model_Type),
+      Context = clean_context(Context),
+      Model_Type = factor(Model_Type, levels = model_levels),
+      Context = factor(Context, levels = context_levels)
+    ) %>%
+    filter(!is.na(Model_Type))
+}
+
+make_pca_mean <- function(df) {
+  df %>%
+    group_by(Model_Type, Context, step_in_sequence) %>%
+    summarise(
+      PC1 = mean(PC1, na.rm = TRUE),
+      PC2 = mean(PC2, na.rm = TRUE),
+      .groups = "drop"
+    )
+}
+
+get_pca_lims <- function(df) {
+  df %>%
+    summarise(
+      xmin = min(PC1, na.rm = TRUE),
+      xmax = max(PC1, na.rm = TRUE),
+      ymin = min(PC2, na.rm = TRUE),
+      ymax = max(PC2, na.rm = TRUE)
+    )
+}
+
+pca_theme <- theme_minimal() +
+  theme(
+    legend.title = element_blank(),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    axis.line = element_line(
+      colour = "black",
+      linewidth = 2,
+      linetype = "solid"
+    ),
+    legend.key.size = unit(2, "cm"),
+    axis.text = element_text(size = 30),
+    axis.title = element_text(size = 34),
+    plot.title = element_text(size = 30, face = "bold", hjust = 0.5),
+    legend.text = element_text(size = 26)
+  )
+
+legend_circles <- guides(
+  fill = "none",
+  color = guide_legend(
+    override.aes = list(
+      shape = 16,
+      size = 8,
+      alpha = 1,
+      linewidth = 0
+    )
+  )
+)
+
+make_pca_model_plot <- function(pca_mean, model_label, title_suffix, lims) {
+
+  d <- pca_mean %>%
+    filter(Model_Type == model_label) %>%
+    arrange(Context, step_in_sequence) %>%
+    group_by(Context) %>%
+    mutate(step_alpha = rescale_alpha(step_in_sequence)) %>%
+    ungroup()
+
+  starts <- d %>%
+    group_by(Context) %>%
+    slice_min(step_in_sequence, with_ties = FALSE) %>%
+    ungroup()
+
+  ends <- d %>%
+    group_by(Context) %>%
+    slice_max(step_in_sequence, with_ties = FALSE) %>%
+    ungroup()
+
+  ggplot(d, aes(x = PC1, y = PC2)) +
+    geom_path(
+      aes(group = Context, color = Context),
+      linewidth = 5,
+      na.rm = TRUE
+    ) +
+    geom_point(
+      aes(color = Context, alpha = step_alpha),
+      size = 8,
+      na.rm = TRUE
+    ) +
+    geom_point(
+      data = starts,
+      aes(color = Context),
+      size = 8,
+      na.rm = TRUE
+    ) +
+    geom_point(
+      data = ends,
+      aes(color = Context),
+      size = 8,
+      na.rm = TRUE
+    ) +
+    coord_equal(
+      xlim = c(lims$xmin[[1]], lims$xmax[[1]]),
+      ylim = c(lims$ymin[[1]], lims$ymax[[1]])
+    ) +
+    scale_alpha_identity() +
+    scale_color_manual(values = context_cols) +
+    labs(
+      title = paste0(model_label, " (", title_suffix, ")"),
+      x = "PC1",
+      y = "PC2",
+      color = "Context"
+    ) +
+    pca_theme +
+    legend_circles
+}
+
+make_pca_plot_list <- function(pca_mean, title_suffix, lims) {
+  present_models <- model_levels[
+    model_levels %in% as.character(unique(pca_mean$Model_Type))
+  ]
+
+  plots <- lapply(
+    present_models,
+    function(m) {
+      make_pca_model_plot(
+        pca_mean = pca_mean,
+        model_label = m,
+        title_suffix = title_suffix,
+        lims = lims
+      )
+    }
+  )
+
+  names(plots) <- present_models
+  plots
+}
+
+strip_pca_axes <- function(p) {
+  p + labs(x = NULL, y = NULL)
+}
+
+# =========================================================
+# 1) Clean PCA data
+# =========================================================
+
+pca           <- clean_pca_df(pca)
+pca_maze      <- clean_pca_df(pca_maze)
+pca_melody    <- clean_pca_df(pca_melody)
+pca_NoContext <- clean_pca_df(pca_NoContext)
+
+# =========================================================
+# 2) Switching-context PCA plots
+# =========================================================
+
+pca_mean <- make_pca_mean(pca)
+lims <- get_pca_lims(pca_mean)
+
+pca_two_plots <- make_pca_plot_list(
+  pca_mean = pca_mean,
+  title_suffix = "Two Contexts",
+  lims = lims
+)
+
+pca_combo <- ggarrange(
+  plotlist = pca_two_plots,
+  ncol = 2,
+  nrow = ceiling(length(pca_two_plots) / 2),
+  common.legend = TRUE,
+  legend = "right",
+  align = "hv",
+  font.label = list(size = 24, face = "bold")
+)
+
+pca_combo
+
+# Backward-compatible object names, in case later chunks use them
+LowScalePCA <- pca_two_plots[["Low-Scale"]]
+LowHighContextPCA <- pca_two_plots[["Low-Scale + High Context"]]
+HighLowContextPCA <- pca_two_plots[["High-Scale + Low Context"]]
+HighScalePCA <- pca_two_plots[["High-Scale"]]
+
+poorPCA <- LowScalePCA
+richPCA <- HighScalePCA
+
+# =========================================================
+# 3) Single-context PCA plots
+# =========================================================
+
+pca_single <- bind_rows(
+  pca_maze %>%
+    mutate(TrainContext = "Maze"),
+
+  pca_melody %>%
+    mutate(TrainContext = "Melody"),
+
+  pca_NoContext %>%
+    mutate(TrainContext = "NoContext")
+) %>%
+  mutate(
+    TrainContext = factor(TrainContext, levels = context_levels),
+    Context = TrainContext,
+    Model_Type = factor(Model_Type, levels = model_levels)
+  )
+
+pca_single_mean <- make_pca_mean(pca_single)
+lims_single <- get_pca_lims(pca_single_mean)
+
+pca_single_plots <- make_pca_plot_list(
+  pca_mean = pca_single_mean,
+  title_suffix = "Single Context",
+  lims = lims_single
+)
+
+pca_combo_single <- ggarrange(
+  plotlist = pca_single_plots,
+  ncol = 2,
+  nrow = ceiling(length(pca_single_plots) / 2),
+  common.legend = TRUE,
+  legend = "right",
+  align = "hv",
+  labels = LETTERS[seq_along(pca_single_plots)],
+  font.label = list(size = 24, face = "bold")
+)
+
+pca_combo_single
+
+# Backward-compatible object names, in case later chunks use them
+LowScalePCA_single <- pca_single_plots[["Low-Scale"]]
+LowHighContextPCA_single <- pca_single_plots[["Low-Scale + High Context"]]
+HighLowContextPCA_single <- pca_single_plots[["High-Scale + Low Context"]]
+HighScalePCA_single <- pca_single_plots[["High-Scale"]]
+
+lazyPCA_single <- LowScalePCA_single
+richPCA_single <- HighScalePCA_single
+
+# =========================================================
+# 4) Combined PCA figure
+# Row 1 = single-context trajectories
+# Row 2 = switching-context trajectories
+# =========================================================
+
+pca_single_plots_clean <- lapply(pca_single_plots, strip_pca_axes)
+pca_two_plots_clean    <- lapply(pca_two_plots, strip_pca_axes)
+
+pcaAll <- ggarrange(
+  plotlist = c(pca_single_plots_clean, pca_two_plots_clean),
+  labels = LETTERS[
+    seq_len(length(pca_single_plots_clean) + length(pca_two_plots_clean))
+  ],
+  font.label = list(size = 24, face = "bold"),
+  ncol = 4,
+  nrow = 2,
+  common.legend = TRUE,
+  legend = "right",
+  align = "hv"
+)
+
+pcaAll <- annotate_figure(
+  pcaAll,
+  left = text_grob("PC2", rot = 90, size = 28),
+  bottom = text_grob("PC1", size = 28)
+)
+
+pcaAll
+
+
+```
+
+```{r}
+library(tidyverse)
+library(vegan)
+library(ggpubr)
+
+# ==========================================================
+# PCA splitting / null analyses with 2 x 2 model conditions
+# Rich -> High-Scale
+# Poor/Lazy -> Low-Scale
+# ==========================================================
+
+# ---------- Model helpers ----------
+# Define these only if they do not already exist from earlier chunks.
+
+if (!exists("model_levels")) {
+  model_levels <- c(
+    "Low-Scale",
+    "Low-Scale + High Context",
+    "High-Scale + Low Context",
+    "High-Scale"
+  )
+}
+
+if (!exists("context_levels")) {
+  context_levels <- c("Maze", "Melody", "NoContext")
+}
+
+if (!exists("clean_model_type")) {
+  clean_model_type <- function(x) {
+    x <- as.character(x)
+
+    dplyr::case_when(
+      x %in% c(
+        "Poor", "Lazy", "Low", "Low-Scale", "Low Scale"
+      ) ~ "Low-Scale",
+
+      x %in% c(
+        "Rich", "High", "High-Scale", "High Scale"
+      ) ~ "High-Scale",
+
+      x %in% c(
+        "Lazy-Rich-Contex",
+        "Lazy-Rich-Context",
+        "Lazy+RichCtx",
+        "Lazy Rich-Context",
+        "Low-High-Contex",
+        "Low-High-Context",
+        "Low+HighCtx",
+        "Low-Scale-High-Context",
+        "Low-Scale + High Context"
+      ) ~ "Low-Scale + High Context",
+
+      x %in% c(
+        "Rich-Lazy-Contex",
+        "Rich-Lazy-Context",
+        "Rich+LazyCtx",
+        "Rich Lazy-Context",
+        "High-Low-Contex",
+        "High-Low-Context",
+        "High+LowCtx",
+        "High-Scale-Low-Context",
+        "High-Scale + Low Context"
+      ) ~ "High-Scale + Low Context",
+
+      TRUE ~ NA_character_
+    )
+  }
+}
+
+if (!exists("clean_context")) {
+  clean_context <- function(x) {
+    x <- as.character(x)
+
+    dplyr::case_when(
+      is.na(x) ~ "NoContext",
+      str_detect(tolower(x), "maze") ~ "Maze",
+      str_detect(tolower(x), "melody") ~ "Melody",
+      str_detect(tolower(x), "letter|no context|nocontext|none") ~ "NoContext",
+      TRUE ~ x
+    )
+  }
+}
+
+add_scale_factors <- function(df, model_col = "Model_Type") {
+  df %>%
+    mutate(
+      global_scale = case_when(
+        .data[[model_col]] %in% c("Low-Scale", "Low-Scale + High Context") ~ "Low",
+        .data[[model_col]] %in% c("High-Scale", "High-Scale + Low Context") ~ "High",
+        TRUE ~ NA_character_
+      ),
+      context_scale = case_when(
+        .data[[model_col]] %in% c("Low-Scale", "High-Scale + Low Context") ~ "Low",
+        .data[[model_col]] %in% c("High-Scale", "Low-Scale + High Context") ~ "High",
+        TRUE ~ NA_character_
+      ),
+      global_scale = factor(global_scale, levels = c("Low", "High")),
+      context_scale = factor(context_scale, levels = c("Low", "High"))
+    )
+}
+
+fix_model_type <- function(df) {
+  df %>%
+    mutate(
+      Model_Type = clean_model_type(Model_Type),
+      Model_Type = factor(Model_Type, levels = model_levels)
+    ) %>%
+    filter(!is.na(Model_Type))
+}
+
+fix_context_labels <- function(df) {
+  df %>%
+    mutate(
+      Context = clean_context(Context),
+      Context = factor(Context, levels = context_levels)
+    )
+}
+
+# ---------- Standardize PCA data ----------
+
+pca <- pca %>%
+  fix_model_type() %>%
+  fix_context_labels() %>%
+  mutate(Step = as.numeric(step_in_sequence))
+
+pca_maze <- pca_maze %>%
+  fix_model_type() %>%
+  fix_context_labels() %>%
+  mutate(Step = as.numeric(step_in_sequence))
+
+pca_melody <- pca_melody %>%
+  fix_model_type() %>%
+  fix_context_labels() %>%
+  mutate(Step = as.numeric(step_in_sequence))
+
+# Sanity: mixed-context PCA must contain both Maze and Melody.
+if (!all(c("Maze", "Melody") %in% unique(as.character(pca$Context)))) {
+  stop("The mixed-context PCA dataframe does not contain both Maze and Melody.")
+}
+
+# ==========================================================
+# 1) Primary inferential analysis:
+#    within-net splitting index in two-context networks
+# ==========================================================
+
+mixed_centroids <- pca %>%
+  filter(Context %in% c("Maze", "Melody")) %>%
+  group_by(Model_Type, participant_id, Context) %>%
+  summarise(
+    c1 = mean(PC1, na.rm = TRUE),
+    c2 = mean(PC2, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+mixed_split <- mixed_centroids %>%
+  pivot_wider(names_from = Context, values_from = c(c1, c2)) %>%
+  filter(!is.na(c1_Maze), !is.na(c1_Melody)) %>%
+  mutate(
+    d_split = sqrt(
+      (c1_Maze - c1_Melody)^2 +
+        (c2_Maze - c2_Melody)^2
+    ),
+    Source = "Within-net (Two Contexts)"
+  ) %>%
+  add_scale_factors("Model_Type")
+
+# Four-condition test
+fit_split_condition <- aov(d_split ~ Model_Type, data = mixed_split)
+summary(fit_split_condition)
+
+# 2 x 2 test: global scale x context scale
+fit_split_2x2 <- aov(d_split ~ global_scale * context_scale, data = mixed_split)
+summary(fit_split_2x2)
+
+# ==========================================================
+# 2) Null control:
+#    compare within-net two-context distance to single-context null
+# ==========================================================
+
+mean_traj_mat <- function(df) {
+  df %>%
+    group_by(Step) %>%
+    summarise(
+      m1 = mean(PC1, na.rm = TRUE),
+      m2 = mean(PC2, na.rm = TRUE),
+      .groups = "drop"
+    ) %>%
+    arrange(Step) %>%
+    select(m1, m2) %>%
+    as.matrix()
+}
+
+align_points_rigid <- function(fit, Y) {
+  R <- fit$rotation
+  t <- fit$translation
+
+  Y %*% R + matrix(
+    rep(t, each = nrow(Y)),
+    nrow = nrow(Y),
+    ncol = 2
+  )
+}
+
+perm_test_within_vs_null <- function(W, maze_cent, mel_cent, B = 20000, seed = 1) {
+  set.seed(seed)
+
+  W <- W[is.finite(W)]
+  nW <- length(W)
+
+  n_maze <- nrow(maze_cent)
+  n_mel <- nrow(mel_cent)
+
+  replace_maze <- n_maze < nW
+  replace_mel <- n_mel < nW
+
+  T_obs <- mean(W)
+
+  null_means <- replicate(B, {
+    idx_m <- sample(seq_len(n_maze), size = nW, replace = replace_maze)
+    idx_l <- sample(seq_len(n_mel), size = nW, replace = replace_mel)
+
+    d_null <- sqrt(
+      (maze_cent$c1[idx_m] - mel_cent$c1[idx_l])^2 +
+        (maze_cent$c2[idx_m] - mel_cent$c2[idx_l])^2
+    )
+
+    mean(d_null, na.rm = TRUE)
+  })
+
+  p_less <- mean(null_means <= T_obs)
+  p_gtr <- mean(null_means >= T_obs)
+  p_two <- 2 * min(p_less, p_gtr)
+  p_two <- min(p_two, 1)
+
+  list(
+    n_within = nW,
+    mean_within = T_obs,
+    mean_null = mean(null_means),
+    p_within_less_than_null = p_less,
+    p_within_greater_than_null = p_gtr,
+    p_two_sided = p_two,
+    null_means = null_means
+  )
+}
+
+# Force single-context labels.
+pca_maze <- pca_maze %>%
+  mutate(Context = factor("Maze", levels = context_levels))
+
+pca_melody <- pca_melody %>%
+  mutate(Context = factor("Melody", levels = context_levels))
+
+centroid_store <- list()
+null_split_list <- list()
+perm_results <- list()
+
+within_counts <- mixed_split %>%
+  group_by(Model_Type) %>%
+  summarise(n_within = n(), .groups = "drop")
+
+set.seed(1)
+
+present_model_levels <- model_levels[
+  model_levels %in% as.character(unique(mixed_split$Model_Type))
+]
+
+for (mt in present_model_levels) {
+
+  maze_mt <- pca_maze %>%
+    filter(Model_Type == mt, Context == "Maze")
+
+  melody_mt <- pca_melody %>%
+    filter(Model_Type == mt, Context == "Melody")
+
+  if (nrow(maze_mt) == 0 || nrow(melody_mt) == 0) {
+    warning("Skipping model type ", mt, ": missing MazeOnly or MelodyOnly data.")
+    next
+  }
+
+  steps_common <- intersect(
+    sort(unique(maze_mt$Step)),
+    sort(unique(melody_mt$Step))
+  )
+
+  maze_mt <- maze_mt %>%
+    filter(Step %in% steps_common)
+
+  melody_mt <- melody_mt %>%
+    filter(Step %in% steps_common)
+
+  X_ref <- mean_traj_mat(maze_mt)
+  Y_src <- mean_traj_mat(melody_mt)
+
+  if (nrow(X_ref) < 3) {
+    warning("Skipping model type ", mt, ": fewer than 3 shared steps.")
+    next
+  }
+
+  fit_mt <- vegan::procrustes(
+    X = X_ref,
+    Y = Y_src,
+    symmetric = FALSE
+  )
+
+  XY_aligned <- align_points_rigid(
+    fit_mt,
+    as.matrix(melody_mt[, c("PC1", "PC2")])
+  )
+
+  melody_aligned <- melody_mt %>%
+    mutate(
+      PC1a = XY_aligned[, 1],
+      PC2a = XY_aligned[, 2]
+    )
+
+  maze_ref <- maze_mt %>%
+    mutate(
+      PC1a = PC1,
+      PC2a = PC2
+    )
+
+  maze_cent <- maze_ref %>%
+    group_by(participant_id) %>%
+    summarise(
+      c1 = mean(PC1a, na.rm = TRUE),
+      c2 = mean(PC2a, na.rm = TRUE),
+      .groups = "drop"
+    )
+
+  mel_cent <- melody_aligned %>%
+    group_by(participant_id) %>%
+    summarise(
+      c1 = mean(PC1a, na.rm = TRUE),
+      c2 = mean(PC2a, na.rm = TRUE),
+      .groups = "drop"
+    )
+
+  centroid_store[[mt]] <- list(
+    maze_cent = maze_cent,
+    mel_cent = mel_cent
+  )
+
+  # Sanity check
+  i <- sample(seq_len(nrow(maze_cent)), 1)
+  j <- sample(seq_len(nrow(mel_cent)), 1)
+
+  d_check <- sqrt(
+    (maze_cent$c1[i] - mel_cent$c1[j])^2 +
+      (maze_cent$c2[i] - mel_cent$c2[j])^2
+  )
+
+  if (!is.finite(d_check) || d_check < 1e-6) {
+    warning(
+      "Null alignment sanity check suspiciously small for ",
+      mt,
+      " (d ~ ",
+      signif(d_check, 3),
+      "). Check PC1/PC2 and Step matching."
+    )
+  }
+
+  nW <- within_counts %>%
+    filter(Model_Type == mt) %>%
+    pull(n_within)
+
+  if (length(nW) == 0) nW <- 0
+
+  if (nW > 0 && nrow(maze_cent) > 0 && nrow(mel_cent) > 0) {
+    idx_m <- sample(
+      seq_len(nrow(maze_cent)),
+      size = nW,
+      replace = nrow(maze_cent) < nW
+    )
+
+    idx_l <- sample(
+      seq_len(nrow(mel_cent)),
+      size = nW,
+      replace = nrow(mel_cent) < nW
+    )
+
+    null_split_list[[mt]] <- tibble(
+      Model_Type = mt,
+      d_split = sqrt(
+        (maze_cent$c1[idx_m] - mel_cent$c1[idx_l])^2 +
+          (maze_cent$c2[idx_m] - mel_cent$c2[idx_l])^2
+      ),
+      Source = "Null: different nets (Single Context)"
+    )
+  }
+
+  W <- mixed_split %>%
+    filter(Model_Type == mt) %>%
+    pull(d_split)
+
+  perm_results[[mt]] <- perm_test_within_vs_null(
+    W = W,
+    maze_cent = maze_cent,
+    mel_cent = mel_cent,
+    B = 20000,
+    seed = 123
+  )
+}
+
+null_split <- bind_rows(null_split_list) %>%
+  mutate(
+    Model_Type = factor(Model_Type, levels = model_levels)
+  ) %>%
+  add_scale_factors("Model_Type")
+
+# ==========================================================
+# 3) Within-net vs single-context null plot
+# Colored by model condition
+# ==========================================================
+
+source_labels <- c(
+  "Within-net (Two Contexts)" = "Within-net\nTwo contexts",
+  "Null: different nets (Single Context)" = "Null\nSingle-context nets"
+)
+
+model_cols <- c(
+  "Low-Scale" = "red",
+  "Low-Scale + High Context" = "orange",
+  "High-Scale + Low Context" = "purple",
+  "High-Scale" = "blue"
+)
+
+# Build plot_df first
+plot_df <- bind_rows(
+  mixed_split %>%
+    select(Model_Type, global_scale, context_scale, d_split, Source),
+
+  null_split %>%
+    select(Model_Type, global_scale, context_scale, d_split, Source)
+) %>%
+  mutate(
+    Model_Type = factor(Model_Type, levels = model_levels),
+    Source = factor(
+      Source,
+      levels = c(
+        "Within-net (Two Contexts)",
+        "Null: different nets (Single Context)"
+      )
+    )
+  )
+
+# ==========================================================
+# 3) Within-net vs single-context null plot
+# Within-net bar + null benchmark point
+# Error bars shown as thick lineranges
+# ==========================================================
+
+within_source <- "Within-net (Two Contexts)"
+null_source   <- "Null: different nets (Single Context)"
+
+within_df <- plot_df %>%
+  filter(Source == within_source)
+
+null_df <- plot_df %>%
+  filter(Source == null_source)
+
+null_plot <- ggplot() +
+
+  # Within-network bars
+  geom_bar(
+    data = within_df,
+    aes(
+      x = Model_Type,
+      y = d_split,
+      fill = Model_Type
+    ),
+    stat = "summary",
+    fun = "mean",
+    width = 0.65,
+    color = "black",
+    alpha = 0.70
+  ) +
+
+  # Raw within-network points
+  geom_jitter(
+    data = within_df,
+    aes(
+      x = Model_Type,
+      y = d_split,
+      color = Model_Type
+    ),
+    width = 0.12,
+    height = 0,
+    size = 3,
+    alpha = 0.45,
+    show.legend = FALSE
+  ) +
+
+  # Within-network thick linerange error bars
+  stat_summary(
+    data = within_df,
+    aes(
+      x = Model_Type,
+      y = d_split
+    ),
+    fun.data = mean_cl_normal,
+    geom = "linerange",
+    linewidth = 3,
+    color = "black"
+  ) +
+
+  # Null benchmark thick linerange error bars
+  stat_summary(
+    data = null_df,
+    aes(
+      x = Model_Type,
+      y = d_split
+    ),
+    fun.data = mean_cl_normal,
+    geom = "linerange",
+    linewidth = 3,
+    color = "black"
+  ) +
+
+  # Null benchmark open circles
+  stat_summary(
+    data = null_df,
+    aes(
+      x = Model_Type,
+      y = d_split
+    ),
+    fun = "mean",
+    geom = "point",
+    shape = 21,
+    size = 6,
+    stroke = 1.6,
+    fill = "white",
+    color = "black"
+  ) +
+
+  scale_fill_manual(values = model_cols, drop = FALSE) +
+  scale_color_manual(values = model_cols, drop = FALSE) +
+
+  scale_x_discrete(
+    labels = c(
+      "Low-Scale" = "Low-\nScale",
+      "Low-Scale + High Context" = "Low-Scale +\nHigh Context",
+      "High-Scale + Low Context" = "High-Scale +\nLow Context",
+      "High-Scale" = "High-\nScale"
+    )
+  ) +
+
+  labs(
+    x = NULL,
+    y = "Centroid Distance (PC space)"
+  ) +
+
+  coord_cartesian(clip = "off") +
+
+  theme_minimal() +
+  theme(
+    legend.position = "none",
+    legend.title = element_blank(),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    axis.line = element_line(colour = "black", linewidth = 2),
+    axis.text = element_text(size = 22),
+    axis.text.x = element_text(
+      size = 18,
+      face = "bold",
+      angle = 0,
+      hjust = 0.5
+    ),
+    axis.title = element_text(size = 30),
+    plot.title = element_text(size = 28, face = "bold", hjust = 0.5)
+  )
+
+null_plot
+# ==========================================================
+# 4) Permutation summary and plots
+# ==========================================================
+
+perm_summary <- tibble(
+  Model_Type = names(perm_results),
+  n_within = sapply(perm_results, `[[`, "n_within"),
+  mean_within = sapply(perm_results, `[[`, "mean_within"),
+  mean_null = sapply(perm_results, `[[`, "mean_null"),
+  p_within_less_than_null = sapply(perm_results, `[[`, "p_within_less_than_null"),
+  p_within_greater_than_null = sapply(perm_results, `[[`, "p_within_greater_than_null"),
+  p_two_sided = sapply(perm_results, `[[`, "p_two_sided")
+) %>%
+  mutate(
+    Model_Type = factor(Model_Type, levels = model_levels)
+  ) %>%
+  arrange(Model_Type) %>%
+  add_scale_factors("Model_Type")
+
+perm_summary
+
+perm_theme <- theme_minimal() +
+  theme(
+    legend.title = element_blank(),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    axis.line = element_line(colour = "black", linewidth = 2),
+    axis.text = element_text(size = 22),
+    axis.title = element_text(size = 26),
+    plot.title = element_text(size = 22, face = "bold", hjust = 0.5),
+    legend.text = element_text(size = 20)
+  )
+
+perm_null_df <- purrr::imap_dfr(
+  perm_results,
+  function(res, mt) {
+    tibble(
+      model_type = mt,
+      null_mean = res$null_means
+    )
+  }
+) %>%
+  mutate(
+    model_type = factor(model_type, levels = names(model_cols))
+  )
+
+perm_mean_df <- purrr::imap_dfr(
+  perm_results,
+  function(res, mt) {
+    tibble(
+      model_type = mt,
+      mean_within = res$mean_within
+    )
+  }
+) %>%
+  mutate(
+    model_type = factor(model_type, levels = names(model_cols))
+  )
+
+perm_plot_all <- ggplot(
+  perm_null_df,
+  aes(
+    x = null_mean,
+    y = after_stat(count),
+    color = model_type,
+    fill = model_type
+  )
+) +
+  geom_density(
+    alpha = 0.25,
+    linewidth = 1.2,
+    adjust = 1
+  ) +
+  geom_vline(
+    data = perm_mean_df,
+    aes(
+      xintercept = mean_within,
+      color = model_type
+    ),
+    linewidth = 1.4,
+    linetype = "dashed",
+    show.legend = FALSE,
+    inherit.aes = FALSE
+  ) +
+  scale_fill_manual(values = model_cols, drop = FALSE) +
+  scale_color_manual(values = model_cols, drop = FALSE) +
+  labs(
+    title = "Permutation null distributions",
+    x = "Null mean centroid distance",
+    y = "Frequency",
+    fill = "Model type",
+    color = "Model type"
+  ) +
+  perm_theme
+
+perm_plot_all
+# ==========================================================
+# 5) ANOVA: within-net vs null
+# ==========================================================
+
+fit_null_condition <- aov(
+  d_split ~ Model_Type * Source,
+  data = plot_df
+)
+
+summary(fit_null_condition)
+
+fit_null_2x2 <- aov(
+  d_split ~ global_scale * context_scale * Source,
+  data = plot_df
+)
+
+summary(fit_null_2x2)
+```
+
+```{r, echo=FALSE}
+# df should be your data frame
+# e.g., df <- rich_poor_learning_dynamics
+
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(tidyverse)
+library(ggpubr)
+
+# =========================================================
+# Model labels
+# Rich -> High-Scale
+# Poor/Lazy -> Low-Scale
+# Adds hybrid context-scale conditions
+# =========================================================
+
+model_levels <- c(
+  "Low-Scale",
+  "Low-Scale + High Context",
+  "High-Scale + Low Context",
+  "High-Scale"
+)
+
+agent_levels <- c(
+  "Low-Scale",
+  "Low-Scale + High Context",
+  "High-Scale + Low Context",
+  "High-Scale",
+  "Human"
+)
+
+cols4 <- c(
+  "Low-Scale" = "red",
+  "Low-Scale + High Context" = "orange",
+  "High-Scale + Low Context" = "purple",
+  "High-Scale" = "blue",
+  "Human" = "grey"
+)
+
+clean_model_type <- function(x) {
+  x <- as.character(x)
+
+  dplyr::case_when(
+    x %in% c("Poor", "Lazy", "Low", "Low-Scale", "Low Scale") ~ "Low-Scale",
+
+    x %in% c("Rich", "High", "High-Scale", "High Scale") ~ "High-Scale",
+
+    x %in% c(
+      "Lazy-Rich-Contex",
+      "Lazy-Rich-Context",
+      "Lazy+RichCtx",
+      "Lazy Rich-Context",
+      "Low-High-Contex",
+      "Low-High-Context",
+      "Low+HighCtx",
+      "Low-Scale-High-Context",
+      "Low-Scale + High Context"
+    ) ~ "Low-Scale + High Context",
+
+    x %in% c(
+      "Rich-Lazy-Contex",
+      "Rich-Lazy-Context",
+      "Rich+LazyCtx",
+      "Rich Lazy-Context",
+      "High-Low-Contex",
+      "High-Low-Context",
+      "High+LowCtx",
+      "High-Scale-Low-Context",
+      "High-Scale + Low Context"
+    ) ~ "High-Scale + Low Context",
+
+    TRUE ~ NA_character_
+  )
+}
+
+# -----------------------------
+# 1) Prepare agent label + DV
+#    - Models: use transfer_loss (or loss)
+#    - Humans: use rt
+#    - Z-score within agent for comparability
+# -----------------------------
+
+make_agent_dv <- function(df, model_dv = "transfer_loss", human_dv = "rt") {
+
+  # human stream: same rows, but use rt
+  human_df <- df %>%
+    mutate(
+      agent = "Human",
+      dv_raw = .data[[human_dv]]
+    )
+
+  # model stream: same rows, but use model DV and cleaned model_type label
+  model_df <- df %>%
+    mutate(agent = clean_model_type(model_type)) %>%
+    filter(!is.na(agent)) %>%
+    mutate(
+      agent = factor(agent, levels = model_levels),
+      dv_raw = .data[[model_dv]]
+    )
+
+  # combine into one long df
+  bind_rows(human_df, model_df) %>%
+    mutate(agent = as.character(agent)) %>%
+    group_by(agent) %>%
+    mutate(
+      dv_z = as.numeric(scale(dv_raw))
+    ) %>%
+    ungroup()
+}
+
+# -----------------------------
+# 2) Compute block-boundary transition costs
+#    - Switch is detected by context changing across consecutive blocks
+#    - IMPORTANT: humans keep all rows; models keep training_active == TRUE
+# -----------------------------
+
+compute_transition_cost <- function(df, dv, use_global_step = TRUE) {
+
+  other_context <- function(x) {
+    ifelse(
+      x == "Maze", "Melody",
+      ifelse(x == "Melody", "Maze", NA_character_)
+    )
+  }
+
+  block <- df %>%
+    filter(agent == "Human" | training_active == TRUE) %>%
+    mutate(
+      context = case_when(
+        agent == "Human" & "context" %in% names(.) &
+          stringr::str_detect(stringr::str_to_lower(context), "maze") ~ "Maze",
+        agent == "Human" & "context" %in% names(.) &
+          stringr::str_detect(stringr::str_to_lower(context), "melody") ~ "Melody",
+        TRUE ~ trimws(as.character(context))
+      ),
+      context = stringr::str_to_title(context)
+    ) %>%
+    filter(!is.na(context)) %>%
+    group_by(agent, participant_id, block_id, context) %>%
+    summarise(
+      dv_start = .data[[dv]][which.min(sequence_in_block)],
+      dv_end = .data[[dv]][which.max(sequence_in_block)],
+      block_order = if (use_global_step) {
+        min(global_step, na.rm = TRUE)
+      } else {
+        min(block_id, na.rm = TRUE)
+      },
+      .groups = "drop"
+    ) %>%
+    arrange(agent, participant_id, block_order)
+
+  starts <- block %>%
+    group_by(agent, participant_id) %>%
+    slice_min(block_order, with_ties = FALSE) %>%
+    ungroup() %>%
+    transmute(
+      agent,
+      participant_id,
+      start_context = as.character(context)
+    )
+
+  block2 <- block %>%
+    left_join(starts, by = c("agent", "participant_id")) %>%
+    mutate(other = other_context(start_context)) %>%
+    group_by(agent, participant_id) %>%
+    mutate(
+      prev_context = lag(as.character(context)),
+      prev_end = lag(dv_end),
+      is_transition = !is.na(prev_context),
+      is_switch = is_transition & (as.character(context) != prev_context),
+
+      # Original transition-cost definition: absolute boundary change
+      trans_cost = if_else(
+        is_transition,
+        abs(dv_start - prev_end),
+        NA_real_
+      ),
+
+      trans_type = case_when(
+        !is_transition ~ NA_character_,
+        is_switch ~ "switch",
+        TRUE ~ "stay"
+      ),
+      trans_dir_raw = if_else(
+        is_transition,
+        paste0(prev_context, "→", as.character(context)),
+        NA_character_
+      ),
+      trans_dir_norm = case_when(
+        !is_transition ~ NA_character_,
+        prev_context == start_context & as.character(context) == other ~ "A→B",
+        prev_context == other & as.character(context) == start_context ~ "B→A",
+        TRUE ~ "other"
+      )
+    ) %>%
+    ungroup()
+
+  events <- block2 %>%
+    filter(!is.na(trans_type)) %>%
+    transmute(
+      agent,
+      participant_id,
+      block_id,
+      block_order,
+      start_context,
+      prev_context,
+      context,
+      trans_type,
+      trans_dir_raw,
+      trans_dir_norm,
+      trans_cost
+    )
+
+  unit <- events %>%
+    group_by(agent, participant_id, trans_type, trans_dir_norm) %>%
+    summarise(
+      mean_cost = mean(trans_cost, na.rm = TRUE),
+      n_trans = n(),
+      .groups = "drop"
+    )
+
+  list(events = events, unit = unit, block = block2)
+}
+
+# -----------------------------
+# 3) Condition-level metric extraction
+#    - NoContext/Maze/Melody: use "stay" transitions
+#    - Switch dataset: use "switch" transitions
+# -----------------------------
+
+compute_condition_metric <- function(df, condition, dv = "dv_z",
+                                     want = c("stay", "switch"),
+                                     switch_dir = c("any", "AtoB", "BtoA")) {
+  want <- match.arg(want)
+  switch_dir <- match.arg(switch_dir)
+
+  res <- compute_transition_cost(df, dv = dv)
+
+  out <- res$unit %>%
+    filter(trans_type == want)
+
+  if (want == "switch") {
+    out <- out %>%
+      filter(
+        switch_dir == "any" |
+          (switch_dir == "AtoB" & trans_dir_norm == "A→B") |
+          (switch_dir == "BtoA" & trans_dir_norm == "B→A")
+      )
+  }
+
+  out %>%
+    group_by(agent, participant_id) %>%
+    summarise(
+      mean_cost = mean(mean_cost, na.rm = TRUE),
+      n_trans = sum(n_trans, na.rm = TRUE),
+      .groups = "drop"
+    ) %>%
+    mutate(condition = condition) %>%
+    select(agent, participant_id, condition, mean_cost, n_trans)
+}
+
+# -----------------------------
+# 4) Build data for all 4 conditions
+# -----------------------------
+
+no_df     <- make_agent_dv(rich_poor_learning_dynamics_noContext)
+maze_df   <- make_agent_dv(rich_poor_learning_dynamics_maze)
+melody_df <- make_agent_dv(rich_poor_learning_dynamics_melody)
+switch_df <- make_agent_dv(rich_poor_learning_dynamics)
+
+switch2 <- bind_rows(
+  compute_condition_metric(no_df,     "NoContext", want = "stay"),
+  compute_condition_metric(maze_df,   "Maze",      want = "stay"),
+  compute_condition_metric(melody_df, "Melody",    want = "stay"),
+  compute_condition_metric(switch_df, "Switch",    want = "switch", switch_dir = "any")
+) %>%
+  mutate(
+    condition = factor(
+      condition,
+      levels = c("NoContext", "Maze", "Melody", "Switch")
+    ),
+    agent = factor(agent, levels = agent_levels)
+  ) %>%
+  filter(!is.na(agent))
+
+# -----------------------------
+# 5) Summarise + plot all conditions
+# -----------------------------
+
+sum_df <- switch2 %>%
+  group_by(agent, condition) %>%
+  summarise(
+    mean = mean(mean_cost, na.rm = TRUE),
+    se = sd(mean_cost, na.rm = TRUE) / sqrt(n()),
+    n = n(),
+    .groups = "drop"
+  )
+
+ggplot(sum_df, aes(x = condition, y = mean, fill = agent)) +
+  geom_col(position = position_dodge(width = 0.8), width = 0.7) +
+  geom_errorbar(
+    aes(ymin = mean - se, ymax = mean + se),
+    position = position_dodge(width = 0.8),
+    width = 0.2
+  ) +
+  scale_fill_manual(values = cols4, drop = FALSE) +
+  theme_bw(base_size = 14) +
+  labs(
+    title = "Transition cost by condition",
+    x = NULL,
+    y = "Mean block-boundary cost (|ΔDV|; z within agent)"
+  )
+
+# -----------------------------
+# 6) Switch-only graph
+# -----------------------------
+
+sum_switch <- sum_df %>% filter(condition == "Switch")
+pts_switch <- switch2 %>% filter(condition == "Switch")
+
+switch_units <- switch2 %>%
+  filter(condition == "Switch") %>%
+  mutate(agent = factor(agent, levels = agent_levels))
+
+sum_ci <- switch_units %>%
+  group_by(agent, condition) %>%
+  summarise(
+    mean = mean(mean_cost, na.rm = TRUE),
+    sd = sd(mean_cost, na.rm = TRUE),
+    n = sum(!is.na(mean_cost)),
+    se = sd / sqrt(n),
+    tcrit = qt(0.975, df = n - 1),
+    ci_lo = mean - tcrit * se,
+    ci_hi = mean + tcrit * se,
+    .groups = "drop"
+  )
+
+pd <- position_dodge(width = 1)
+
+switchGraph <- ggplot(sum_ci, aes(x = agent, y = mean, fill = agent)) +
+  geom_col(width = 0.7) +
+  geom_linerange(
+    aes(ymin = ci_lo, ymax = ci_hi),
+    position = pd,
+    linewidth = 2
+  ) +
+  geom_point(
+    data = switch_units,
+    aes(x = agent, y = mean_cost),
+    position = position_jitter(width = 0.10, height = 0),
+    alpha = 0.6,
+    size = 4,
+    inherit.aes = FALSE
+  ) +
+  theme_minimal() +
+  srn_theme+
+  # theme(
+  #   legend.title = element_blank(),
+  #   panel.grid.major = element_blank(),
+  #   panel.grid.minor = element_blank(),
+  #   axis.line = element_line(
+  #     colour = "black",
+  #     size = 2,
+  #     linetype = "solid"
+  #   ),
+  #   legend.key.size = unit(2, "cm"),
+  #   axis.text = element_text(size = 30),
+  #   axis.text.x = element_text(angle = 25, hjust = 1),
+  #   axis.title = element_text(size = 34),
+  #   plot.title = element_text(size = 30, face = "bold", hjust = 0.5),
+  #   legend.text = element_text(size = 26)
+  # ) +
+  scale_color_manual(values = cols4, drop = FALSE) +
+  scale_fill_manual(values = cols4, drop = FALSE) +
+  guides(
+    fill = "none",
+    color = guide_legend(
+      override.aes = list(
+        shape = 16,
+        size = 8,
+        alpha = 1,
+        linewidth = 0
+      )
+    )
+  ) +
+  labs(
+    x = NULL,
+    y = "Mean Transition Cost (z-score)"
+  ) +
+  guides(fill = "none")
+
+switchGraph
+
+# -----------------------------
+# 7) Original analysis: one-way ANOVA over agents
+# -----------------------------
+
+fit <- aov(mean_cost ~ agent, data = switch_units)
+summary(fit)
+
+TukeyHSD(fit)
+
+effectsize::eta_squared(fit, partial = FALSE)
+
+
+# SRN only
+switch_units_srn_2x2 <- switch_units_srn %>%
+  mutate(
+    global_scale = case_when(
+      agent %in% c("High-Scale", "High-Scale + Low Context") ~ "High",
+      TRUE ~ "Low"
+    ),
+    context_scale = case_when(
+      agent %in% c("High-Scale", "Low-Scale + High Context") ~ "High",
+      TRUE ~ "Low"
+    ),
+    global_scale = factor(global_scale, levels = c("Low", "High")),
+    context_scale = factor(context_scale, levels = c("Low", "High"))
+  )
+
+fit_srn_2x2 <- aov(mean_cost ~ global_scale * context_scale, data = switch_units_srn_2x2)
+
+summary(fit_srn_2x2)
+effectsize::eta_squared(fit_srn_2x2, partial = FALSE)
+
+# -----------------------------
+# Optional sanity checks
+# -----------------------------
+# res_sw <- compute_transition_cost(switch_df, dv = "dv_z")
+# res_sw$events %>% count(agent, trans_type)
+# res_sw$events %>% filter(agent == "Human", trans_type == "switch") %>% count(trans_dir_raw, sort = TRUE)
+```
+
+```{r, echo=FALSE}
+# plotting SRN transition costs
+# ---------------------------------------------------------
+# 1) Transition-cost data on loss
+# ---------------------------------------------------------
+
+switch2_loss <- bind_rows(
+  compute_condition_metric(no_df,     "NoContext", want = "stay"),
+  compute_condition_metric(maze_df,   "Maze",      want = "stay"),
+  compute_condition_metric(melody_df, "Melody",    want = "stay"),
+  compute_condition_metric(switch_df, "Switch",    want = "switch", switch_dir = "any")
+) %>%
+  mutate(
+    condition = factor(
+      condition,
+      levels = c("NoContext", "Maze", "Melody", "Switch")
+    ),
+    agent = factor(agent, levels = names(model_cols))
+  ) %>%
+  filter(!is.na(agent))
+
+
+# ---------------------------------------------------------
+# 2) Summary with 95% CI
+# ---------------------------------------------------------
+
+sum_loss_ci <- switch2_loss %>%
+  group_by(agent, condition) %>%
+  summarise(
+    mean = mean(mean_cost, na.rm = TRUE),
+    sd = sd(mean_cost, na.rm = TRUE),
+    n = sum(!is.na(mean_cost)),
+    se = sd / sqrt(n),
+    tcrit = qt(0.975, df = n - 1),
+    ci_lo = mean - tcrit * se,
+    ci_hi = mean + tcrit * se,
+    .groups = "drop"
+  )
+
+
+# ---------------------------------------------------------
+# 3) Common y-axis scale
+# ---------------------------------------------------------
+
+common_ymax <- max(
+  c(sum_loss_ci$ci_hi, switch2_loss$mean_cost),
+  na.rm = TRUE
+) * 1.05
+
+
+# ---------------------------------------------------------
+# 4) Shared theme
+# ---------------------------------------------------------
+
+transition_theme <- theme_minimal() +
+  theme(
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    axis.line = element_line(
+      colour = "black",
+      linewidth = 2,
+      linetype = "solid"
+    ),
+    legend.title = element_blank(),
+    legend.key.size = unit(1.2, "cm"),
+    axis.text = element_text(size = 24),
+    axis.text.x = element_text(angle = 25, hjust = 1),
+    axis.title = element_text(size = 28),
+    plot.title = element_text(size = 30, face = "bold", hjust = 0.5),
+    legend.text = element_text(size = 20)
+  )
+
+pd <- position_dodge(width = 0.8)
+
+transition_all_contexts <- ggplot(
+  sum_loss_ci,
+  aes(x = condition, y = mean, fill = agent, color = agent)
+) +
+  geom_col(
+    position = pd,
+    width = 0.7,
+    alpha = 0.75
+  ) +
+  geom_linerange(
+    aes(ymin = ci_lo, ymax = ci_hi),
+    position = pd,
+    linewidth = 1.5
+  ) +
+  geom_point(
+    data = switch2_loss,
+    aes(x = condition, y = mean_cost, color = agent),
+    position = position_jitterdodge(
+      dodge.width = 0.8,
+      jitter.width = 0.10,
+      jitter.height = 0
+    ),
+    alpha = 0.45,
+    size = 3,
+    inherit.aes = FALSE
+  ) +
+  scale_fill_manual(values = model_cols, drop = FALSE) +
+  scale_color_manual(values = model_cols, drop = FALSE) +
+  coord_cartesian(ylim = c(0, common_ymax)) +
+  transition_theme +
+  labs(
+    x = NULL,
+    y = "Transition Cost"
+  ) +
+  theme(legend.position = "none")
+
+transition_all_contexts 
+
+# ---------------------------------------------------------
+# Plot 2: switch-only, individual plots by SRN condition
+# ---------------------------------------------------------
+
+sum_switch_ci <- sum_loss_ci %>%
+  filter(condition == "Switch")
+
+switch_units_loss <- switch2_loss %>%
+  filter(condition == "Switch")
+
+plot_switch_only_one_srn <- function(agent_name) {
+  plot_sum <- sum_switch_ci %>%
+    filter(agent == agent_name)
+
+  plot_pts <- switch_units_loss %>%
+    filter(agent == agent_name)
+
+  ggplot(plot_sum, aes(x = condition, y = mean)) +
+    geom_col(
+      fill = model_cols[[agent_name]],
+      color = model_cols[[agent_name]],
+      width = 0.7,
+      alpha = 0.75
+    ) +
+    geom_linerange(
+      aes(ymin = ci_lo, ymax = ci_hi),
+      color = model_cols[[agent_name]],
+      linewidth = 1.5
+    ) +
+    geom_point(
+      data = plot_pts,
+      aes(x = condition, y = mean_cost),
+      position = position_jitter(width = 0.10, height = 0),
+      color = model_cols[[agent_name]],
+      alpha = 0.45,
+      size = 3,
+      inherit.aes = FALSE
+    ) +
+    coord_cartesian(ylim = c(0, common_ymax)) +
+    transition_theme +
+    theme(
+      legend.position = "none",
+      axis.text.x = element_text(angle = 0, hjust = 0.5)
+    ) +
+    labs(
+      title = agent_name,
+      x = NULL,
+      y = "Transition Cost"
+    )
+}
+
+transition_switch_only_plots <- purrr::map(
+  names(model_cols),
+  plot_switch_only_one_srn
+)
+
+names(transition_switch_only_plots) <- names(model_cols)
+
+transition_switch_only_plots[["Low-Scale"]]
+transition_switch_only_plots[["Low-Scale + High Context"]]
+transition_switch_only_plots[["High-Scale + Low Context"]]
+transition_switch_only_plots[["High-Scale"]]
+
+# horizontal switch cost
+
+agent_labels_short <- c(
+  "Low-Scale" = "Low",
+  "Low-Scale + High Context" = "Low +\nHigh Ctx",
+  "High-Scale + Low Context" = "High +\nLow Ctx",
+  "High-Scale" = "High"
+)
+
+switch_xmax <- max(
+  c(sum_switch_ci$ci_hi, switch_units_loss$mean_cost),
+  na.rm = TRUE
+) * 1.10
+
+
+transition_switch <- ggplot(
+  sum_switch_ci,
+  aes(x = agent, y = mean, fill = agent)
+) +
+  geom_col(
+    width = 0.85,
+    alpha = 0.75,
+    color = "black",
+    linewidth = 0.6
+  ) +
+  geom_linerange(
+    aes(ymin = ci_lo, ymax = ci_hi),
+    linewidth = 3
+  ) +
+  geom_point(
+    data = switch_units_loss,
+    aes(x = agent, y = mean_cost, fill = agent),
+    position = position_jitter(width = 0.08, height = 0.2),
+    alpha = 0.4,
+    size = 2.5,
+    inherit.aes = FALSE
+  ) +
+  scale_fill_manual(values = model_cols, drop = FALSE) +
+  scale_x_discrete(expand = expansion(mult = c(0.02, 0.02))) +
+  coord_cartesian(ylim = c(0, switch_xmax)) +
+  labs(
+    x = NULL,
+    y = "Transition Cost"
+  ) +
+  transition_theme +
+  theme(
+    axis.text.x = element_text(size = 28, angle = 15, hjust = 1),
+    axis.title.y = element_text(size = 34),
+    axis.text.y = element_text(size = 28)
+  ) +
+  theme(legend.position = "none")
+
+transition_switch
+
+```
+
+```{r, echo = FALSE}
+# =========================================================
+# Matched-loss analyses
+# Rich -> High-Scale
+# Poor/Lazy -> Low-Scale
+# Includes hybrid context-scale conditions
+# =========================================================
+
+library(tidyverse)
+library(lme4)
+library(lmerTest)
+library(emmeans)
+library(broom.mixed)
+
+# -----------------------------
+# 0. Model label helpers
+# -----------------------------
+
+model_levels <- c(
+  "Low-Scale",
+  "Low-Scale + High Context",
+  "High-Scale + Low Context",
+  "High-Scale"
+)
+
+model_cols <- c(
+  "Low-Scale" = "red",
+  "Low-Scale + High Context" = "orange",
+  "High-Scale + Low Context" = "purple",
+  "High-Scale" = "blue"
+)
+
+clean_model_type <- function(x) {
+  x <- as.character(x)
+
+  dplyr::case_when(
+    x %in% c(
+      "Poor", "Lazy", "Low", "Low-Scale", "Low Scale"
+    ) ~ "Low-Scale",
+
+    x %in% c(
+      "Rich", "High", "High-Scale", "High Scale"
+    ) ~ "High-Scale",
+
+    x %in% c(
+      "Lazy-Rich-Contex",
+      "Lazy-Rich-Context",
+      "Lazy+RichCtx",
+      "Lazy Rich-Context",
+      "Low-High-Contex",
+      "Low-High-Context",
+      "Low+HighCtx",
+      "Low-Scale-High-Context",
+      "Low-Scale + High Context"
+    ) ~ "Low-Scale + High Context",
+
+    x %in% c(
+      "Rich-Lazy-Contex",
+      "Rich-Lazy-Context",
+      "Rich+LazyCtx",
+      "Rich Lazy-Context",
+      "High-Low-Contex",
+      "High-Low-Context",
+      "High+LowCtx",
+      "High-Scale-Low-Context",
+      "High-Scale + Low Context"
+    ) ~ "High-Scale + Low Context",
+
+    TRUE ~ NA_character_
+  )
+}
+
+# -----------------------------
+# 1. Clean and standardize data
+# -----------------------------
+
+matched_metrics <- matched_metrics %>%
+  mutate(
+    model_type = clean_model_type(model_type),
+    model_type = factor(model_type, levels = model_levels),
+    ce_threshold = as.numeric(ce_threshold)
+  ) %>%
+  filter(!is.na(model_type))
+
+# -----------------------------
+# 2. Helper to summarize metrics
+# -----------------------------
+
+summarize_metric <- function(data, metric_var) {
+  data %>%
+    group_by(model_type, ce_threshold) %>%
+    summarise(
+      mean_value = mean(.data[[metric_var]], na.rm = TRUE),
+      se_value = sd(.data[[metric_var]], na.rm = TRUE) /
+        sqrt(sum(!is.na(.data[[metric_var]]))),
+      .groups = "drop"
+    ) %>%
+    arrange(model_type, ce_threshold)
+}
+
+matchedContextDecode   <- summarize_metric(matched_metrics, "context_decodability")
+matchedWeightRatio     <- summarize_metric(matched_metrics, "weight_ratio_cx_in")
+matchedDimensionality  <- summarize_metric(matched_metrics, "effective_dimensionality")
+matchedSeperation      <- summarize_metric(matched_metrics, "trajectory_separation")
+
+# -----------------------------
+# 3. Helper to make plots
+# -----------------------------
+
+plot_matched_metric <- function(plot_data, xlab) {
+  ggplot(
+    plot_data,
+    aes(
+      x = mean_value,
+      y = ce_threshold,
+      color = model_type,
+      fill = model_type
+    )
+  ) +
+    geom_ribbon(
+      aes(
+        xmin = mean_value - se_value,
+        xmax = mean_value + se_value,
+        group = model_type
+      ),
+      alpha = 0.10,
+      linetype = 0,
+      orientation = "y",
+      na.rm = TRUE,
+      show.legend = FALSE
+    ) +
+    geom_path(
+      aes(group = model_type),
+      linewidth = 6,
+      na.rm = TRUE
+    ) +
+    scale_color_manual(values = model_cols, drop = FALSE) +
+    scale_fill_manual(values = model_cols, drop = FALSE) +
+    labs(
+      x = xlab,
+      y = "Loss",
+      color = NULL,
+      fill = NULL
+    ) +
+    theme_minimal() +
+    theme(
+      panel.grid.major = element_blank(),
+      panel.grid.minor = element_blank(),
+      axis.line = element_line(
+        colour = "black",
+        linewidth = 2,
+        linetype = "solid"
+      ),
+      legend.key.size = unit(1.3, "cm"),
+      legend.text = element_text(size = 26),
+      axis.text = element_text(size = 30),
+      axis.title = element_text(size = 34)
+    )
+}
+
+# -----------------------------
+# 4. Build all graphs
+# -----------------------------
+
+matchedContextDecodeGraph <- plot_matched_metric(
+  matchedContextDecode,
+  "Context Decodability"
+)
+
+matchedWeightRatioGraph <- plot_matched_metric(
+  matchedWeightRatio,
+  "Context Weight Ratio"
+)
+
+matchedDimensionalityGraph <- plot_matched_metric(
+  matchedDimensionality,
+  "Dimensionality"
+)
+
+matchedSeperationGraph <- plot_matched_metric(
+  matchedSeperation,
+  "PCA Trajectory Separation"
+)
+
+# -----------------------------
+# 5. Print graphs
+# -----------------------------
+
+matchedContextDecodeGraph
+matchedWeightRatioGraph
+matchedDimensionalityGraph
+matchedSeperationGraph
+
+# =========================================================
+# Matched stats - mixed effects
+# Same analysis structure, now with four model conditions
+# =========================================================
+
+# -----------------------------
+# 6. Add centered loss threshold
+# -----------------------------
+
+matched_metrics <- matched_metrics %>%
+  mutate(
+    model_type = factor(model_type, levels = model_levels),
+    ce_threshold = as.numeric(ce_threshold),
+    ce_c = scale(ce_threshold, center = TRUE, scale = FALSE)[, 1]
+  ) %>%
+  filter(!is.na(model_type))
+
+# -----------------------------
+# 7. Helper to fit one model
+# -----------------------------
+
+fit_lme <- function(data, outcome) {
+  formula_full <- as.formula(
+    paste0(outcome, " ~ model_type * ce_c + (1 + ce_c || participant_id)")
+  )
+
+  model <- lmer(formula_full, data = data, REML = FALSE)
+
+  # fallback if singular / unstable
+  if (isSingular(model, tol = 1e-4)) {
+    formula_simple <- as.formula(
+      paste0(outcome, " ~ model_type * ce_c + (1 | participant_id)")
+    )
+    model <- lmer(formula_simple, data = data, REML = FALSE)
+  }
+
+  model
+}
+
+# -----------------------------
+# 8. Fit models for each outcome
+# -----------------------------
+
+m_decode <- fit_lme(matched_metrics, "context_decodability")
+m_weight <- fit_lme(matched_metrics, "weight_ratio_cx_in")
+m_dim    <- fit_lme(matched_metrics, "effective_dimensionality")
+m_sep    <- fit_lme(matched_metrics, "trajectory_separation")
+
+# -----------------------------
+# 9. Inspect results
+# -----------------------------
+
+anova(m_decode)
+summary(m_decode)
+
+anova(m_weight)
+summary(m_weight)
+
+anova(m_dim)
+summary(m_dim)
+
+anova(m_sep)
+summary(m_sep)
+```
+
+```{r, echo=FALSE}
+# Collapse Dynamics
+# =========================================================
+# Collapse Dynamics
+# Relabel model types to match SRN figures
+# =========================================================
+
+model_levels <- c(
+  "Low-Scale",
+  "Low-Scale + High Context",
+  "High-Scale + Low Context",
+  "High-Scale"
+)
+
+model_cols_collapse <- c(
+  "Low-Scale" = "red",
+  "Low-Scale + High Context" = "orange",
+  "High-Scale + Low Context" = "purple",
+  "High-Scale" = "blue"
+)
+
+collapse_training <- collapse_training %>%
+  mutate(
+    model_type = dplyr::recode(
+      model_type,
+      "Poor" = "Low-Scale",
+      "Lazy" = "Low-Scale",
+      "Lazy+RichCtx" = "Low-Scale + High Context",
+      "Rich+LazyCtx" = "High-Scale + Low Context",
+      "Rich" = "High-Scale"
+    ),
+    model_type = factor(model_type, levels = model_levels)
+  )
+
+# =========================================================
+# Shared plotting helpers
+# =========================================================
+
+collapse_theme <- theme_minimal() +
+  theme(
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    axis.line = element_line(
+      colour = "black",
+      linewidth = 2,
+      linetype = "solid"
+    ),
+    legend.key.size = unit(1.3, "cm"),
+    legend.text  = element_text(size = 26),
+    axis.text  = element_text(size = 30),
+    axis.title = element_text(size = 34)
+  )
+
+summarise_collapse_metric <- function(df, metric_var) {
+  df %>%
+    group_by(model_type, step_or_epoch) %>%
+    summarise(
+      mean_value = mean(.data[[metric_var]], na.rm = TRUE),
+      se_value = sd(.data[[metric_var]], na.rm = TRUE) / sqrt(sum(!is.na(.data[[metric_var]]))),
+      .groups = "drop"
+    )
+}
+
+plot_collapse_metric <- function(plot_df, y_label) {
+  plot_df %>%
+    ggplot() +
+    geom_ribbon(
+      aes(
+        x = step_or_epoch,
+        ymin = mean_value - se_value,
+        ymax = mean_value + se_value,
+        fill = model_type,
+        group = model_type
+      ),
+      alpha = 0.10,
+      linetype = 0,
+      na.rm = TRUE,
+      show.legend = FALSE
+    ) +
+    geom_line(
+      aes(
+        x = step_or_epoch,
+        y = mean_value,
+        color = model_type,
+        group = model_type
+      ),
+      linewidth = 6,
+      na.rm = TRUE
+    ) +
+    scale_color_manual(values = model_cols_collapse, drop = FALSE) +
+    scale_fill_manual(values = model_cols_collapse, drop = FALSE) +
+    labs(
+      x = "Cumulative Sequence",
+      y = y_label,
+      color = NULL
+    ) +
+    collapse_theme
+}
+
+# =========================================================
+# Loss
+# =========================================================
+
+collapseLoss <- summarise_collapse_metric(
+  collapse_training,
+  metric_var = "loss"
+)
+
+collapseLossGraph <- plot_collapse_metric(
+  collapseLoss,
+  y_label = "Loss"
+)
+
+collapseLossGraph
+
+# =========================================================
+# Accuracy
+# =========================================================
+
+collapseAccuracy <- summarise_collapse_metric(
+  collapse_training,
+  metric_var = "accuracy"
+)
+
+collapseAccuracyGraph <- plot_collapse_metric(
+  collapseAccuracy,
+  y_label = "Accuracy"
+)
+
+collapseAccuracyGraph
+
+# =========================================================
+# Dimensionality
+# =========================================================
+
+collapseDimensionality <- summarise_collapse_metric(
+  collapse_training,
+  metric_var = "effective_dimensionality"
+)
+
+collapseDimensionalityGraph <- plot_collapse_metric(
+  collapseDimensionality,
+  y_label = "Dimensionality"
+)
+
+collapseDimensionalityGraph
+
+# =========================================================
+# Separation
+# =========================================================
+
+collapseSeperation <- summarise_collapse_metric(
+  collapse_training,
+  metric_var = "trajectory_separation"
+)
+
+collapseSeperationGraph <- plot_collapse_metric(
+  collapseSeperation,
+  y_label = "PCA Separation"
+)
+
+collapseSeperationGraph
+
+# =========================================================
+# Context decodability
+# =========================================================
+
+collapseDecodability <- summarise_collapse_metric(
+  collapse_training,
+  metric_var = "context_decodability"
+)
+
+collapseDecodabilityGraph <- plot_collapse_metric(
+  collapseDecodability,
+  y_label = "Context Decodability"
+)
+
+collapseDecodabilityGraph
+
+# =========================================================
+# Context weight over time
+# =========================================================
+
+collapseContextWeight <- summarise_collapse_metric(
+  collapse_training,
+  metric_var = "weight_ratio_cx_in"
+)
+
+collapseContextWeightGraph <- plot_collapse_metric(
+  collapseContextWeight,
+  y_label = "Context Weight Ratio"
+)
+
+collapseContextWeightGraph
+```
+
+```{r, echo=FALSE}
+# =========================================================
+# Stats for 4 SRN conditions
+# Rich -> High-Scale
+# Poor/Lazy -> Low-Scale
+# Includes hybrid context-scale conditions
+# Human-matched analyses use step_or_epoch <= 90
+# =========================================================
+
+library(dplyr)
+library(lme4)
+library(lmerTest)
+library(emmeans)
+library(effectsize)
+
+# =========================================================
+# 1. Define model labels
+# =========================================================
+
+model_levels <- c(
+  "Low-Scale",
+  "Low-Scale + High Context",
+  "High-Scale + Low Context",
+  "High-Scale"
+)
+
+# =========================================================
+# 2. Clean model labels
+# =========================================================
+
+clean_model_type <- function(x) {
+  x <- as.character(x)
+
+  dplyr::case_when(
+    x %in% c("Poor", "Lazy", "Low", "Low-Scale", "Low Scale") ~
+      "Low-Scale",
+
+    x %in% c(
+      "Rich", "High", "High-Scale", "High Scale",
+      "High-Scale + High Context",
+      "High-Scale-High-Context"
+    ) ~
+      "High-Scale",
+
+    x %in% c(
+      "Lazy-Rich-Contex",
+      "Lazy-Rich-Context",
+      "Lazy+RichCtx",
+      "Lazy Rich-Context",
+      "Low-High-Contex",
+      "Low-High-Context",
+      "Low+HighCtx",
+      "Low-Scale-High-Context",
+      "Low-Scale + High Context"
+    ) ~
+      "Low-Scale + High Context",
+
+    x %in% c(
+      "Rich-Lazy-Contex",
+      "Rich-Lazy-Context",
+      "Rich+LazyCtx",
+      "Rich Lazy-Context",
+      "High-Low-Contex",
+      "High-Low-Context",
+      "High+LowCtx",
+      "High-Scale-Low-Context",
+      "High-Scale + Low Context"
+    ) ~
+      "High-Scale + Low Context",
+
+    TRUE ~ NA_character_
+  )
+}
+
+# =========================================================
+# 3. Clean mech_metrics
+# =========================================================
+
+mech_metrics_clean <- mech_metrics %>%
+  mutate(
+    model_type = clean_model_type(model_type),
+    model_type = factor(model_type, levels = model_levels),
+
+    global_scale = case_when(
+      model_type %in% c("Low-Scale", "Low-Scale + High Context") ~ "Low",
+      model_type %in% c("High-Scale", "High-Scale + Low Context") ~ "High",
+      TRUE ~ NA_character_
+    ),
+
+    context_scale = case_when(
+      model_type %in% c("Low-Scale", "High-Scale + Low Context") ~ "Low",
+      model_type %in% c("High-Scale", "Low-Scale + High Context") ~ "High",
+      TRUE ~ NA_character_
+    ),
+
+    global_scale = factor(global_scale, levels = c("Low", "High")),
+    context_scale = factor(context_scale, levels = c("Low", "High"))
+  ) %>%
+  filter(!is.na(model_type))
+
+# =========================================================
+# 4. Clean collapse_training
+# =========================================================
+
+collapse_training_clean <- collapse_training %>%
+  mutate(
+    model_type = clean_model_type(model_type),
+    model_type = factor(model_type, levels = model_levels),
+
+    global_scale = case_when(
+      model_type %in% c("Low-Scale", "Low-Scale + High Context") ~ "Low",
+      model_type %in% c("High-Scale", "High-Scale + Low Context") ~ "High",
+      TRUE ~ NA_character_
+    ),
+
+    context_scale = case_when(
+      model_type %in% c("Low-Scale", "High-Scale + Low Context") ~ "Low",
+      model_type %in% c("High-Scale", "Low-Scale + High Context") ~ "High",
+      TRUE ~ NA_character_
+    ),
+
+    global_scale = factor(global_scale, levels = c("Low", "High")),
+    context_scale = factor(context_scale, levels = c("Low", "High"))
+  ) %>%
+  filter(!is.na(model_type))
+
+# =========================================================
+# 5. Endpoint dataset at step 90
+# =========================================================
+
+mech_metrics_90 <- mech_metrics_clean %>%
+  filter(step_or_epoch == 90)
+
+# Sanity check
+mech_metrics_90 %>%
+  count(model_type, global_scale, context_scale)
+
+# =========================================================
+# 6. Training dataset through step 90 only
+# =========================================================
+
+collapse_training_90 <- collapse_training_clean %>%
+  filter(step_or_epoch <= 90) %>%
+  mutate(
+    step_c = as.numeric(scale(step_or_epoch, center = TRUE, scale = FALSE))
+  )
+
+# Sanity check
+collapse_training_90 %>%
+  count(model_type, global_scale, context_scale)
+
+# =========================================================
+# 7. Endpoint stats: trajectory separation
+# =========================================================
+
+outcome <- "trajectory_separation"
+
+dat_endpoint <- mech_metrics_90 %>%
+  filter(
+    !is.na(.data[[outcome]]),
+    !is.na(model_type),
+    !is.na(global_scale),
+    !is.na(context_scale)
+  )
+
+fit_endpoint_condition <- aov(
+  as.formula(paste0(outcome, " ~ model_type")),
+  data = dat_endpoint
+)
+
+summary(fit_endpoint_condition)
+TukeyHSD(fit_endpoint_condition)
+
+fit_endpoint_2x2 <- aov(
+  as.formula(paste0(outcome, " ~ global_scale * context_scale")),
+  data = dat_endpoint
+)
+
+summary(fit_endpoint_2x2)
+effectsize::eta_squared(fit_endpoint_2x2, partial = FALSE)
+
+# =========================================================
+# 8. Training-through-step-90 stats: trajectory separation
+# =========================================================
+
+outcome <- "trajectory_separation"
+
+dat_training <- collapse_training_90 %>%
+  filter(
+    !is.na(.data[[outcome]]),
+    !is.na(step_or_epoch),
+    !is.na(step_c),
+    !is.na(model_type),
+    !is.na(global_scale),
+    !is.na(context_scale),
+    !is.na(participant_id)
+  )
+
+fit_training_condition <- lmer(
+  as.formula(
+    paste0(outcome, " ~ model_type * step_c + (1 | participant_id)")
+  ),
+  data = dat_training,
+  REML = FALSE
+)
+
+summary(fit_training_condition)
+anova(fit_training_condition)
+
+fit_training_2x2 <- lmer(
+  as.formula(
+    paste0(outcome, " ~ global_scale * context_scale * step_c + (1 | participant_id)")
+  ),
+  data = dat_training,
+  REML = FALSE
+)
+
+summary(fit_training_2x2)
+anova(fit_training_2x2)
+
+# =========================================================
+# 9. Endpoint stats: loss
+# =========================================================
+
+outcome <- "loss"
+
+dat_endpoint <- mech_metrics_90 %>%
+  filter(
+    !is.na(.data[[outcome]]),
+    !is.na(model_type),
+    !is.na(global_scale),
+    !is.na(context_scale)
+  )
+
+fit_endpoint_condition <- aov(
+  as.formula(paste0(outcome, " ~ model_type")),
+  data = dat_endpoint
+)
+
+summary(fit_endpoint_condition)
+TukeyHSD(fit_endpoint_condition)
+
+fit_endpoint_2x2 <- aov(
+  as.formula(paste0(outcome, " ~ global_scale * context_scale")),
+  data = dat_endpoint
+)
+
+summary(fit_endpoint_2x2)
+effectsize::eta_squared(fit_endpoint_2x2, partial = FALSE)
+
+# =========================================================
+# 10. Training-through-step-90 stats: loss
+# =========================================================
+
+outcome <- "loss"
+
+dat_training <- collapse_training_90 %>%
+  filter(
+    !is.na(.data[[outcome]]),
+    !is.na(step_or_epoch),
+    !is.na(step_c),
+    !is.na(model_type),
+    !is.na(global_scale),
+    !is.na(context_scale),
+    !is.na(participant_id)
+  )
+
+fit_training_condition <- lmer(
+  as.formula(
+    paste0(outcome, " ~ model_type * step_c + (1 | participant_id)")
+  ),
+  data = dat_training,
+  REML = FALSE
+)
+
+summary(fit_training_condition)
+anova(fit_training_condition)
+
+fit_training_2x2 <- lmer(
+  as.formula(
+    paste0(outcome, " ~ global_scale * context_scale * step_c + (1 | participant_id)")
+  ),
+  data = dat_training,
+  REML = FALSE
+)
+
+summary(fit_training_2x2)
+anova(fit_training_2x2)
+
+# =========================================================
+# 11. Endpoint stats: context-to-input weight ratio
+# =========================================================
+
+outcome <- "weight_ratio_cx_in"
+
+dat_endpoint <- mech_metrics_90 %>%
+  filter(
+    !is.na(.data[[outcome]]),
+    !is.na(model_type),
+    !is.na(global_scale),
+    !is.na(context_scale)
+  )
+
+fit_endpoint_condition <- aov(
+  as.formula(paste0(outcome, " ~ model_type")),
+  data = dat_endpoint
+)
+
+summary(fit_endpoint_condition)
+TukeyHSD(fit_endpoint_condition)
+
+fit_endpoint_2x2 <- aov(
+  as.formula(paste0(outcome, " ~ global_scale * context_scale")),
+  data = dat_endpoint
+)
+
+summary(fit_endpoint_2x2)
+effectsize::eta_squared(fit_endpoint_2x2, partial = FALSE)
+
+# =========================================================
+# 12. Training-through-step-90 stats: context-to-input weight ratio
+# =========================================================
+
+outcome <- "weight_ratio_cx_in"
+
+dat_training <- collapse_training_90 %>%
+  filter(
+    !is.na(.data[[outcome]]),
+    !is.na(step_or_epoch),
+    !is.na(step_c),
+    !is.na(model_type),
+    !is.na(global_scale),
+    !is.na(context_scale),
+    !is.na(participant_id)
+  )
+
+fit_training_condition <- lmer(
+  as.formula(
+    paste0(outcome, " ~ model_type * step_c + (1 | participant_id)")
+  ),
+  data = dat_training,
+  REML = FALSE
+)
+
+summary(fit_training_condition)
+anova(fit_training_condition)
+
+fit_training_2x2 <- lmer(
+  as.formula(
+    paste0(outcome, " ~ global_scale * context_scale * step_c + (1 | participant_id)")
+  ),
+  data = dat_training,
+  REML = FALSE
+)
+
+summary(fit_training_2x2)
+anova(fit_training_2x2)
+
+# =========================================================
+# 13. Endpoint stats: context decodability
+# =========================================================
+
+outcome <- "context_decodability"
+
+dat_endpoint <- mech_metrics_90 %>%
+  filter(
+    !is.na(.data[[outcome]]),
+    !is.na(model_type),
+    !is.na(global_scale),
+    !is.na(context_scale)
+  )
+
+fit_endpoint_condition <- aov(
+  as.formula(paste0(outcome, " ~ model_type")),
+  data = dat_endpoint
+)
+
+summary(fit_endpoint_condition)
+TukeyHSD(fit_endpoint_condition)
+
+fit_endpoint_2x2 <- aov(
+  as.formula(paste0(outcome, " ~ global_scale * context_scale")),
+  data = dat_endpoint
+)
+
+summary(fit_endpoint_2x2)
+effectsize::eta_squared(fit_endpoint_2x2, partial = FALSE)
+
+# =========================================================
+# 14. Training-through-step-90 stats: context decodability
+# =========================================================
+
+outcome <- "context_decodability"
+
+dat_training <- collapse_training_90 %>%
+  filter(
+    !is.na(.data[[outcome]]),
+    !is.na(step_or_epoch),
+    !is.na(step_c),
+    !is.na(model_type),
+    !is.na(global_scale),
+    !is.na(context_scale),
+    !is.na(participant_id)
+  )
+
+fit_training_condition <- lmer(
+  as.formula(
+    paste0(outcome, " ~ model_type * step_c + (1 | participant_id)")
+  ),
+  data = dat_training,
+  REML = FALSE
+)
+
+summary(fit_training_condition)
+anova(fit_training_condition)
+
+fit_training_2x2 <- lmer(
+  as.formula(
+    paste0(outcome, " ~ global_scale * context_scale * step_c + (1 | participant_id)")
+  ),
+  data = dat_training,
+  REML = FALSE
+)
+
+summary(fit_training_2x2)
+anova(fit_training_2x2)
+
+# =========================================================
+# 15. Endpoint stats: effective dimensionality
+# =========================================================
+
+outcome <- "effective_dimensionality"
+
+dat_endpoint <- mech_metrics_90 %>%
+  filter(
+    !is.na(.data[[outcome]]),
+    !is.na(model_type),
+    !is.na(global_scale),
+    !is.na(context_scale)
+  )
+
+fit_endpoint_condition <- aov(
+  as.formula(paste0(outcome, " ~ model_type")),
+  data = dat_endpoint
+)
+
+summary(fit_endpoint_condition)
+TukeyHSD(fit_endpoint_condition)
+
+fit_endpoint_2x2 <- aov(
+  as.formula(paste0(outcome, " ~ global_scale * context_scale")),
+  data = dat_endpoint
+)
+
+summary(fit_endpoint_2x2)
+effectsize::eta_squared(fit_endpoint_2x2, partial = FALSE)
+
+# =========================================================
+# 16. Training-through-step-90 stats: effective dimensionality
+# =========================================================
+
+outcome <- "effective_dimensionality"
+
+dat_training <- collapse_training_90 %>%
+  filter(
+    !is.na(.data[[outcome]]),
+    !is.na(step_or_epoch),
+    !is.na(step_c),
+    !is.na(model_type),
+    !is.na(global_scale),
+    !is.na(context_scale),
+    !is.na(participant_id)
+  )
+
+fit_training_condition <- lmer(
+  as.formula(
+    paste0(outcome, " ~ model_type * step_c + (1 | participant_id)")
+  ),
+  data = dat_training,
+  REML = FALSE
+)
+
+summary(fit_training_condition)
+anova(fit_training_condition)
+
+fit_training_2x2 <- lmer(
+  as.formula(
+    paste0(outcome, " ~ global_scale * context_scale * step_c + (1 | participant_id)")
+  ),
+  data = dat_training,
+  REML = FALSE
+)
+
+summary(fit_training_2x2)
+anova(fit_training_2x2)
+
+# =========================================================
+# 17. SRN-only transition-cost analysis
+# =========================================================
+
+switch_units_srn <- switch_units %>%
+  filter(agent != "Human") %>%
+  mutate(
+    agent = factor(agent, levels = model_levels),
+
+    global_scale = case_when(
+      agent %in% c("Low-Scale", "Low-Scale + High Context") ~ "Low",
+      agent %in% c("High-Scale", "High-Scale + Low Context") ~ "High",
+      TRUE ~ NA_character_
+    ),
+
+    context_scale = case_when(
+      agent %in% c("Low-Scale", "High-Scale + Low Context") ~ "Low",
+      agent %in% c("High-Scale", "Low-Scale + High Context") ~ "High",
+      TRUE ~ NA_character_
+    ),
+
+    global_scale = factor(global_scale, levels = c("Low", "High")),
+    context_scale = factor(context_scale, levels = c("Low", "High"))
+  ) %>%
+  filter(
+    !is.na(agent),
+    !is.na(global_scale),
+    !is.na(context_scale),
+    !is.na(mean_cost)
+  )
+
+# Four-condition transition-cost ANOVA
+fit_srn_transition_condition <- aov(
+  mean_cost ~ agent,
+  data = switch_units_srn
+)
+
+summary(fit_srn_transition_condition)
+TukeyHSD(fit_srn_transition_condition)
+
+# 2 x 2 transition-cost ANOVA
+fit_srn_transition_2x2 <- aov(
+  mean_cost ~ global_scale * context_scale,
+  data = switch_units_srn
+)
+
+summary(fit_srn_transition_2x2)
+effectsize::eta_squared(fit_srn_transition_2x2, partial = FALSE)
+```
+
+```{r, echo=FALSE}
+# mixed effects models
+library(tidyverse)
+library(lme4)
+library(lmerTest)
+library(emmeans)
+
+# ---------------------------------------------------------
+# 0) Model labels
+# ---------------------------------------------------------
+
+model_levels <- c(
+  "Low-Scale",
+  "Low-Scale + High Context",
+  "High-Scale + Low Context",
+  "High-Scale"
+)
+
+clean_model_type <- function(x) {
+  x <- as.character(x)
+
+  dplyr::case_when(
+    x %in% c("Poor", "Lazy", "Low", "Low-Scale", "Low Scale") ~ "Low-Scale",
+
+    x %in% c("Rich", "High", "High-Scale", "High Scale") ~ "High-Scale",
+
+    x %in% c(
+      "Lazy-Rich-Contex",
+      "Lazy-Rich-Context",
+      "Lazy+RichCtx",
+      "Lazy Rich-Context",
+      "Low-High-Contex",
+      "Low-High-Context",
+      "Low+HighCtx",
+      "Low-Scale-High-Context",
+      "Low-Scale + High Context"
+    ) ~ "Low-Scale + High Context",
+
+    x %in% c(
+      "Rich-Lazy-Contex",
+      "Rich-Lazy-Context",
+      "Rich+LazyCtx",
+      "Rich Lazy-Context",
+      "High-Low-Contex",
+      "High-Low-Context",
+      "High+LowCtx",
+      "High-Scale-Low-Context",
+      "High-Scale + Low Context"
+    ) ~ "High-Scale + Low Context",
+
+    TRUE ~ NA_character_
+  )
+}
+
+# ---------------------------------------------------------
+# 1) Build SRN acquisition dataframe
+# ---------------------------------------------------------
+
+srn_acq <- bind_rows(
+  rich_poor_learning_dynamics_noContext %>%
+    filter(global_step <= 90, training_active == TRUE) %>%
+    mutate(condition = "NoContext"),
+
+  rich_poor_learning_dynamics_maze %>%
+    filter(global_step <= 90, training_active == TRUE) %>%
+    mutate(condition = "Maze"),
+
+  rich_poor_learning_dynamics_melody %>%
+    filter(global_step <= 90, training_active == TRUE) %>%
+    mutate(condition = "Melody"),
+
+  rich_poor_learning_dynamics %>%
+    filter(global_step <= 90, training_active == TRUE) %>%
+    mutate(condition = "Maze-Melody")
+) %>%
+  mutate(
+    model_type = clean_model_type(model_type),
+    model_type = factor(model_type, levels = model_levels),
+    condition = factor(
+      condition,
+      levels = c("NoContext", "Maze", "Melody", "Maze-Melody")
+    )
+  ) %>%
+  filter(!is.na(model_type)) %>%
+  group_by(participant_id, model_type, condition) %>%
+  arrange(global_step, .by_group = TRUE) %>%
+  mutate(
+    practice0 = row_number() - 1
+  ) %>%
+  ungroup() %>%
+  mutate(
+    practice_c = as.numeric(scale(practice0, center = TRUE, scale = TRUE)),
+    group2 = if_else(condition == "Maze-Melody", "Maze-Melody", "Other"),
+    group2 = factor(group2, levels = c("Other", "Maze-Melody"))
+  )
+
+# quick check
+#srn_acq %>% count(model_type, condition)
+
+# ---------------------------------------------------------
+# 2) Original omnibus model, now with four model conditions
+# ---------------------------------------------------------
+
+m_srn_omnibus <- lmer(
+  loss ~ practice_c * group2 * model_type + (1 | participant_id),
+  data = srn_acq,
+  REML = FALSE
+)
+
+summary(m_srn_omnibus)
+anova(m_srn_omnibus)
+
+# Optional planned comparisons
+emm_srn <- emmeans(
+  m_srn_omnibus,
+  ~ model_type | group2
+)
+
+emm_srn
+pairs(emm_srn)
+```
+
+
+```{r, echo=FALSE}
+
+# =========================
+# 1. Packages
+# =========================
+library(tidyverse)
+library(scales)
+library(patchwork)
+library(gifski)
+
+# =========================
+# 2. Read / clean data
+# =========================
+
+# Context colors
+cols <- c(Maze = "blue", Melody = "red")
+
+# Model ordering and colors
+model_levels <- c(
+  "Low-Scale",
+  "Low-Scale + High Context",
+  "High-Scale + Low Context",
+  "High-Scale"
+)
+
+clean_model_type <- function(x) {
+  x <- as.character(x)
+
+  dplyr::case_when(
+    x %in% c(
+      "Poor", "Lazy", "Low", "Low-Scale", "Low Scale"
+    ) ~ "Low-Scale",
+
+    x %in% c(
+      "Rich", "High", "High-Scale", "High Scale"
+    ) ~ "High-Scale",
+
+    x %in% c(
+      "Lazy-Rich-Contex",
+      "Lazy-Rich-Context",
+      "Lazy+RichCtx",
+      "Lazy Rich-Context",
+      "Low-High-Contex",
+      "Low-High-Context",
+      "Low+HighCtx",
+      "Low-Scale-High-Context",
+      "Low-Scale + High Context"
+    ) ~ "Low-Scale + High Context",
+
+    x %in% c(
+      "Rich-Lazy-Contex",
+      "Rich-Lazy-Context",
+      "Rich+LazyCtx",
+      "Rich Lazy-Context",
+      "High-Low-Contex",
+      "High-Low-Context",
+      "High+LowCtx",
+      "High-Scale-Low-Context",
+      "High-Scale + Low Context"
+    ) ~ "High-Scale + Low Context",
+
+    TRUE ~ NA_character_
+  )
+}
+
+clean_context <- function(x) {
+  x <- as.character(x)
+
+  dplyr::case_when(
+    is.na(x) ~ NA_character_,
+    str_detect(tolower(x), "maze") ~ "Maze",
+    str_detect(tolower(x), "melody") ~ "Melody",
+    TRUE ~ as.character(x)
+  )
+}
+
+fix_model_type <- function(df) {
+  df %>%
+    rename_with(tolower) %>%
+    mutate(
+      model_type = clean_model_type(model_type),
+      model_type = factor(model_type, levels = model_levels),
+      context = clean_context(context),
+      context = factor(context, levels = c("Maze", "Melody"))
+    ) %>%
+    filter(!is.na(model_type))
+}
+
+pca <- read_csv(
+  "/Users/mg9965/Library/CloudStorage/Box-Box/ResearchProjects/RI-EVC/SRN/CogSci/results_mazeMelodyID_clean_all/shared_pca_trajectories.csv"
+)
+
+pca_use <- fix_model_type(pca)
+
+# Keep only Maze and Melody for the GIF
+pca_use <- pca_use %>%
+  filter(context %in% c("Maze", "Melody"))
+
+# =========================
+# 3. Average PCA trajectory
+#    at each checkpoint
+# =========================
+
+pca_mean <- pca_use %>%
+  group_by(checkpoint_value, model_type, context, step_in_sequence) %>%
+  summarise(
+    pc1 = mean(pc1, na.rm = TRUE),
+    pc2 = mean(pc2, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+# Shared limits across all checkpoints and model types
+xlims <- range(pca_mean$pc1, na.rm = TRUE)
+ylims <- range(pca_mean$pc2, na.rm = TRUE)
+
+# =========================
+# 4. Helpers
+# =========================
+
+base_theme <- theme_minimal() +
+  theme(
+    legend.title = element_blank(),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    axis.line = element_line(
+      colour = "black",
+      linewidth = 1.5,
+      linetype = "solid"
+    ),
+    legend.key.size = unit(1.2, "cm"),
+    axis.text = element_text(size = 20),
+    axis.title = element_text(size = 24),
+    plot.title = element_text(size = 24, face = "bold", hjust = 0.5),
+    legend.text = element_text(size = 18)
+  )
+
+prep_model_df <- function(df, checkpoint_now, model_label) {
+  d <- df %>%
+    filter(
+      checkpoint_value == checkpoint_now,
+      model_type == model_label
+    ) %>%
+    arrange(context, step_in_sequence) %>%
+    group_by(context) %>%
+    mutate(
+      step_alpha = scales::rescale(step_in_sequence, to = c(0.25, 1.0))
+    ) %>%
+    ungroup()
+
+  starts <- d %>%
+    group_by(context) %>%
+    slice_min(step_in_sequence, with_ties = FALSE) %>%
+    ungroup()
+
+  ends <- d %>%
+    group_by(context) %>%
+    slice_max(step_in_sequence, with_ties = FALSE) %>%
+    ungroup()
+
+  list(d = d, starts = starts, ends = ends)
+}
+
+make_single_pca_plot <- function(parts, model_label, checkpoint_now, xlims, ylims) {
+  ggplot(parts$d, aes(x = pc1, y = pc2)) +
+    geom_path(
+      aes(group = context, color = context),
+      linewidth = 2.5,
+      na.rm = TRUE
+    ) +
+    geom_point(
+      aes(color = context, alpha = step_alpha),
+      size = 4.5,
+      na.rm = TRUE
+    ) +
+    geom_point(
+      data = parts$starts,
+      aes(color = context),
+      size = 6,
+      shape = 21,
+      fill = "white",
+      stroke = 1.5,
+      na.rm = TRUE
+    ) +
+    geom_point(
+      data = parts$ends,
+      aes(color = context),
+      size = 6,
+      shape = 16,
+      na.rm = TRUE
+    ) +
+    coord_equal(xlim = xlims, ylim = ylims) +
+    scale_alpha_identity() +
+    scale_color_manual(values = cols, drop = FALSE) +
+    labs(
+      title = model_label,
+      x = "PC1",
+      y = "PC2"
+    ) +
+    guides(
+      color = guide_legend(
+        override.aes = list(
+          shape = 16,
+          size = 6,
+          alpha = 1,
+          linewidth = 0
+        )
+      )
+    ) +
+    base_theme
+}
+
+make_frame_plot <- function(checkpoint_now, df = pca_mean, xlims, ylims) {
+
+  present_models <- model_levels[
+    model_levels %in%
+      as.character(unique(df$model_type[df$checkpoint_value == checkpoint_now]))
+  ]
+
+  plot_list <- lapply(
+    present_models,
+    function(model_label) {
+      parts <- prep_model_df(
+        df = df,
+        checkpoint_now = checkpoint_now,
+        model_label = model_label
+      )
+
+      make_single_pca_plot(
+        parts = parts,
+        model_label = model_label,
+        checkpoint_now = checkpoint_now,
+        xlims = xlims,
+        ylims = ylims
+      )
+    }
+  )
+
+  names(plot_list) <- present_models
+
+  combined <- wrap_plots(
+    plotlist = plot_list,
+    ncol = 2,
+    guides = "collect"
+  ) +
+    plot_annotation(
+      title = paste0(
+        "PCA trajectories across training | checkpoint = ",
+        checkpoint_now
+      )
+    )
+
+  combined & theme(legend.position = "bottom")
+}
+
+# =========================
+# 5. Save all frames
+# =========================
+
+frame_dir <- "/Users/mg9965/Library/CloudStorage/Box-Box/ResearchProjects/RI-EVC/SRN/figures/PDP/pca_gif_frames"
+dir.create(frame_dir, showWarnings = FALSE, recursive = TRUE)
+
+checkpoints <- sort(unique(pca_mean$checkpoint_value))
+
+# Optional: thin frames for a shorter GIF
+# checkpoints <- checkpoints[seq(1, length(checkpoints), by = 2)]
+
+for (i in seq_along(checkpoints)) {
+  ckpt <- checkpoints[i]
+
+  message(
+    "Saving frame ",
+    i,
+    " / ",
+    length(checkpoints),
+    " (checkpoint = ",
+    ckpt,
+    ")"
+  )
+
+  p_frame <- make_frame_plot(
+    checkpoint_now = ckpt,
+    df = pca_mean,
+    xlims = xlims,
+    ylims = ylims
+  )
+
+  ggsave(
+    filename = file.path(frame_dir, sprintf("frame_%03d.png", i)),
+    plot = p_frame,
+    width = 14,
+    height = 12,
+    dpi = 200,
+    bg = "white"
+  )
+}
+
+# =========================
+# 6. Turn frames into GIF
+# =========================
+
+png_files <- list.files(
+  frame_dir,
+  pattern = "\\.png$",
+  full.names = TRUE
+)
+
+gifski(
+  png_files = png_files,
+  gif_file = "pca_training_2x2_scale_context.gif",
+  width = 1400,
+  height = 1200,
+  delay = 0.35,
+  loop = TRUE
+)
+
+# Done:
+# - individual PNGs are in `pca_gif_frames/`
+# - GIF is saved as `pca_training_2x2_scale_context.gif`
+```
+
+```{r collapse-training-lmer-matched-style, echo=FALSE, warning=FALSE, message=FALSE}
+library(tidyverse)
+library(lme4)
+library(lmerTest)
+library(effectsize)
+
+# =========================================================
+# Collapse training stats - mixed effects
+# Same analysis structure as matched stats,
+# now across all 500 training steps
+# =========================================================
+
+# -----------------------------
+# 1. Define model levels if needed
+# -----------------------------
+
+model_levels <- c(
+  "Low-Scale",
+  "Low-Scale + High Context",
+  "High-Scale + Low Context",
+  "High-Scale"
+)
+
+# -----------------------------
+# 2. Prepare training trajectory data
+# -----------------------------
+
+collapse_training_lmer <- collapse_training_clean %>%
+  filter(step_or_epoch <= 500) %>%
+  mutate(
+    model_type = factor(model_type, levels = model_levels),
+    step = as.numeric(step_or_epoch),
+    step_c = scale(step, center = TRUE, scale = FALSE)[, 1],
+    
+    # Use a unique run ID so IDs do not collide across model conditions.
+    participant_id = interaction(
+      model_type,
+      global_scale,
+      context_scale,
+      participant_id,
+      drop = TRUE
+    )
+  ) %>%
+  filter(
+    !is.na(model_type),
+    !is.na(step_c),
+    !is.na(participant_id)
+  )
+
+# -----------------------------
+# 3. Helper to fit one model
+# -----------------------------
+
+fit_lmer_training <- function(data, outcome) {
+  
+  formula_full <- as.formula(
+    paste0(outcome, " ~ model_type * step_c + (1 + step_c || participant_id)")
+  )
+  
+  model <- lmer(
+    formula_full,
+    data = data,
+    REML = FALSE,
+    control = lmerControl(
+      optimizer = "bobyqa",
+      optCtrl = list(maxfun = 2e5)
+    )
+  )
+  
+  # fallback if singular / unstable
+  if (isSingular(model, tol = 1e-4)) {
+    
+    formula_simple <- as.formula(
+      paste0(outcome, " ~ model_type * step_c + (1 | participant_id)")
+    )
+    
+    model <- lmer(
+      formula_simple,
+      data = data,
+      REML = FALSE,
+      control = lmerControl(
+        optimizer = "bobyqa",
+        optCtrl = list(maxfun = 2e5)
+      )
+    )
+  }
+  
+  model
+}
+
+# -----------------------------
+# 4. Fit models for each outcome
+# -----------------------------
+
+m_loss_500   <- fit_lmer_training(collapse_training_lmer, "loss")
+m_acc_500    <- fit_lmer_training(collapse_training_lmer, "accuracy")
+m_decode_500 <- fit_lmer_training(collapse_training_lmer, "context_decodability")
+m_weight_500 <- fit_lmer_training(collapse_training_lmer, "weight_ratio_cx_in")
+m_dim_500    <- fit_lmer_training(collapse_training_lmer, "effective_dimensionality")
+m_sep_500    <- fit_lmer_training(collapse_training_lmer, "trajectory_separation")
+
+# -----------------------------
+# 5. Inspect results
+# -----------------------------
+
+anova(m_loss_500)
+summary(m_loss_500)
+
+anova(m_acc_500)
+summary(m_acc_500)
+
+anova(m_decode_500)
+summary(m_decode_500)
+
+anova(m_weight_500)
+summary(m_weight_500)
+
+anova(m_dim_500)
+summary(m_dim_500)
+
+anova(m_sep_500)
+summary(m_sep_500)
+
+# -----------------------------
+# 6. Compact ANOVA table
+# -----------------------------
+
+collapse_lmer_models <- list(
+  loss = m_loss_500,
+  accuracy = m_acc_500,
+  context_decodability = m_decode_500,
+  weight_ratio_cx_in = m_weight_500,
+  effective_dimensionality = m_dim_500,
+  trajectory_separation = m_sep_500
+)
+
+collapse_lmer_anova_table <- map_df(
+  names(collapse_lmer_models),
+  function(metric_name) {
+    
+    aov_i <- anova(collapse_lmer_models[[metric_name]]) %>%
+      as.data.frame() %>%
+      rownames_to_column("term")
+    
+    aov_i %>%
+      mutate(metric = metric_name) %>%
+      select(metric, term, everything())
+  }
+)
+
+collapse_lmer_anova_table
+
+# -----------------------------
+# 7. Optional: compact fixed-effect summaries
+# -----------------------------
+
+collapse_lmer_fixed_effects <- map_df(
+  names(collapse_lmer_models),
+  function(metric_name) {
+    
+    coef_i <- summary(collapse_lmer_models[[metric_name]])$coefficients %>%
+      as.data.frame() %>%
+      rownames_to_column("term")
+    
+    coef_i %>%
+      mutate(metric = metric_name) %>%
+      select(metric, term, everything())
+  }
+)
+
+collapse_lmer_fixed_effects
+```
+
+```{r,echo=FALSE}
+library(tidyverse)
+library(ggpubr)
+
+# ==========================================================
+# Join transition cost and centroid distance by network
+# ==========================================================
+
+cor_df <- switch_units_loss %>%
+  transmute(
+    participant_id,
+    Model_Type = clean_model_type(agent),
+    transition_cost = mean_cost
+  ) %>%
+  mutate(
+    Model_Type = factor(Model_Type, levels = model_levels)
+  ) %>%
+  inner_join(
+    mixed_split %>%
+      transmute(
+        participant_id,
+        Model_Type,
+        centroid_distance = d_split
+      ),
+    by = c("participant_id", "Model_Type")
+  ) %>%
+  filter(
+    is.finite(transition_cost),
+    is.finite(centroid_distance)
+  )
+
+# Check that each row represents one network
+cor_df %>%
+  count(Model_Type)
+
+cor_test <- cor.test(
+  cor_df$centroid_distance,
+  cor_df$transition_cost,
+  method = "pearson"
+)
+
+cor_test
+
+r_value <- unname(cor_test$estimate)
+p_value <- cor_test$p.value
+n_value <- nrow(cor_df)
+
+cor_label <- paste0(
+  "r = ", sprintf("%.2f", r_value),
+  ", p ",
+  ifelse(
+    p_value < .001,
+    "< .001",
+    paste0("= ", sprintf("%.3f", p_value))
+  )
+)
+
+correlation_plot <- ggplot(
+  cor_df,
+  aes(
+    x = centroid_distance,
+    y = transition_cost,
+    color = Model_Type
+  )
+) +
+  geom_point(
+    size = 6,
+    alpha = 0.65
+  ) +
+
+  # Overall regression line with no confidence ribbon
+  geom_smooth(
+    aes(group = 1),
+    method = "lm",
+    formula = y ~ x,
+    se = FALSE,
+    color = "black",
+    linewidth = 4,
+    linetype = "dashed"
+  ) +
+
+  scale_color_manual(
+    values = model_cols,
+    drop = FALSE
+  ) +
+
+  labs(
+    x = "Centroid Distance (PC space)",
+    y = "Transition Cost",
+    color = NULL
+  ) +
+
+  coord_cartesian(clip = "off") +
+
+  theme_minimal() +
+  theme(
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    axis.line = element_line(
+      color = "black",
+      linewidth = 4
+    ),
+    axis.text = element_text(size = 30),
+    axis.title = element_text(size = 36),
+    legend.position = "none"
+  )
+
+correlation_plot
+
+```

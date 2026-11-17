@@ -1,0 +1,16 @@
+
+==================================== ERRORS ====================================
+__ ERROR collecting tests/output_compatible_trajectories/test_cue_branches.py __
+ImportError while importing test module '/Users/mg9965/Library/CloudStorage/Box-Box/ResearchProjects/RI-EVC/Contexts-FTT-Tiny-RNN/tests/output_compatible_trajectories/test_cue_branches.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/Users/mg9965/.pyenv/versions/3.11.8/lib/python3.11/importlib/__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/output_compatible_trajectories/test_cue_branches.py:6: in <module>
+    from experiments.output_compatible_trajectories.cue_access import cue_branch,branch_vectors,viable_distance,cue_only
+E   ModuleNotFoundError: No module named 'experiments.output_compatible_trajectories.cue_access'
+=========================== short test summary info ============================
+ERROR tests/output_compatible_trajectories/test_cue_branches.py
+!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!
+1 error in 1.37s

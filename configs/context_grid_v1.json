@@ -1,0 +1,759 @@
+{
+  "version": "context_grid_v1",
+  "alpha": [
+    -1.366025403784,
+    -1.0,
+    -0.5,
+    0.0,
+    0.5,
+    1.0,
+    1.366025403784
+  ],
+  "beta": [
+    -1.0,
+    -0.366025403784,
+    0.0,
+    0.366025403784,
+    1.0
+  ],
+  "third_channel": 0.0,
+  "novelty_registry_sha256": "2b28095562ea69a33d96c521817dcd0743f3d66658385ac425212f6951e00727",
+  "cues": [
+    {
+      "name": "grid_a0_b0",
+      "kind": "grid",
+      "vector": [
+        -1.183012701892,
+        0.18301270189200003,
+        0.0
+      ],
+      "cue_sha256": "e7b296e5e282ca4a90d7bdd6530572acc9a9fb933f951deef2c88406fb657773",
+      "cue_alpha": -1.366025403784,
+      "cue_beta": -1.0,
+      "cue_norm": 1.1970850854854136,
+      "nearest_endpoint_angle_degrees": 81.20602311301188,
+      "distance_to_familiar_segment": 1.437702089484334
+    },
+    {
+      "name": "grid_a0_b1",
+      "kind": "grid",
+      "vector": [
+        -0.8660254037840001,
+        0.5,
+        0.0
+      ],
+      "cue_sha256": "e9459bc9b1765c35949d26333a42e9768263da5a9f23acc77b0bb7209a885eee",
+      "cue_alpha": -1.366025403784,
+      "cue_beta": -0.366025403784,
+      "cue_norm": 0.9999999999996202,
+      "nearest_endpoint_angle_degrees": 59.99999999998744,
+      "distance_to_familiar_segment": 0.9999999999996202
+    },
+    {
+      "name": "grid_a0_b2",
+      "kind": "grid",
+      "vector": [
+        -0.683012701892,
+        0.683012701892,
+        0.0
+      ],
+      "cue_sha256": "6a9e0e63407285f13e5724e60afcad211b46b48ac4608165883ba355ab71ac79",
+      "cue_alpha": -1.366025403784,
+      "cue_beta": 0.0,
+      "cue_norm": 0.9659258262887581,
+      "nearest_endpoint_angle_degrees": 45.0,
+      "distance_to_familiar_segment": 0.7529855895750065
+    },
+    {
+      "name": "grid_a0_b3",
+      "kind": "grid",
+      "vector": [
+        -0.5,
+        0.8660254037840001,
+        0.0
+      ],
+      "cue_sha256": "3afff71373036510ac924953583bc94715cc7dce1ef55dcc06c3d20437165a23",
+      "cue_alpha": -1.366025403784,
+      "cue_beta": 0.366025403784,
+      "cue_norm": 0.9999999999996202,
+      "nearest_endpoint_angle_degrees": 30.000000000012566,
+      "distance_to_familiar_segment": 0.517638090205155
+    },
+    {
+      "name": "grid_a0_b4",
+      "kind": "grid",
+      "vector": [
+        -0.18301270189200003,
+        1.183012701892,
+        0.0
+      ],
+      "cue_sha256": "ee84a9d8d72e054067b8bb9726376be781265aeb325f86a83d0d6c8dd0d8de36",
+      "cue_alpha": -1.366025403784,
+      "cue_beta": 1.0,
+      "cue_norm": 1.1970850854854136,
+      "nearest_endpoint_angle_degrees": 8.793976886988071,
+      "distance_to_familiar_segment": 0.2588190451022106
+    },
+    {
+      "name": "grid_a1_b0",
+      "kind": "grid",
+      "vector": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "cue_sha256": "09c3afbe0971b7aa145f1ea8ae1fc014c103cb2b8b4b978baa1d0f7157cd8d5f",
+      "cue_alpha": -1.0,
+      "cue_beta": -1.0,
+      "cue_norm": 1.0,
+      "nearest_endpoint_angle_degrees": 90.0,
+      "distance_to_familiar_segment": 1.4142135623730951
+    },
+    {
+      "name": "grid_a1_b1",
+      "kind": "grid",
+      "vector": [
+        -0.683012701892,
+        0.31698729810799997,
+        0.0
+      ],
+      "cue_sha256": "658ab4a417b5c4251ebd413692b72746fd1e84b3b7d0350737b0f9faa8a2f34a",
+      "cue_alpha": -1.0,
+      "cue_beta": -0.366025403784,
+      "cue_norm": 0.7529855895750065,
+      "nearest_endpoint_angle_degrees": 65.10390936099493,
+      "distance_to_familiar_segment": 0.9659258262887581
+    },
+    {
+      "name": "grid_a1_b2",
+      "kind": "grid",
+      "vector": [
+        -0.5,
+        0.5,
+        0.0
+      ],
+      "cue_sha256": "fdd888f6bbde3554a1cdf800421c5b81fb8b744f5bd6cf1b7d4c30fb425ae2f2",
+      "cue_alpha": -1.0,
+      "cue_beta": 0.0,
+      "cue_norm": 0.7071067811865476,
+      "nearest_endpoint_angle_degrees": 45.00000000000001,
+      "distance_to_familiar_segment": 0.7071067811865476
+    },
+    {
+      "name": "grid_a1_b3",
+      "kind": "grid",
+      "vector": [
+        -0.31698729810799997,
+        0.683012701892,
+        0.0
+      ],
+      "cue_sha256": "7a0f86980a1dc93850b52bd98c0e12b801d8e6908b20b1efacf1bcaee16a0f05",
+      "cue_alpha": -1.0,
+      "cue_beta": 0.366025403784,
+      "cue_norm": 0.7529855895750065,
+      "nearest_endpoint_angle_degrees": 24.89609063900507,
+      "distance_to_familiar_segment": 0.44828773608433686
+    },
+    {
+      "name": "grid_a1_b4",
+      "kind": "grid",
+      "vector": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "cue_sha256": "eeeffcc0c39565a55816bb80338a122886ddbdffb3c3dedd3988ddb809cfee65",
+      "cue_alpha": -1.0,
+      "cue_beta": 1.0,
+      "cue_norm": 1.0,
+      "nearest_endpoint_angle_degrees": 0.0,
+      "distance_to_familiar_segment": 0.0
+    },
+    {
+      "name": "grid_a2_b0",
+      "kind": "grid",
+      "vector": [
+        -0.75,
+        -0.25,
+        0.0
+      ],
+      "cue_sha256": "8b9d1bf8190b5430c94b70b6edd95bccf8cf99211ca22e43ee368070a43c9ef9",
+      "cue_alpha": -0.5,
+      "cue_beta": -1.0,
+      "cue_norm": 0.7905694150420949,
+      "nearest_endpoint_angle_degrees": 108.43494882292201,
+      "distance_to_familiar_segment": 1.4142135623730951
+    },
+    {
+      "name": "grid_a2_b1",
+      "kind": "grid",
+      "vector": [
+        -0.43301270189200003,
+        0.066987298108,
+        0.0
+      ],
+      "cue_sha256": "f043cd91ec6732fa3e6f538345f2489fc8cdea50435edf361256aa366d5a0e2e",
+      "cue_alpha": -0.5,
+      "cue_beta": -0.366025403784,
+      "cue_norm": 0.4381635517790362,
+      "nearest_endpoint_angle_degrees": 81.20602311297039,
+      "distance_to_familiar_segment": 0.9659258262887581
+    },
+    {
+      "name": "grid_a2_b2",
+      "kind": "grid",
+      "vector": [
+        -0.25,
+        0.25,
+        0.0
+      ],
+      "cue_sha256": "8bd6370536875a4bc5a406ece94ae8502ecb5392ee1233d836cc949c0962da91",
+      "cue_alpha": -0.5,
+      "cue_beta": 0.0,
+      "cue_norm": 0.3535533905932738,
+      "nearest_endpoint_angle_degrees": 45.00000000000001,
+      "distance_to_familiar_segment": 0.7071067811865476
+    },
+    {
+      "name": "grid_a2_b3",
+      "kind": "grid",
+      "vector": [
+        -0.066987298108,
+        0.43301270189200003,
+        0.0
+      ],
+      "cue_sha256": "fffd4390e2b576d30bc5f4e3eedcc2059dc9a8ef0bd278276f60a00751b538a2",
+      "cue_alpha": -0.5,
+      "cue_beta": 0.366025403784,
+      "cue_norm": 0.4381635517790362,
+      "nearest_endpoint_angle_degrees": 8.793976887029595,
+      "distance_to_familiar_segment": 0.44828773608433686
+    },
+    {
+      "name": "grid_a2_b4",
+      "kind": "grid",
+      "vector": [
+        0.25,
+        0.75,
+        0.0
+      ],
+      "cue_sha256": "a13be0a4729b90004563fa37fe9f3e35e310e2c67eae219e728a60d619741393",
+      "cue_alpha": -0.5,
+      "cue_beta": 1.0,
+      "cue_norm": 0.7905694150420949,
+      "nearest_endpoint_angle_degrees": 18.434948822922017,
+      "distance_to_familiar_segment": 0.0
+    },
+    {
+      "name": "grid_a3_b0",
+      "kind": "grid",
+      "vector": [
+        -0.5,
+        -0.5,
+        0.0
+      ],
+      "cue_sha256": "80bece5883f9d5ff17a466a0e508b038d6174a488492d8b07a38413d33dd8306",
+      "cue_alpha": 0.0,
+      "cue_beta": -1.0,
+      "cue_norm": 0.7071067811865476,
+      "nearest_endpoint_angle_degrees": 135.0,
+      "distance_to_familiar_segment": 1.4142135623730951
+    },
+    {
+      "name": "grid_a3_b1",
+      "kind": "grid",
+      "vector": [
+        -0.183012701892,
+        -0.183012701892,
+        0.0
+      ],
+      "cue_sha256": "071404416c16110d7fc0c1fc740f4031b0c26cd47eea9019970a599ea4ed8299",
+      "cue_alpha": 0.0,
+      "cue_beta": -0.366025403784,
+      "cue_norm": 0.2588190451022106,
+      "nearest_endpoint_angle_degrees": 135.0,
+      "distance_to_familiar_segment": 0.9659258262887581
+    },
+    {
+      "name": "grid_a3_b2",
+      "kind": "grid",
+      "vector": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "cue_sha256": "c42502d9a3cb8c3bf47febeb675bdc762ad27556b8519ed160a0030d65e25a28",
+      "cue_alpha": 0.0,
+      "cue_beta": 0.0,
+      "cue_norm": 0.0,
+      "nearest_endpoint_angle_degrees": null,
+      "distance_to_familiar_segment": 0.7071067811865476
+    },
+    {
+      "name": "grid_a3_b3",
+      "kind": "grid",
+      "vector": [
+        0.183012701892,
+        0.183012701892,
+        0.0
+      ],
+      "cue_sha256": "5950a2f07485e77f2f755465aa464be2621b130c02f25b043e8c0ffe227e7713",
+      "cue_alpha": 0.0,
+      "cue_beta": 0.366025403784,
+      "cue_norm": 0.2588190451022106,
+      "nearest_endpoint_angle_degrees": 45.00000000000001,
+      "distance_to_familiar_segment": 0.44828773608433686
+    },
+    {
+      "name": "grid_a3_b4",
+      "kind": "grid",
+      "vector": [
+        0.5,
+        0.5,
+        0.0
+      ],
+      "cue_sha256": "c2acc1ad40a092227aad46730fe637cefe35af5f8bb564efdad74da0efd6b547",
+      "cue_alpha": 0.0,
+      "cue_beta": 1.0,
+      "cue_norm": 0.7071067811865476,
+      "nearest_endpoint_angle_degrees": 45.00000000000001,
+      "distance_to_familiar_segment": 0.0
+    },
+    {
+      "name": "grid_a4_b0",
+      "kind": "grid",
+      "vector": [
+        -0.25,
+        -0.75,
+        0.0
+      ],
+      "cue_sha256": "21e214db0afc7e97f87cbceb94bc76833802c4733eb1b79801d9a733a49c2b88",
+      "cue_alpha": 0.5,
+      "cue_beta": -1.0,
+      "cue_norm": 0.7905694150420949,
+      "nearest_endpoint_angle_degrees": 108.43494882292201,
+      "distance_to_familiar_segment": 1.4142135623730951
+    },
+    {
+      "name": "grid_a4_b1",
+      "kind": "grid",
+      "vector": [
+        0.066987298108,
+        -0.43301270189200003,
+        0.0
+      ],
+      "cue_sha256": "d8ce7c566abc0e91f1a32cadd286f1b8c5d5d6fd6b7f49e0fd5e54be495a35a3",
+      "cue_alpha": 0.5,
+      "cue_beta": -0.366025403784,
+      "cue_norm": 0.4381635517790362,
+      "nearest_endpoint_angle_degrees": 81.20602311297039,
+      "distance_to_familiar_segment": 0.9659258262887581
+    },
+    {
+      "name": "grid_a4_b2",
+      "kind": "grid",
+      "vector": [
+        0.25,
+        -0.25,
+        0.0
+      ],
+      "cue_sha256": "be1285067774a73b1cc70cbb806d0cd03d3607083c3a464491253eccc11f5beb",
+      "cue_alpha": 0.5,
+      "cue_beta": 0.0,
+      "cue_norm": 0.3535533905932738,
+      "nearest_endpoint_angle_degrees": 45.00000000000001,
+      "distance_to_familiar_segment": 0.7071067811865476
+    },
+    {
+      "name": "grid_a4_b3",
+      "kind": "grid",
+      "vector": [
+        0.43301270189200003,
+        -0.066987298108,
+        0.0
+      ],
+      "cue_sha256": "462c9dd0ba75671c73e0a9b10409d23fa2e76ced67d7d9d2287ac1d52eced4ab",
+      "cue_alpha": 0.5,
+      "cue_beta": 0.366025403784,
+      "cue_norm": 0.4381635517790362,
+      "nearest_endpoint_angle_degrees": 8.793976887029595,
+      "distance_to_familiar_segment": 0.44828773608433686
+    },
+    {
+      "name": "grid_a4_b4",
+      "kind": "grid",
+      "vector": [
+        0.75,
+        0.25,
+        0.0
+      ],
+      "cue_sha256": "209f67ac9633af87da8f3f2a687ea1bcc8bfe6866a40f02cfd0c895950a73b6c",
+      "cue_alpha": 0.5,
+      "cue_beta": 1.0,
+      "cue_norm": 0.7905694150420949,
+      "nearest_endpoint_angle_degrees": 18.434948822922017,
+      "distance_to_familiar_segment": 0.0
+    },
+    {
+      "name": "grid_a5_b0",
+      "kind": "grid",
+      "vector": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "cue_sha256": "004e2f42564fbe6ea18942985a3bdb121323e1f481eaf0032808529c16239d32",
+      "cue_alpha": 1.0,
+      "cue_beta": -1.0,
+      "cue_norm": 1.0,
+      "nearest_endpoint_angle_degrees": 90.0,
+      "distance_to_familiar_segment": 1.4142135623730951
+    },
+    {
+      "name": "grid_a5_b1",
+      "kind": "grid",
+      "vector": [
+        0.31698729810799997,
+        -0.683012701892,
+        0.0
+      ],
+      "cue_sha256": "ead16322c18b7d5c51c665eaf30ecf8d5db2b773d1edd38d09b2b06a094589ed",
+      "cue_alpha": 1.0,
+      "cue_beta": -0.366025403784,
+      "cue_norm": 0.7529855895750065,
+      "nearest_endpoint_angle_degrees": 65.10390936099493,
+      "distance_to_familiar_segment": 0.9659258262887581
+    },
+    {
+      "name": "grid_a5_b2",
+      "kind": "grid",
+      "vector": [
+        0.5,
+        -0.5,
+        0.0
+      ],
+      "cue_sha256": "b5567b3fdfeb7b1ae28a0e46ac94435426292e3bb36445d63bcb459a4dad2397",
+      "cue_alpha": 1.0,
+      "cue_beta": 0.0,
+      "cue_norm": 0.7071067811865476,
+      "nearest_endpoint_angle_degrees": 45.00000000000001,
+      "distance_to_familiar_segment": 0.7071067811865476
+    },
+    {
+      "name": "grid_a5_b3",
+      "kind": "grid",
+      "vector": [
+        0.683012701892,
+        -0.31698729810799997,
+        0.0
+      ],
+      "cue_sha256": "6c143b680eb077b1192ed58e5722f3a7700b7e4a1987c01df0ca45b46a85118b",
+      "cue_alpha": 1.0,
+      "cue_beta": 0.366025403784,
+      "cue_norm": 0.7529855895750065,
+      "nearest_endpoint_angle_degrees": 24.89609063900507,
+      "distance_to_familiar_segment": 0.44828773608433686
+    },
+    {
+      "name": "grid_a5_b4",
+      "kind": "grid",
+      "vector": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "cue_sha256": "4038c71f32b1e0b99e22be8120608645adba7fe339e63085b8c9ca1580576685",
+      "cue_alpha": 1.0,
+      "cue_beta": 1.0,
+      "cue_norm": 1.0,
+      "nearest_endpoint_angle_degrees": 0.0,
+      "distance_to_familiar_segment": 0.0
+    },
+    {
+      "name": "grid_a6_b0",
+      "kind": "grid",
+      "vector": [
+        0.18301270189200003,
+        -1.183012701892,
+        0.0
+      ],
+      "cue_sha256": "c34aafe7d68287d0f4b6e15fe3d3d8e3903ef98f4e6a9c8afca6902861795255",
+      "cue_alpha": 1.366025403784,
+      "cue_beta": -1.0,
+      "cue_norm": 1.1970850854854136,
+      "nearest_endpoint_angle_degrees": 81.20602311301188,
+      "distance_to_familiar_segment": 1.437702089484334
+    },
+    {
+      "name": "grid_a6_b1",
+      "kind": "grid",
+      "vector": [
+        0.5,
+        -0.8660254037840001,
+        0.0
+      ],
+      "cue_sha256": "a78d3a4b4d35a56d7d6d1294ccaf61609ae2aa5c3c9854ee2447d705b9d5f41a",
+      "cue_alpha": 1.366025403784,
+      "cue_beta": -0.366025403784,
+      "cue_norm": 0.9999999999996202,
+      "nearest_endpoint_angle_degrees": 59.99999999998744,
+      "distance_to_familiar_segment": 0.9999999999996202
+    },
+    {
+      "name": "grid_a6_b2",
+      "kind": "grid",
+      "vector": [
+        0.683012701892,
+        -0.683012701892,
+        0.0
+      ],
+      "cue_sha256": "6955b9eb46a6d7b45481acb280e4a2932c2d01f687329fdc2821e035cb1b31b5",
+      "cue_alpha": 1.366025403784,
+      "cue_beta": 0.0,
+      "cue_norm": 0.9659258262887581,
+      "nearest_endpoint_angle_degrees": 45.0,
+      "distance_to_familiar_segment": 0.7529855895750065
+    },
+    {
+      "name": "grid_a6_b3",
+      "kind": "grid",
+      "vector": [
+        0.8660254037840001,
+        -0.5,
+        0.0
+      ],
+      "cue_sha256": "a97abc4db0dc73c4fa56c4c9a28f4f1c31127f6f0acb22c156fa6e676b8b1eca",
+      "cue_alpha": 1.366025403784,
+      "cue_beta": 0.366025403784,
+      "cue_norm": 0.9999999999996202,
+      "nearest_endpoint_angle_degrees": 30.000000000012566,
+      "distance_to_familiar_segment": 0.517638090205155
+    },
+    {
+      "name": "grid_a6_b4",
+      "kind": "grid",
+      "vector": [
+        1.183012701892,
+        -0.18301270189200003,
+        0.0
+      ],
+      "cue_sha256": "85fc789e5ae3930c1322086cca48cf4e41df1b2e1c6a9e554d41b2a7b28a3919",
+      "cue_alpha": 1.366025403784,
+      "cue_beta": 1.0,
+      "cue_norm": 1.1970850854854136,
+      "nearest_endpoint_angle_degrees": 8.793976886988071,
+      "distance_to_familiar_segment": 0.2588190451022106
+    },
+    {
+      "name": "A",
+      "kind": "anchor",
+      "vector": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "cue_sha256": "4038c71f32b1e0b99e22be8120608645adba7fe339e63085b8c9ca1580576685",
+      "cue_alpha": 1.0,
+      "cue_beta": 1.0,
+      "cue_norm": 1.0,
+      "nearest_endpoint_angle_degrees": 0.0,
+      "distance_to_familiar_segment": 0.0
+    },
+    {
+      "name": "B",
+      "kind": "anchor",
+      "vector": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "cue_sha256": "eeeffcc0c39565a55816bb80338a122886ddbdffb3c3dedd3988ddb809cfee65",
+      "cue_alpha": -1.0,
+      "cue_beta": 1.0,
+      "cue_norm": 1.0,
+      "nearest_endpoint_angle_degrees": 0.0,
+      "distance_to_familiar_segment": 0.0
+    },
+    {
+      "name": "Mixed",
+      "kind": "anchor",
+      "vector": [
+        0.5,
+        0.5,
+        0.0
+      ],
+      "cue_sha256": "c2acc1ad40a092227aad46730fe637cefe35af5f8bb564efdad74da0efd6b547",
+      "cue_alpha": 0.0,
+      "cue_beta": 1.0,
+      "cue_norm": 0.7071067811865476,
+      "nearest_endpoint_angle_degrees": 45.00000000000001,
+      "distance_to_familiar_segment": 0.0
+    },
+    {
+      "name": "NoContext",
+      "kind": "anchor",
+      "vector": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "cue_sha256": "c42502d9a3cb8c3bf47febeb675bdc762ad27556b8519ed160a0030d65e25a28",
+      "cue_alpha": 0.0,
+      "cue_beta": 0.0,
+      "cue_norm": 0.0,
+      "nearest_endpoint_angle_degrees": null,
+      "distance_to_familiar_segment": 0.7071067811865476
+    },
+    {
+      "name": "Novel30_A",
+      "kind": "anchor",
+      "vector": [
+        0.8660254037844386,
+        -0.5,
+        0.0
+      ],
+      "cue_sha256": "520023d046389d50634e608a8c548a07a12af624be66bc436a7f8eb14f1306a9",
+      "cue_alpha": 1.3660254037844386,
+      "cue_beta": 0.3660254037844386,
+      "cue_norm": 0.9999999999999999,
+      "nearest_endpoint_angle_degrees": 29.999999999999996,
+      "distance_to_familiar_segment": 0.5176380902050415
+    },
+    {
+      "name": "Novel30_B",
+      "kind": "anchor",
+      "vector": [
+        -0.5,
+        0.8660254037844386,
+        0.0
+      ],
+      "cue_sha256": "adf7b27d008bebcfbb4dc78fb0fc9e51a85888b12e17a2dc924fc70c95f9ffb0",
+      "cue_alpha": -1.3660254037844386,
+      "cue_beta": 0.3660254037844386,
+      "cue_norm": 0.9999999999999999,
+      "nearest_endpoint_angle_degrees": 29.999999999999996,
+      "distance_to_familiar_segment": 0.5176380902050415
+    },
+    {
+      "name": "Novel60_A",
+      "kind": "anchor",
+      "vector": [
+        0.5,
+        -0.8660254037844386,
+        0.0
+      ],
+      "cue_sha256": "7e661a3167fc5e65db85880fbe6e8674d30df2dcaae63236436fbf66f6a0ac8b",
+      "cue_alpha": 1.3660254037844386,
+      "cue_beta": -0.3660254037844386,
+      "cue_norm": 0.9999999999999999,
+      "nearest_endpoint_angle_degrees": 59.99999999999999,
+      "distance_to_familiar_segment": 0.9999999999999999
+    },
+    {
+      "name": "Novel60_B",
+      "kind": "anchor",
+      "vector": [
+        -0.8660254037844386,
+        0.5,
+        0.0
+      ],
+      "cue_sha256": "d0f2229ee8d5c6ec7dac02f2d688f8c005d002472483ba67bb07f57a762278bb",
+      "cue_alpha": -1.3660254037844386,
+      "cue_beta": -0.3660254037844386,
+      "cue_norm": 0.9999999999999999,
+      "nearest_endpoint_angle_degrees": 59.99999999999999,
+      "distance_to_familiar_segment": 0.9999999999999999
+    },
+    {
+      "name": "ray_A_0.5",
+      "kind": "ray",
+      "vector": [
+        0.5,
+        0.0,
+        0.0
+      ],
+      "cue_sha256": "0c814086fe318c545158a0d8205d05bcd27ebfed627476fd4acdb4a2d8de7ed1",
+      "cue_alpha": 0.5,
+      "cue_beta": 0.5,
+      "cue_norm": 0.5,
+      "nearest_endpoint_angle_degrees": 0.0,
+      "distance_to_familiar_segment": 0.3535533905932738
+    },
+    {
+      "name": "ray_A_1",
+      "kind": "ray",
+      "vector": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "cue_sha256": "4038c71f32b1e0b99e22be8120608645adba7fe339e63085b8c9ca1580576685",
+      "cue_alpha": 1.0,
+      "cue_beta": 1.0,
+      "cue_norm": 1.0,
+      "nearest_endpoint_angle_degrees": 0.0,
+      "distance_to_familiar_segment": 0.0
+    },
+    {
+      "name": "ray_A_1.5",
+      "kind": "ray",
+      "vector": [
+        1.5,
+        0.0,
+        0.0
+      ],
+      "cue_sha256": "c1a33336f462f5f55a08a62ce1a6ed86efb839f8e84994a615bffd99db64a34d",
+      "cue_alpha": 1.5,
+      "cue_beta": 1.5,
+      "cue_norm": 1.5,
+      "nearest_endpoint_angle_degrees": 0.0,
+      "distance_to_familiar_segment": 0.5
+    },
+    {
+      "name": "ray_B_0.5",
+      "kind": "ray",
+      "vector": [
+        0.0,
+        0.5,
+        0.0
+      ],
+      "cue_sha256": "a1a4fa6b04f91ceaadcb350e671d0c82aef0fb4199ce7f995b35c6ba8ba1826d",
+      "cue_alpha": -0.5,
+      "cue_beta": 0.5,
+      "cue_norm": 0.5,
+      "nearest_endpoint_angle_degrees": 0.0,
+      "distance_to_familiar_segment": 0.3535533905932738
+    },
+    {
+      "name": "ray_B_1",
+      "kind": "ray",
+      "vector": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "cue_sha256": "eeeffcc0c39565a55816bb80338a122886ddbdffb3c3dedd3988ddb809cfee65",
+      "cue_alpha": -1.0,
+      "cue_beta": 1.0,
+      "cue_norm": 1.0,
+      "nearest_endpoint_angle_degrees": 0.0,
+      "distance_to_familiar_segment": 0.0
+    },
+    {
+      "name": "ray_B_1.5",
+      "kind": "ray",
+      "vector": [
+        0.0,
+        1.5,
+        0.0
+      ],
+      "cue_sha256": "2204a7d64af2e431364286716b69b46f0977de53e18ba1ab56e4b99cb78db709",
+      "cue_alpha": -1.5,
+      "cue_beta": 1.5,
+      "cue_norm": 1.5,
+      "nearest_endpoint_angle_degrees": 0.0,
+      "distance_to_familiar_segment": 0.5
+    }
+  ],
+  "registry_sha256": "4ba68e9ab576eb0f1c728c0eb3b364bab7efab8b3547304ddfb84f27f37bc6d4"
+}

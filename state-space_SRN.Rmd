@@ -1,0 +1,1468 @@
+---
+title: "SRN Analysis"
+output: html_document
+date: "2022-08-14"
+---
+
+```{r setup, include=FALSE}
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(purrr)
+library(readr)
+library(lme4)
+library(minpack.lm)
+library(stringr)
+library(lmerTest)
+library(scales)
+
+knitr::opts_chunk$set(warning = FALSE, message = FALSE)
+
+clean_context <- function(x) {
+  x <- as.character(x)
+
+  dplyr::case_when(
+    is.na(x) ~ "NoContext",
+    tolower(x) %in% c("letters", "no context", "nocontext", "none", "na", "") ~ "NoContext",
+    tolower(x) == "maze" ~ "Maze",
+    tolower(x) == "melody" ~ "Melody",
+    TRUE ~ x
+  )
+}
+
+
+clean_model_type <- function(x) {
+  x <- as.character(x)
+
+  dplyr::case_when(
+    # Low-scale baseline
+    x %in% c(
+      "Poor", "Lazy", "Low", "Low-Scale", "Low Scale"
+    ) ~ "Low-Scale",
+
+    # High-scale baseline
+    x %in% c(
+      "Rich", "High", "High-Scale", "High Scale"
+    ) ~ "High-Scale",
+
+    # Low global scale + high context scale
+    x %in% c(
+      "Lazy-Rich-Contex",
+      "Lazy-Rich-Context",
+      "Lazy+RichCtx",
+      "Lazy Rich-Context",
+      "Low-High-Contex",
+      "Low-High-Context",
+      "Low+HighCtx",
+      "Low-Scale-High-Context",
+      "Low-Scale + High Context"
+    ) ~ "Low-Scale + High Context",
+
+    # High global scale + low context scale
+    x %in% c(
+      "Rich-Lazy-Contex",
+      "Rich-Lazy-Context",
+      "Rich+LazyCtx",
+      "Rich Lazy-Context",
+      "High-Low-Contex",
+      "High-Low-Context",
+      "High+LowCtx",
+      "High-Scale-Low-Context",
+      "High-Scale + Low Context"
+    ) ~ "High-Scale + Low Context",
+
+    TRUE ~ NA_character_
+  )
+}
+
+model_levels <- c(
+  "High-Scale",
+  "Low-Scale",
+  "Low-Scale + High Context",
+  "High-Scale + Low Context"
+)
+
+context_levels <- c("Maze", "Melody", "NoContext")
+
+context_cols <- c(
+  Maze = "blue",
+  Melody = "red",
+  NoContext = "black"
+)
+
+model_linetypes <- c(
+  "High-Scale" = "solid",
+  "Low-Scale" = "22",
+  "Low-Scale + High Context" = "dotdash",
+  "High-Scale + Low Context" = "longdash"
+)
+
+
+# Windows
+#learning dynamics
+# rich_poor_learning_dynamics  <- read_csv("C:/Users/sheik/Box/ResearchProjects/RI-EVC/SRN/CogSci/results_mazeMelodyID_clean_all/rich_poor_learning_dynamics.csv") %>%
+#   filter(global_step <= 90)
+# 
+# rich_poor_learning_dynamics_melody  <- read_csv("C:/Users/sheik/Box/ResearchProjects/RI-EVC/SRN/CogSci/results_melodyID_clean/rich_poor_learning_dynamics.csv") %>%
+#   filter(global_step <= 90)
+# 
+# rich_poor_learning_dynamics_maze  <- read_csv("C:/Users/sheik/Box/ResearchProjects/RI-EVC/SRN/CogSci/results_mazeID_clean/rich_poor_learning_dynamics.csv") %>%
+#   filter(global_step <= 90)
+# 
+# rich_poor_learning_dynamics_noContext  <- read_csv("C:/Users/sheik/Box/ResearchProjects/RI-EVC/SRN/CogSci/results_lettersID_clean/rich_poor_learning_dynamics.csv") %>%
+#   filter(global_step <= 90)
+# 
+# # context weight used
+# mech_metrics <- read_csv("C:/Users/sheik/Box/ResearchProjects/RI-EVC/SRN/CogSci/results_mazeMelodyID_clean_all/mechanistic_metrics.csv")
+# 
+# mech_metrics_melody <- read_csv("C:/Users/sheik/Box/ResearchProjects/RI-EVC/SRN/CogSci/results_melodyID_clean/mechanistic_metrics.csv")
+# 
+# mech_metrics_maze <- read_csv("C:/Users/sheik/Box/ResearchProjects/RI-EVC/SRN/CogSci/results_mazeID_clean/mechanistic_metrics.csv")
+# 
+# 
+# # PCAs
+# pca <- read_csv("C:/Users/sheik/Box/ResearchProjects/RI-EVC/SRN/CogSci/results_mazeMelodyID_clean_all/all_pca_data.csv") %>%
+#   mutate(
+#     Context    = factor(Context, levels = c("Maze", "Melody")),
+#     Model_Type = factor(Model_Type, levels = c("Rich", "Poor"))
+#   )
+# 
+# pca_melody <- read_csv("C:/Users/sheik/Box/ResearchProjects/RI-EVC/SRN/CogSci/results_melodyID_clean/all_pca_data.csv") %>%
+#   mutate(
+#     Context    = factor(Context, levels = c("Maze", "Melody")),
+#     Model_Type = factor(Model_Type, levels = c("Rich", "Poor"))
+#   )
+# 
+# pca_maze <- read_csv("C:/Users/sheik/Box/ResearchProjects/RI-EVC/SRN/CogSci/results_mazeID_clean/all_pca_data.csv") %>%
+#   mutate(
+#     Context    = factor(Context, levels = c("Maze", "Melody")),
+#     Model_Type = factor(Model_Type, levels = c("Rich", "Poor"))
+#   )
+# 
+# pca_NoContext <- read_csv("C:/Users/sheik/Box/ResearchProjects/RI-EVC/SRN/CogSci/results_lettersID_clean/all_pca_data.csv") %>%
+#   mutate(
+#     Context    = factor(Context, levels = c("Letters")),
+#     Model_Type = factor(Model_Type, levels = c("Rich", "Poor"))
+#   )
+# 
+# mechanisticSweep <- read_csv("C:/Users/sheik/Box/ResearchProjects/RI-EVC/SRN/CogSci/results_mechanistic_sweep/mechanistic_sweep_results.csv")
+
+# MAC
+# learning dynamics
+rich_poor_learning_dynamics  <- read_csv("/Users/mg9965/Library/CloudStorage/Box-Box/ResearchProjects/RI-EVC/SRN/CogSci/results_mazeMelodyID_clean_all/training_results.csv") %>%
+  filter(global_step <= 90)
+
+rich_poor_learning_dynamics_melody  <- read_csv("/Users/mg9965/Library/CloudStorage/Box-Box/ResearchProjects/RI-EVC/SRN/CogSci/results_melodyID_clean/training_results.csv") %>%
+  filter(global_step <= 90)
+
+rich_poor_learning_dynamics_maze  <- read_csv("/Users/mg9965/Library/CloudStorage/Box-Box/ResearchProjects/RI-EVC/SRN/CogSci/results_mazeID_clean/training_results.csv") %>%
+  filter(global_step <= 90)
+rich_poor_learning_dynamics_maze$context[rich_poor_learning_dynamics_maze$context == "Melody"] <- "Maze"
+
+rich_poor_learning_dynamics_noContext  <- read_csv("/Users/mg9965/Library/CloudStorage/Box-Box/ResearchProjects/RI-EVC/SRN/CogSci/results_lettersID_clean/training_results.csv") %>%
+  filter(global_step <= 90)
+
+# context weight used
+mech_metrics <- read_csv("/Users/mg9965/Library/CloudStorage/Box-Box/ResearchProjects/RI-EVC/SRN/CogSci/results_mazeMelodyID_clean_all/collapse_asymptote.csv")
+
+mech_metrics_melody <- read_csv("/Users/mg9965/Library/CloudStorage/Box-Box/ResearchProjects/RI-EVC/SRN/CogSci/results_melodyID_clean/collapse_asymptote.csv")
+
+mech_metrics_maze <- read_csv("/Users/mg9965/Library/CloudStorage/Box-Box/ResearchProjects/RI-EVC/SRN/CogSci/results_mazeID_clean/collapse_asymptote.csv")
+
+mech_metrics_NoContext <- read_csv("/Users/mg9965/Library/CloudStorage/Box-Box/ResearchProjects/RI-EVC/SRN/CogSci/results_lettersID_clean/collapse_asymptote.csv")
+
+
+# PCAs
+pca <- read_csv("/Users/mg9965/Library/CloudStorage/Box-Box/ResearchProjects/RI-EVC/SRN/CogSci/results_mazeMelodyID_clean_all/shared_pca_trajectories.csv") %>%
+  mutate(
+    Context    = factor(context, levels = c("Maze", "Melody")),
+    Model_Type = factor(model_type, levels = c("Rich", "Poor"))
+  )
+
+pca_melody <- read_csv("/Users/mg9965/Library/CloudStorage/Box-Box/ResearchProjects/RI-EVC/SRN/CogSci/results_melodyID_clean/shared_pca_trajectories.csv") %>%
+  mutate(
+    Context    = factor(context, levels = c("Maze", "Melody")),
+    Model_Type = factor(model_type, levels = c("Rich", "Poor"))
+  )
+
+pca_maze <- read_csv("/Users/mg9965/Library/CloudStorage/Box-Box/ResearchProjects/RI-EVC/SRN/CogSci/results_mazeID_clean/shared_pca_trajectories.csv") %>%
+  mutate(
+    Context    = factor(context, levels = c("Maze", "Melody")),
+    Model_Type = factor(model_type, levels = c("Rich", "Poor"))
+  )
+
+pca_NoContext <- read_csv("/Users/mg9965/Library/CloudStorage/Box-Box/ResearchProjects/RI-EVC/SRN/CogSci/results_lettersID_clean/shared_pca_trajectories.csv") %>%
+  mutate(
+    Context    = factor(context, levels = c("Letters")),
+    Model_Type = factor(model_type, levels = c("Rich", "Poor"))
+  )
+
+mechanisticSweep <- read_csv("/Users/mg9965/Library/CloudStorage/Box-Box/ResearchProjects/RI-EVC/SRN/CogSci/results_mazeMelodyID_clean_all/init_scale_sweep.csv")
+
+# matched analyses
+matched_metrics <- read_csv("/Users/mg9965/Library/CloudStorage/Box-Box/ResearchProjects/RI-EVC/SRN/CogSci/results_mazeMelodyID_clean_all/matched_geometry_ce.csv") 
+
+collapse_training <- read_csv("/Users/mg9965/Library/CloudStorage/Box-Box/ResearchProjects/RI-EVC/SRN/CogSci/results_mazeMelodyID_clean_all/collapse_asymptote.csv")
+
+
+```
+
+```{r, echo=FALSE}
+# ============================================================
+# LOSS fits (average) with NO FATIGUE term
+# - Remove F from all sims/objectives/decoders
+# - Still keeps "state-space" dynamics via x (and 2-state for Cross/Split)
+#
+# This is a drop-in set of replacements for:
+#   simulate_state_Lump / objective_Lump / fit_model1_avg
+#   simulate_state_Cross / objective_Cross / fit_model2_avg
+#   objective_Split / fit_model3_avg
+# plus the avg/overlay wrapper that uses LOSS.
+# ============================================================
+
+# ------------------------------------------------------------
+# Prepare raw model_type × counterbalance groups for bootstrap
+# ------------------------------------------------------------
+
+get_run_id_col <- function(df) {
+  candidates <- c(
+    "participant_id",
+    "run_id",
+    "network_id",
+    "agent_id",
+    "seed"
+  )
+
+  matches <- candidates[candidates %in% names(df)]
+
+  if (length(matches) == 0L) {
+    stop(
+      "Could not identify the run-ID column. Available columns are: ",
+      paste(names(df), collapse = ", ")
+    )
+  }
+
+  matches[[1]]
+}
+
+bootstrap_raw_groups <- rich_poor_learning_dynamics %>%
+  mutate(
+    model_type = clean_model_type(model_type),
+    model_type = factor(model_type, levels = model_levels)
+  ) %>%
+  filter(
+    !is.na(model_type),
+    training_active
+  ) %>%
+  add_counterbalance() %>%
+  filter(cb %in% c("MazeFirst", "MelodyFirst")) %>%
+  group_by(model_type, cb) %>%
+  group_split() %>%
+  setNames(
+    purrr::map_chr(
+      .,
+      ~ paste(
+        as.character(unique(.x$model_type)),
+        unique(.x$cb),
+        sep = "__"
+      )
+    )
+  )
+
+rich_poor_learning_dynamics <- rich_poor_learning_dynamics %>%
+  mutate(
+    model_type = clean_model_type(model_type),
+    model_type = factor(model_type, levels = model_levels)
+  ) %>%
+  filter(!is.na(model_type))
+
+check_len <- function(name, v, N) {
+  if (length(v) != N) stop(sprintf("%s length mismatch: %d vs %d", name, length(v), N))
+}
+
+`%||%` <- function(a, b) if (!is.null(a)) a else b
+
+rmse <- function(yhat, y) sqrt(mean((as.numeric(yhat) - as.numeric(y))^2, na.rm = TRUE))
+make_X_noF <- function(Phi, x) {
+  x <- as.numeric(x)
+  if (length(x) != nrow(Phi)) {
+    stop(sprintf("make_X_noF mismatch: length(x)=%d nrow(Phi)=%d", length(x), nrow(Phi)))
+  }
+  # data.frame guarantees all columns are length nrow(Phi) (no weird 1-row cbind results)
+  Xdf <- data.frame(Phi, c_x = x, check.names = FALSE)
+  as.matrix(Xdf)
+}
+
+# ---------- decoder (OLS) ----------
+fit_decoder_ols <- function(y, X) {
+  y <- as.numeric(y)
+  X <- as.matrix(X)
+
+  if (nrow(X) != length(y)) {
+    stop(sprintf("fit_decoder_ols mismatch: nrow(X)=%d length(y)=%d",
+                 nrow(X), length(y)))
+  }
+
+  qrX  <- qr(X)
+  beta <- as.numeric(qr.coef(qrX, y))
+  beta[is.na(beta)] <- 0
+  yhat <- as.numeric(X %*% beta)
+
+  list(coef = setNames(beta, colnames(X)), yhat = yhat)
+}
+
+add_counterbalance <- function(df) {
+  # expects: participant_id, model_type, global_step, context
+  starts <- df %>%
+    filter(!is.na(global_step), !is.na(context)) %>%
+    arrange(participant_id, model_type, global_step) %>%
+    group_by(participant_id, model_type) %>%
+    slice(1) %>%
+    ungroup() %>%
+    transmute(
+      participant_id, model_type,
+      start_context = as.character(context),
+      cb = dplyr::case_when(
+        start_context == "Maze" ~ "MazeFirst",
+        start_context == "Melody" ~ "MelodyFirst",
+        TRUE ~ "Other"
+      )
+    )
+
+  df %>% left_join(starts, by = c("participant_id", "model_type"))
+}
+
+# ---------- bases robust to 1 context ----------
+build_bases <- function(trialNum, seqNum, ctx) {
+  # force plain vectors
+  trialNum <- as.integer(trialNum)
+  seqNum   <- as.integer(seqNum)
+  ctx      <- as.character(ctx)
+
+  N <- length(ctx)
+  if (length(trialNum) != N || length(seqNum) != N) {
+    stop(sprintf("build_bases input mismatch: trial=%d seq=%d ctx=%d",
+                 length(trialNum), length(seqNum), N))
+  }
+  if (N < 2) {
+    # return 1-row matrix explicitly
+    return(cbind(Intercept = 1, ctx1 = 1))
+  }
+
+  u <- sort(unique(ctx))
+  if (length(u) < 2) {
+    return(cbind(Intercept = rep(1, N), ctx1 = rep(1, N)))
+  }
+
+  ctxf <- factor(ctx, levels = u)
+  X <- model.matrix(~ ctxf - 1)
+  colnames(X) <- gsub("^ctxf", "", colnames(X))
+  cbind(Intercept = rep(1, N), X)
+}
+
+
+# ---------- prep + averaging (LOSS) ----------
+prep_elman <- function(df, y_col = "loss") {
+  stopifnot(y_col %in% names(df))
+  df %>%
+    filter(!is.na(.data[[y_col]]),
+           !is.na(block_id),
+           !is.na(sequence_in_block)) %>%
+    mutate(
+      new_trialNumber = as.integer(block_id),
+      sequenceNumber  = as.integer(sequence_in_block),
+      global_step     = as.integer(global_step),
+      context         = as.character(context),
+      cb              = as.character(df$cb %||% NA_character_),
+      meanY           = as.numeric(.data[[y_col]])
+    ) %>%
+    arrange(new_trialNumber, sequenceNumber, global_step)
+}
+
+make_avg_trace_cb <- function(df, y_col = "loss",
+                              by = c("model_type", "cb")) {
+  stopifnot(y_col %in% names(df))
+
+  df %>%
+    mutate(
+  model_type = clean_model_type(model_type),
+  model_type = factor(model_type, levels = model_levels)
+) %>%
+filter(!is.na(model_type)) %>%
+    filter(training_active) %>%
+    add_counterbalance() %>%
+    filter(cb %in% c("MazeFirst", "MelodyFirst")) %>%  # drop "Other" if it exists
+    group_by(across(all_of(c(by, "context", "block_id", "sequence_in_block")))) %>%
+    summarise(y = mean(.data[[y_col]], na.rm = TRUE), .groups = "drop") %>%
+    arrange(block_id, sequence_in_block) %>%
+    group_by(across(all_of(by))) %>%
+    mutate(global_step = row_number()) %>%
+    ungroup() %>%
+    rename(!!y_col := y)
+}
+
+# ============================================================
+# Lump: single-state, no fatigue
+#   x_{n+1} = A * x_n
+#   decode: y ~ bases + c_x * x
+# params: A
+# ============================================================
+simulate_state_Lump_noF <- function(par, y) {
+  A <- as.numeric(par["A"])
+  N <- length(y)
+  x <- numeric(N + 1L)
+  x[1L] <- y[1L]
+  for (n in seq_len(N)) x[n + 1L] <- A * x[n]
+  list(x = x[-1L])
+}
+
+# context-free design matrix (intercept only)
+Phi_intercept <- function(N) {
+  X <- matrix(1, nrow = N, ncol = 1)
+  colnames(X) <- "Intercept"
+  X
+}
+
+objective_Lump_noF <- function(p, y, tr, sq, cx) {
+  par <- setNames(as.numeric(p), "A")
+  sim <- simulate_state_Lump_noF(par, y)
+
+  N <- length(y)
+  Phi <- Phi_intercept(N)              # <-- NO context bases
+  X   <- data.frame(Phi, c_x = as.numeric(sim$x), check.names = FALSE) |> as.matrix()
+
+  dec <- fit_decoder_ols(y, X)
+  sum((dec$yhat - y)^2)
+}
+
+fit_model1_avg_noF <- function(df_avg, y_col = "loss") {
+  dat <- prep_elman(df_avg, y_col = y_col)
+  y  <- dat$meanY
+  tr <- dat$new_trialNumber
+  sq <- dat$sequenceNumber
+  cx <- dat$context
+
+  par0  <- c(A = 0.95)
+  lower <- c(A = 0.60)
+  upper <- c(A = 0.999)
+
+  obj <- function(p) { val <- objective_Lump_noF(p, y, tr, sq, cx); if (!is.finite(val)) 1e12 else val }
+  fit <- optim(par0, obj, method = "L-BFGS-B", lower = lower, upper = upper,
+               control = list(maxit = 100000))
+  par_hat <- setNames(fit$par, names(par0))
+
+  sim <- simulate_state_Lump_noF(par_hat, y)
+
+  N <- length(y)
+  Phi <- Phi_intercept(N)              # <-- NO context bases
+  X   <- data.frame(Phi, c_x = as.numeric(sim$x), check.names = FALSE) |> as.matrix()
+  dec <- fit_decoder_ols(y, X)
+
+  list(model="Lump_noF", par=par_hat, coef_decoder=dec$coef, rmse=rmse(dec$yhat, y),
+       observed=y, predicted=dec$yhat, trials=tr, seqnum=sq, context=cx, data=dat,
+       y_col = y_col)
+}
+
+# ============================================================
+# Cross: two-state, no fatigue
+#   x_{t+1} = A_mat %*% x_t  (A_diag, A_cross)
+#   readout: x_obs = alpha_maze*x_maze + alpha_mel*x_mel (w_mix fixed 0.5 if Mixed exists)
+#   decode: y ~ bases + c_x * x_obs
+# params: A_diag, A_cross
+# ============================================================
+# ============================================================
+# Cross vs Split (NO fatigue): context-gated 2-state models
+# - Cross: cross-talk allowed (A_cross >= 0)
+# - Split: no cross-talk (A_cross fixed = 0)
+# - Same decoder class for both: yhat = b0 + bx * x_readout
+# - Readout: Maze -> x_maze, Melody -> x_mel
+#   (Mixed/NoContext -> blend w_mix if present)
+# ============================================================
+
+get_alphas <- function(c_lab, w_mix = 0.5) {
+  if (c_lab == "Maze") {
+    c(alpha_maze = 1, alpha_mel = 0)
+  } else if (c_lab == "Melody") {
+    c(alpha_maze = 0, alpha_mel = 1)
+  } else if (c_lab %in% c("Mixed", "NoContext")) {
+    c(alpha_maze = 1 - w_mix, alpha_mel = w_mix)
+  } else {
+    c(alpha_maze = 1, alpha_mel = 0)
+  }
+}
+
+# ---------- context-gated simulator (Cross/Split share this; Split sets A_cross=0) ----------
+simulate_state_twoctx_gated_noF <- function(par, y, cx, w_mix = 0.5, A_cross_override = NULL) {
+  N <- length(y)
+
+  A_Maze   <- as.numeric(par["A_Maze"])
+  A_Melody <- as.numeric(par["A_Melody"])
+  A_cross  <- as.numeric(par["A_cross"] %||% 0)
+
+  if (!is.null(A_cross_override)) A_cross <- A_cross_override
+
+  x_maze <- numeric(N + 1L)
+  x_mel  <- numeric(N + 1L)
+  x_maze[1L] <- y[1L]
+  x_mel [1L] <- y[1L]
+
+  x_readout <- numeric(N)
+
+  for (t in seq_len(N)) {
+    c_lab <- cx[t]
+    a <- get_alphas(c_lab, w_mix = w_mix)
+
+    # readout at time t (before updating)
+    x_readout[t] <- a["alpha_maze"] * x_maze[t] + a["alpha_mel"] * x_mel[t]
+
+    # gated update: only the "active" memory updates
+    if (c_lab == "Maze") {
+      x_maze[t + 1L] <- A_Maze * x_maze[t] + A_cross * x_mel[t]
+      x_mel [t + 1L] <- x_mel[t]   # held
+    } else if (c_lab == "Melody") {
+      x_mel [t + 1L] <- A_Melody * x_mel[t] + A_cross * x_maze[t]
+      x_maze[t + 1L] <- x_maze[t]  # held
+    } else if (c_lab %in% c("Mixed", "NoContext")) {
+      # optional: update both using blended exposure (keeps symmetry with your alpha scheme)
+      # If you never have Mixed in SRN traces, this branch won't matter.
+      x_maze[t + 1L] <- A_Maze   * x_maze[t] + A_cross * x_mel[t]
+      x_mel [t + 1L] <- A_Melody * x_mel[t]  + A_cross * x_maze[t]
+    } else {
+      # default: treat like Maze
+      x_maze[t + 1L] <- A_Maze * x_maze[t] + A_cross * x_mel[t]
+      x_mel [t + 1L] <- x_mel[t]
+    }
+  }
+
+  list(
+    x_readout = x_readout,
+    x_maze    = x_maze[-1L],
+    x_mel     = x_mel[-1L]
+  )
+}
+
+# ---------- Cross objective/fit (cross-talk estimated) ----------
+objective_Cross_gated_noF <- function(p, y, cx) {
+  par <- setNames(as.numeric(p), c("A_Maze", "A_cross", "A_Melody"))
+  sim <- simulate_state_twoctx_gated_noF(par, y, cx, w_mix = 0.5)
+
+  X <- cbind(Intercept = 1, c_x = as.numeric(sim$x_readout))
+  dec <- fit_decoder_ols(y, X)
+  sum((dec$yhat - y)^2)
+}
+
+fit_model2_avg_noF <- function(df_avg, y_col = "loss") {
+  dat <- prep_elman(df_avg, y_col = y_col)
+  y  <- dat$meanY
+  cx <- dat$context
+
+  par0  <- c(A_Maze = 0.95, A_cross = 0.02, A_Melody = 0.95)
+  lower <- c(A_Maze = 0.60, A_cross = 0.00, A_Melody = 0.60)
+  upper <- c(A_Maze = 0.999, A_cross = 0.50, A_Melody = 0.999)
+
+  obj <- function(p) { v <- objective_Cross_gated_noF(p, y, cx); if (!is.finite(v)) 1e12 else v }
+  fit <- optim(par0, obj, method="L-BFGS-B", lower=lower, upper=upper,
+               control=list(maxit=100000))
+  par_hat <- setNames(fit$par, names(par0))
+
+  sim <- simulate_state_twoctx_gated_noF(par_hat, y, cx, w_mix = 0.5)
+  X   <- cbind(Intercept = 1, c_x = as.numeric(sim$x_readout))
+  dec <- fit_decoder_ols(y, X)
+
+  list(model="Cross_noF", par=par_hat, coef_decoder=dec$coef, rmse=rmse(dec$yhat,y),
+       observed=y, predicted=dec$yhat,
+       trials=dat$new_trialNumber, seqnum=dat$sequenceNumber, context=cx,
+       data=dat, y_col=y_col)
+}
+
+# ---------- Split objective/fit (NO cross-talk; A_cross fixed to 0) ----------
+objective_Split_gated_noF <- function(p, y, cx) {
+  # p: A_Maze, A_Melody (no A_cross)
+  par <- setNames(as.numeric(p), c("A_Maze", "A_Melody"))
+  sim <- simulate_state_twoctx_gated_noF(
+    c(par, A_cross = 0),
+    y, cx, w_mix = 0.5,
+    A_cross_override = 0
+  )
+
+  X <- cbind(Intercept = 1, c_x = as.numeric(sim$x_readout))
+  dec <- fit_decoder_ols(y, X)
+  sum((dec$yhat - y)^2)
+}
+
+fit_model3_avg_noF <- function(df_avg, y_col = "loss") {
+  dat <- prep_elman(df_avg, y_col = y_col)
+  y  <- dat$meanY
+  cx <- dat$context
+
+  par0  <- c(A_Maze = 0.95, A_Melody = 0.95)
+  lower <- c(A_Maze = 0.60, A_Melody = 0.60)
+  upper <- c(A_Maze = 0.999, A_Melody = 0.999)
+
+  obj <- function(p) { v <- objective_Split_gated_noF(p, y, cx); if (!is.finite(v)) 1e12 else v }
+  fit <- optim(par0, obj, method="L-BFGS-B", lower=lower, upper=upper,
+               control=list(maxit=100000))
+  par_hat <- setNames(fit$par, names(par0))
+
+  sim <- simulate_state_twoctx_gated_noF(
+    c(par_hat, A_cross = 0),
+    y, cx, w_mix = 0.5,
+    A_cross_override = 0
+  )
+  X   <- cbind(Intercept = 1, c_x = as.numeric(sim$x_readout))
+  dec <- fit_decoder_ols(y, X)
+
+  list(model="Split_noF", par=par_hat, coef_decoder=dec$coef, rmse=rmse(dec$yhat,y),
+       observed=y, predicted=dec$yhat,
+       trials=dat$new_trialNumber, seqnum=dat$sequenceNumber, context=cx,
+       data=dat, y_col=y_col)
+}
+
+
+
+# ---------- wrapper + plot ----------
+fit_three_models_on_avg_noF <- function(df_avg, y_col = "loss") {
+  Lump <- fit_model1_avg_noF(df_avg, y_col = y_col)
+  Cross <- fit_model2_avg_noF(df_avg, y_col = y_col)
+  Split <- fit_model3_avg_noF(df_avg, y_col = y_col)
+
+  dat <- prep_elman(df_avg, y_col = y_col)
+
+  overlay <- tibble(
+    global_step = dat$global_step,
+    block_id    = dat$new_trialNumber,
+    seq_in_blk  = dat$sequenceNumber,
+    context     = dat$context,
+    observed    = dat$meanY,
+    Lump          = as.numeric(Lump$predicted),
+    Cross          = as.numeric(Cross$predicted),
+    Split          = as.numeric(Split$predicted)
+  ) %>%
+    pivot_longer(cols = c(observed, Lump, Cross, Split),
+                 names_to = "series", values_to = "y") %>%
+    mutate(series = factor(series, levels = c("observed","Lump","Cross","Split")))
+
+  list(fits = list(Lump=Lump, Cross=Cross, Split=Split), df = overlay, y_col = y_col)
+}
+
+cols <- c("red", "blue", "purple")
+
+plot_avg_overlay_noF <- function(fit_obj, title = NULL) {
+  df <- fit_obj$df
+  ylab <- fit_obj$y_col %||% "loss"
+
+  obs <- df %>% filter(series == "observed") %>% arrange(global_step)
+  cuts <- which(diff(obs$block_id) != 0L)
+  vlines <- if (length(cuts)) tibble(xint = obs$global_step[cuts] + 0.5) else NULL
+
+  ggplot() +
+    geom_point(data = obs, aes(x = global_step, y = y, color = context),
+               size = 6) +
+    geom_line(data = obs, aes(x = global_step, y = y, color = context, group = interaction(context, block_id)),
+              linewidth = 3, alpha = 0.4) +
+    geom_line(data = df %>% filter(series != "observed"),
+              aes(x = global_step, y = y, linetype = series),
+              linewidth = 4)  +
+    labs(x="Global step", y=ylab, linetype="Model") +
+theme_minimal() +
+  theme(legend.title = element_blank(),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.line = element_line(colour = "black", linewidth = 2),
+        legend.key.size = unit(2, 'cm'),
+        axis.text = element_text(size = 30),
+        axis.title = element_text(size = 34)) +
+  scale_color_manual(values = cols) +
+    theme(legend.position = "top")
+}
+
+# ============================================================
+# RUN: average LOSS, skip Control (Rich), fit Rich vs Poor
+# ============================================================
+avg_traces_cb <- make_avg_trace_cb(rich_poor_learning_dynamics, y_col = "loss", by = c("model_type", "cb"))
+
+avg_fits_cb <- avg_traces_cb %>%
+  mutate(
+    model_type = clean_model_type(model_type),
+    model_type = factor(model_type, levels = model_levels)
+  ) %>%
+  filter(!is.na(model_type)) %>%
+  group_by(model_type, cb) %>%
+  group_split() %>%
+  setNames(
+    purrr::map_chr(
+      .,
+      ~ paste(
+        as.character(unique(.x$model_type)),
+        unique(.x$cb),
+        sep = "__"
+      )
+    )
+  ) %>%
+  purrr::map(~ fit_three_models_on_avg_noF(.x, y_col = "loss"))
+
+# plot overlays
+purrr::iwalk(avg_fits_cb, function(fit_obj, name) {
+  print(plot_avg_overlay_noF(fit_obj, title = paste0(name, " (avg loss) – no fatigue")))
+})
+
+# RMSE table (now by model_type × cb)
+rmse_tbl_cb <- tibble(
+  key = names(avg_fits_cb),
+  rmse_Lump = vapply(avg_fits_cb, \(z) z$fits$Lump$rmse, numeric(1)),
+  rmse_Cross = vapply(avg_fits_cb, \(z) z$fits$Cross$rmse, numeric(1)),
+  rmse_Split = vapply(avg_fits_cb, \(z) z$fits$Split$rmse, numeric(1))
+) %>%
+  separate(key, into = c("model_type", "cb"), sep = "__", remove = FALSE)
+
+rmse_tbl_cb
+
+# table of parameter fits
+fit_summary <- purrr::imap_dfr(avg_fits_cb, function(obj, key) {
+  tibble(
+    group = key,
+    model = c("Lump", "Cross", "Split"),
+    rmse  = c(obj$fits$Lump$rmse, obj$fits$Cross$rmse, obj$fits$Split$rmse),
+    par   = list(obj$fits$Lump$par, obj$fits$Cross$par, obj$fits$Split$par),
+    decoder = list(obj$fits$Lump$coef_decoder, obj$fits$Cross$coef_decoder, obj$fits$Split$coef_decoder)
+  )
+})
+
+fit_summary
+
+# add parameter recovery / bootstrapping
+simulate_from_fit_noF <- function(fit_obj, sigma = NULL, seed = 1) {
+  set.seed(seed)
+  yhat <- as.numeric(fit_obj$predicted)
+  yobs <- as.numeric(fit_obj$observed)
+
+  if (is.null(sigma)) {
+    sigma <- sd(yobs - yhat, na.rm = TRUE)
+    if (!is.finite(sigma) || sigma <= 0) sigma <- 1e-3
+  }
+
+  ysim <- yhat + rnorm(length(yhat), mean = 0, sd = sigma)
+
+  # return a df shaped like an avg trace (same covariates)
+  dat <- fit_obj$data
+  out <- tibble(
+    block_id = dat$new_trialNumber,
+    sequence_in_block = dat$sequenceNumber,
+    global_step = dat$global_step,
+    context = dat$context,
+    cb = dat$cb %||% NA_character_,
+    loss = ysim
+  )
+  out
+}
+
+
+# ============================================================
+# Helpers
+# ============================================================
+
+refit_model_noF <- function(model_name, df_sim, y_col = "loss") {
+  
+  switch(
+    model_name,
+    Lump = fit_model1_avg_noF(df_sim, y_col = y_col),
+    Cross  = fit_model2_avg_noF(df_sim, y_col = y_col),
+    Split  = fit_model3_avg_noF(df_sim, y_col = y_col),
+    stop("Unknown model name: ", model_name)
+  )
+}
+
+extract_params <- function(fit_three, group_label = NA_character_) {
+  
+  purrr::imap_dfr(
+    fit_three$fits,
+    function(fit_obj, model_name) {
+      tibble(
+        group = group_label,
+        model = model_name,
+        param = names(fit_obj$par),
+        estimate = as.numeric(fit_obj$par)
+      )
+    }
+  )
+}
+
+# ============================================================
+# Part 1. Noise-free parameter recovery
+# ============================================================
+# This uses the fitted model as the data-generating model.
+# No noise is added.
+#
+# Question:
+# If the data were generated exactly by the fitted model,
+# can the fitting procedure recover the known parameters?
+# ============================================================
+
+simulate_from_fit_no_noise <- function(fit_obj) {
+  
+  dat <- fit_obj$data
+  
+  tibble(
+    block_id = dat$new_trialNumber,
+    sequence_in_block = dat$sequenceNumber,
+    global_step = dat$global_step,
+    context = dat$context,
+    cb = dat$cb %||% NA_character_,
+    loss = as.numeric(fit_obj$predicted)
+  )
+}
+
+recover_params_no_noise_one <- function(fit_three) {
+  
+  purrr::imap_dfr(
+    fit_three$fits,
+    function(fit0, model_name) {
+      
+      par_true <- fit0$par
+      
+      sim_df <- simulate_from_fit_no_noise(fit0)
+      
+      refit <- refit_model_noF(
+        model_name = model_name,
+        df_sim = sim_df,
+        y_col = "loss"
+      )
+      
+      tibble(
+        model = model_name,
+        param = names(refit$par),
+        true = as.numeric(par_true[names(refit$par)]),
+        recovered = as.numeric(refit$par),
+        bias = recovered - true,
+        abs_error = abs(recovered - true)
+      )
+    }
+  )
+}
+
+# Run noise-free recovery for all model_type × counterbalance groups
+
+param_recovery_no_noise <- purrr::imap_dfr(
+  avg_fits_cb,
+  function(fit_three, key) {
+    recover_params_no_noise_one(fit_three) %>%
+      mutate(group = key, .before = model)
+  }
+)
+
+param_recovery_no_noise
+
+# Compact summary
+
+param_recovery_no_noise_summary <- param_recovery_no_noise %>%
+  group_by(model, param) %>%
+  summarise(
+    mean_abs_error = mean(abs_error, na.rm = TRUE),
+    max_abs_error = max(abs_error, na.rm = TRUE),
+    mean_bias = mean(bias, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+param_recovery_no_noise_summary
+
+# Optional recovery plot
+
+ggplot(param_recovery_no_noise, aes(x = true, y = recovered)) +
+  geom_point(size = 3, alpha = 0.8) +
+  geom_abline(slope = 1, intercept = 0, linetype = "dashed") +
+  facet_grid(model ~ param, scales = "free") +
+  theme_bw(base_size = 14) +
+  labs(
+    x = "True parameter value",
+    y = "Recovered parameter value"
+  )
+
+# ============================================================
+# Part 2. Nonparametric bootstrap CIs for parameter estimates
+# ============================================================
+# This resamples network runs / participants with replacement.
+#
+# Question:
+# How stable are the fitted parameters across plausible resamples
+# of the observed SRN runs?
+# ============================================================
+
+# Try to find the run identifier column automatically.
+# Change this manually if your run ID has a different name.
+# ============================================================
+# Fast bootstrap CIs
+# - assumes bootstrap_raw_groups already exists
+# - avoids duplicating sampled runs
+# - skips overlay creation
+# - optionally fits only selected models
+# - parallelizes across bootstrap reps
+# ============================================================
+
+library(tidyverse)
+library(future)
+library(furrr)
+
+# ------------------------------------------------------------
+# 1. Fit-only wrapper: no overlay dataframe
+# ------------------------------------------------------------
+
+fit_models_fast_noF <- function(df_avg, y_col = "loss",
+                                models = c("Lump", "Cross", "Split")) {
+  
+  fits <- list()
+  
+  if ("Lump" %in% models) {
+    fits$Lump <- fit_model1_avg_noF(df_avg, y_col = y_col)
+  }
+  
+  if ("Cross" %in% models) {
+    fits$Cross <- fit_model2_avg_noF(df_avg, y_col = y_col)
+  }
+  
+  if ("Split" %in% models) {
+    fits$Split <- fit_model3_avg_noF(df_avg, y_col = y_col)
+  }
+  
+  list(fits = fits, y_col = y_col)
+}
+
+extract_params <- function(fit_obj, group_label = NA_character_) {
+  
+  purrr::imap_dfr(
+    fit_obj$fits,
+    function(one_fit, model_name) {
+      tibble(
+        group = group_label,
+        model = model_name,
+        param = names(one_fit$par),
+        estimate = as.numeric(one_fit$par)
+      )
+    }
+  )
+}
+
+# ------------------------------------------------------------
+# 2. Run-level trace for one already-split group
+# ------------------------------------------------------------
+
+make_run_trace_one_group <- function(group_raw, y_col = "loss") {
+  
+  run_id_col <- get_run_id_col(group_raw)
+  
+  group_raw %>%
+    filter(training_active) %>%
+    mutate(run_id_boot = .data[[run_id_col]]) %>%
+    group_by(run_id_boot, context, block_id, sequence_in_block) %>%
+    summarise(
+      y = mean(.data[[y_col]], na.rm = TRUE),
+      .groups = "drop"
+    ) %>%
+    rename(!!y_col := y)
+}
+
+# ------------------------------------------------------------
+# 3. Weighted bootstrap average
+# ------------------------------------------------------------
+# Instead of duplicating rows for sampled runs, count how many
+# times each run was sampled and compute a weighted mean.
+
+make_weighted_boot_avg <- function(run_trace, sampled_ids, y_col = "loss") {
+  
+  boot_weights <- tibble(run_id_boot = sampled_ids) %>%
+    count(run_id_boot, name = "boot_w")
+  
+  run_trace %>%
+    inner_join(boot_weights, by = "run_id_boot") %>%
+    group_by(context, block_id, sequence_in_block) %>%
+    summarise(
+      y = weighted.mean(.data[[y_col]], w = boot_w, na.rm = TRUE),
+      .groups = "drop"
+    ) %>%
+    arrange(block_id, sequence_in_block) %>%
+    mutate(global_step = row_number()) %>%
+    rename(!!y_col := y)
+}
+
+# ------------------------------------------------------------
+# 4. Fast bootstrap for one group
+# ------------------------------------------------------------
+
+bootstrap_params_one_group_fast <- function(
+    group_key,
+    raw_groups,
+    R = 200,
+    seed = 123,
+    models = c("Lump", "Cross", "Split")) {
+
+  group_raw <- raw_groups[[group_key]]
+
+  if (is.null(group_raw)) {
+    stop(
+      "No raw dataframe found for group: ", group_key,
+      "\nAvailable groups: ",
+      paste(names(raw_groups), collapse = ", ")
+    )
+  }
+
+  run_trace <- make_run_trace_one_group(
+    group_raw,
+    y_col = "loss"
+  )
+
+  run_ids <- unique(run_trace$run_id_boot)
+
+  if (length(run_ids) < 2) {
+    stop("Need at least two runs to bootstrap group: ", group_key)
+  }
+
+  set.seed(seed)
+
+  boot_samples <- replicate(
+    R,
+    sample(
+      run_ids,
+      size = length(run_ids),
+      replace = TRUE
+    ),
+    simplify = FALSE
+  )
+
+  future_map_dfr(
+    seq_len(R),
+    function(r) {
+
+      boot_avg <- make_weighted_boot_avg(
+        run_trace = run_trace,
+        sampled_ids = boot_samples[[r]],
+        y_col = "loss"
+      )
+
+      boot_fit <- tryCatch(
+        fit_models_fast_noF(
+          boot_avg,
+          y_col = "loss",
+          models = models
+        ),
+        error = function(e) {
+          warning(
+            "Bootstrap fit failed for group ",
+            group_key,
+            ", replicate ",
+            r,
+            ": ",
+            conditionMessage(e)
+          )
+          NULL
+        }
+      )
+
+      if (is.null(boot_fit)) {
+        return(
+          tibble(
+            .rep = r,
+            group = group_key,
+            model = NA_character_,
+            param = NA_character_,
+            estimate = NA_real_
+          )
+        )
+      }
+
+      extract_params(
+        boot_fit,
+        group_label = group_key
+      ) %>%
+        mutate(.rep = r, .before = group)
+    },
+    .options = furrr_options(seed = TRUE)
+  )
+}
+# ------------------------------------------------------------
+# 5. Parallel setup
+# ------------------------------------------------------------
+
+n_workers <- max(1, parallel::detectCores() - 1)
+future::plan(multisession, workers = n_workers)
+
+# ------------------------------------------------------------
+# 6. Run bootstrap
+# ------------------------------------------------------------
+# Start with R = 50 to test.
+# Then use R = 200.
+# Only use R = 500 or 1000 for the final table.
+
+models_to_bootstrap <- c("Lump", "Cross", "Split")
+
+bootstrap_param_estimates_fast <- purrr::map_dfr(
+  names(avg_fits_cb),
+  function(group_key) {
+    bootstrap_params_one_group_fast(
+      group_key = group_key,
+      raw_groups = bootstrap_raw_groups,
+      R = 200,
+      seed = 123,
+      models = models_to_bootstrap
+    )
+  }
+) %>%
+  filter(
+    !is.na(model),
+    !is.na(param),
+    !is.na(estimate)
+  )
+# ------------------------------------------------------------
+# 7. Original parameter estimates
+# ------------------------------------------------------------
+
+original_param_estimates <- purrr::imap_dfr(
+  avg_fits_cb,
+  function(fit_three, key) {
+    extract_params(fit_three, group_label = key)
+  }
+) %>%
+  rename(original_estimate = estimate)
+
+# ------------------------------------------------------------
+# 8. Bootstrap percentile CIs
+# ------------------------------------------------------------
+
+bootstrap_param_ci_fast <- bootstrap_param_estimates_fast %>%
+  group_by(group, model, param) %>%
+  summarise(
+    boot_mean = mean(estimate, na.rm = TRUE),
+    boot_sd = sd(estimate, na.rm = TRUE),
+    ci_low = quantile(estimate, probs = 0.025, na.rm = TRUE),
+    ci_high = quantile(estimate, probs = 0.975, na.rm = TRUE),
+    n_boot = sum(!is.na(estimate)),
+    .groups = "drop"
+  ) %>%
+  left_join(
+    original_param_estimates,
+    by = c("group", "model", "param")
+  ) %>%
+  select(
+    group,
+    model,
+    param,
+    original_estimate,
+    boot_mean,
+    boot_sd,
+    ci_low,
+    ci_high,
+    n_boot
+  )
+
+bootstrap_param_ci_fast
+```
+
+```{r, echo=FALSE}
+bic_from_fit <- function(fit_obj, k) {
+  y <- as.numeric(fit_obj$observed)
+  yhat <- as.numeric(fit_obj$predicted)
+
+  ok <- is.finite(y) & is.finite(yhat)
+  y <- y[ok]
+  yhat <- yhat[ok]
+
+  n <- length(y)
+  rss <- sum((y - yhat)^2)
+
+  # guard against log(0)
+  rss <- max(rss, .Machine$double.eps)
+
+  bic <- n * log(rss / n) + k * log(n)
+
+  tibble(
+    model = fit_obj$model,
+    n = n,
+    k = k,
+    rss = rss,
+    rmse = sqrt(mean((y - yhat)^2)),
+    bic = bic
+  )
+}
+
+bic_table_from_threefit <- function(fit_three_obj) {
+  bind_rows(
+    bic_from_fit(fit_three_obj$fits$Lump, k = 3),
+    bic_from_fit(fit_three_obj$fits$Cross, k = 5),
+    bic_from_fit(fit_three_obj$fits$Split, k = 4)
+  ) %>%
+    arrange(bic) %>%
+    mutate(
+      delta_bic = bic - min(bic),
+      bic_weight = exp(-0.5 * delta_bic) / sum(exp(-0.5 * delta_bic))
+    )
+}
+
+bic_tbl_cb <- purrr::imap_dfr(avg_fits_cb, function(fit_obj, key) {
+  bic_table_from_threefit(fit_obj) %>%
+    mutate(key = key, .before = 1)
+}) %>%
+  tidyr::separate(key, into = c("model_type", "cb"), sep = "__", remove = FALSE) %>%
+  arrange(model_type, cb, bic)
+
+bic_tbl_cb
+
+bic_tbl_wide <- bic_tbl_cb %>%
+  select(model_type, cb, model, bic, delta_bic, bic_weight) %>%
+  pivot_wider(
+    names_from = model,
+    values_from = c(bic, delta_bic, bic_weight)
+  )
+
+bic_tbl_wide
+
+bic_tbl_paper <- bic_tbl_cb %>%
+  mutate(
+    model_type = clean_model_type(model_type),
+    model_type = factor(model_type, levels = model_levels),
+    model = dplyr::recode(
+      model,
+      "Lump_noF" = "Lump",
+      "Cross_noF" = "Cross",
+      "Split_noF" = "Split"
+    )
+  ) %>%
+  filter(!is.na(model_type)) %>%
+  group_by(model_type, model) %>%
+  summarise(
+    bic_sum = sum(bic, na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  group_by(model_type) %>%
+  mutate(
+    delta_bic = bic_sum - min(bic_sum),
+    winner = ifelse(delta_bic == 0, "Yes", "")
+  ) %>%
+  ungroup() %>%
+  arrange(model_type, bic_sum)
+
+bic_tbl_paper
+
+# BIC plots
+library(tidyverse)
+library(grid)
+
+# ----------------------------
+# 1. Human BICs (hard-coded)
+# ----------------------------
+human_bic <- tribble(
+  ~Data,          ~model, ~bic,
+  "Maze",         "Lump",   1525.92,
+  "Maze",         "Cross",   1899.22,
+  "Maze",         "Split",   1530.60,
+  "Melody",       "Lump",   1773.64,
+  "Melody",       "Cross",   2232.26,
+  "Melody",       "Split",   1778.48,
+  "Maze-Melody",  "Lump",   3927.30,
+  "Maze-Melody",  "Cross",   4625.62,
+  "Maze-Melody",  "Split",   3816.47
+) %>%
+  mutate(source = "Human")
+
+# ----------------------------
+# 2. SRN BICs (from your object)
+# ----------------------------
+srn_bic <- bic_tbl_paper %>%
+  transmute(
+    Data = paste0(model_type, " SRN"),
+    model = model,
+    bic = bic_sum,
+    source = "SRN"
+  )
+
+# ----------------------------
+# 3. Combine + compute delta BIC
+# ----------------------------
+plot_df <- bind_rows(human_bic, srn_bic) %>%
+  mutate(
+    Data = factor(
+      Data,
+      levels = c(
+  "Maze-Melody",
+  "Maze",
+  "Melody",
+  "Low-Scale SRN",
+  "Low-Scale + High Context SRN",
+  "High-Scale + Low Context SRN",
+  "High-Scale SRN"
+)
+    ),
+    model = factor(model, levels = c("Lump", "Cross", "Split"))
+  ) %>%
+  group_by(Data) %>%
+  mutate(
+    winner = bic == min(bic, na.rm = TRUE)
+  ) %>%
+  ungroup()
+
+model_cols <- c(
+  Lump = "#E69F00",
+  Cross  = "#009E73",
+  Split  = "#8C564B"
+)
+
+BIC_bars <- ggplot(plot_df, aes(x = model, y = bic, fill = model)) +
+  # all bars
+  geom_col(width = 0.7, color = "black", linewidth = 0.8) +
+  # redraw winning bars with thicker outline
+  geom_col(
+    data = ~ dplyr::filter(.x, winner),
+    width = 0.7,
+    fill = NA,
+    color = "black",
+    linewidth = 2.2
+  ) +
+  facet_wrap(~ Data, scales = "free_y", ncol = 3) +
+  labs(
+    x = "State Space Model",
+    y = "BIC",
+    title = "BIC by dataset and state-space model"
+  ) +
+  theme_minimal() +
+  theme(
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    axis.line = element_line(colour = "black", linewidth = 2, linetype = "solid"),
+    legend.key.size = unit(1.3, "cm"),
+    legend.text  = element_text(size = 26),
+    axis.text  = element_text(size = 30),
+    axis.title = element_text(size = 34),
+    plot.title = element_text(size = 26, face = "bold", hjust = 0.5),
+    strip.text = element_text(size = 26, face = "bold"),
+    axis.text.x = element_blank(),
+    legend.title = element_blank()
+  ) +
+  scale_fill_manual(values = model_cols) +
+  labs(x = NULL)
+```
+
+
+```{r, echo=FALSE}
+library(tidyverse)
+library(grid)
+
+# ----------------------------
+# 1. Human BICs
+# ----------------------------
+
+human_bic <- tribble(
+  ~Data,          ~model,  ~bic,
+  "Maze",         "Lump",   1525.92,
+  "Maze",         "Cross",  1899.22,
+  "Maze",         "Split",  1530.60,
+  "Melody",       "Lump",   1773.64,
+  "Melody",       "Cross",  2232.26,
+  "Melody",       "Split",  1778.48,
+  "Maze-Melody",  "Lump",   3927.30,
+  "Maze-Melody",  "Cross",  4625.62,
+  "Maze-Melody",  "Split",  3816.47
+) %>%
+  mutate(source = "Human")
+
+# ----------------------------
+# 2. SRN BICs
+# ----------------------------
+
+srn_bic <- bic_tbl_paper %>%
+  transmute(
+    Data = paste0(model_type, " SRN"),
+    model = model,
+    bic = bic_sum,
+    source = "SRN"
+  )
+
+# ----------------------------
+# 3. Combine and compute ΔBIC
+# ----------------------------
+scale_fill_gradient(
+  low = "blue",     # blue
+  high = "red",    # red
+  trans = scales::pseudo_log_trans(sigma = 1),
+  name = expression(Delta * "BIC")
+)
+
+BIC_heatmap_grouped <- ggplot(
+  bic_heat_df,
+  aes(
+    x = model,
+    y = Data,
+    fill = delta_bic
+  )
+) +
+  geom_tile(
+    color = "white",
+    linewidth = 1.5
+  ) +
+  geom_text(
+    aes(
+      label = label,
+      fontface = ifelse(winner, "bold", "plain")
+    ),
+    size = 12
+  ) +
+  geom_tile(
+    data = bic_heat_df %>% filter(winner),
+    fill = NA,
+    color = "black",
+    linewidth = 2.2
+  ) +
+  facet_grid(
+    source ~ .,
+    scales = "free_y",
+    space = "free_y",
+    switch = "y"
+  ) +
+  scale_fill_gradient(
+    low = "blue",
+    high = "red",
+    trans = scales::pseudo_log_trans(sigma = 1),
+    name = expression(Delta * "BIC")
+  ) +
+  labs(
+    x = "State-space model",
+    y = NULL
+  ) +
+  theme_minimal() +
+  theme(
+    panel.grid = element_blank(),
+
+    strip.placement = "outside",
+    strip.background = element_blank(),
+    strip.text.y.left = element_text(
+      angle = 0,
+      size = 36,
+      face = "bold"
+    ),
+
+    axis.text.x = element_text(
+      size = 36,
+      face = "bold"
+    ),
+
+    axis.text.y = element_text(
+      size = 36
+    ),
+
+    axis.title.x = element_text(
+      size = 36,
+      margin = margin(t = 15)
+    ),
+
+    legend.title = element_text(size = 22),
+    legend.text = element_text(size = 18),
+
+    panel.spacing.y = unit(0.8, "lines")
+  ) +
+  theme(
+    legend.key.height = unit(3.5, "cm"),
+    legend.key.width  = unit(1.2, "cm"),
+    legend.title = element_text(size = 26),
+    legend.text  = element_text(size = 22)
+  )
+
+BIC_heatmap_grouped
+
+```
+

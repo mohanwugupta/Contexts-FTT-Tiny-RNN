@@ -1,0 +1,9 @@
+{
+  "V0": {"label": "Current G2 SRN", "role": "baseline", "averaging_imposed": false, "latent_size": 0},
+  "C1": {"label": "RBF responsibility output", "role": "sufficiency_control", "averaging_imposed": true, "latent_size": 0},
+  "C2": {"label": "COIN-lite temporal responsibility", "role": "history_control", "averaging_imposed": true, "latent_size": 0},
+  "E1": {"label": "Learned context embedding", "role": "emergent", "averaging_imposed": false, "latent_size": 2},
+  "E2": {"label": "History-dependent latent context", "role": "emergent", "averaging_imposed": false, "latent_size": 2},
+  "E3": {"label": "Prediction-error latent context", "role": "emergent", "averaging_imposed": false, "latent_size": 2},
+  "E4": {"label": "FiLM shared recurrence", "role": "emergent", "averaging_imposed": false, "latent_size": 2}
+}

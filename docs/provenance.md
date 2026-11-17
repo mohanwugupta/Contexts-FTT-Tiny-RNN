@@ -1,0 +1,7 @@
+# Provenance and audit
+
+`artifacts/manifests/pre_freeze_snapshot.json` records SHA256 hashes for the pre-cleanup non-cache repository files. `archive/artifact_index.json` maps the moved root research documents and copied legacy runners to their original paths and hashes. Historical checkpoint and analysis roots remain on disk. The paper contract identifies all 120 required checkpoint hashes and supporting source-table hashes; `scripts/audit_paper_inputs.py` checks them without running a model.
+
+Each paper output manifest records contract, registry and source hashes, input hashes, output hashes, optimizer-update count, A1–A8 statuses, and figure-panel source maps. `audit/checkpoint_hashes_before.csv` and `audit/checkpoint_hashes_after.csv` demonstrate unchanged checkpoint bytes; `audit/evaluator_regression.csv` records comparison with historical evaluator behavior; `audit/matching_frozen.json` captures the pre-new-cue A2 selection; `audit/bootstrap_indices.npy` stores the exact shared resampling draws. `tables/claim_source_map.csv` links each plotted panel to a source table, filter, estimator, and checkpoint hashes.
+
+The original output and the later figure-layout correction have separate freeze IDs and manifests. The correction changes no scientific calculation. Retained historical scripts under `scripts/` can reproduce their own phases; they are not imported by the paper evaluation entry point.

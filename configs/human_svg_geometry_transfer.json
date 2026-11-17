@@ -1,0 +1,25 @@
+{
+  "analysis_version": "human-svg-geometry-transfer-2.0.0",
+  "repo_root": "..",
+  "output_dir": "outputs/human_svg_geometry_transfer",
+  "coordinate_registry": "human_svg_target_coordinates_v3.json",
+  "coordinate_array_assignment": {"A": 0, "B": 1, "Mixed": 2, "Novel": 3},
+  "canonical_motor_sequence": ["S", "A", "F", "S", "D", "A", "F", "D"],
+  "geometry_conditions": ["G0_synthetic", "G1_exact_svg", "G2_shared_x"],
+  "model_conditions": ["High_monotonic", "Low_monotonic"],
+  "seeds": {
+    "screen": [0, 1, 2, 3, 4],
+    "confirmatory": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
+  },
+  "training_sequences": 170,
+  "block_length": 10,
+  "interpolation_grid": [0.0, 0.25, 0.5, 0.75, 1.0],
+  "gates": {
+    "seed_fraction": 0.8,
+    "endpoint_rt_gap_minimum": 0.005,
+    "high_state_space_winners": ["Cross", "Split"],
+    "low_state_space_winner": "Lump"
+  },
+  "baseline_reference": "outputs/transfer_experiment_program/audit/original_reference_transition_results.csv",
+  "long_training": {"enabled": false, "training_sequences": 680}
+}

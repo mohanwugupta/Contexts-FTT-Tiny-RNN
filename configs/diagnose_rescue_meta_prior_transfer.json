@@ -1,0 +1,64 @@
+{
+  "analysis_version": "diagnose-rescue-meta-prior-transfer-1.0.0",
+  "repo_root": "..",
+  "output_dir": "outputs/diagnose_rescue_meta_prior_transfer",
+  "h8_config": "configs/human_svg_geometry_transfer.json",
+  "h8_reference_output": "outputs/human_svg_geometry_transfer",
+  "human_meta_config": "configs/human_meta_transfer_config.json",
+  "stage_a": {
+    "geometry_condition": "G2_shared_x",
+    "model_condition": "High_monotonic",
+    "training_sequences": 170,
+    "deterministic_tolerance": 1e-6,
+    "gate_seed_fraction": 0.8,
+    "rt_sawtooth_minimum": 0.005
+  },
+  "stage_b": {
+    "groups": ["P2_meta", "P1_shuffled_meta"],
+    "hidden_size": 128,
+    "initialization_regime": "I3_orthogonal",
+    "inner_alpha": 0.01,
+    "inner_steps": 10,
+    "meta_batch": 16,
+    "support_repetitions_per_context": 5,
+    "support_schedule": ["A", "B", "A", "B", "A", "B", "A", "B", "A", "B"],
+    "permutation_draws": 1000,
+    "gate_seed_fraction": 0.8,
+    "profile_difference_epsilon": 1e-6,
+    "bootstrap_draws": 10000,
+    "rt_mapping": "normalized_RT = 1 - sigmoid(softplus(0)*logit(confidence) + 0)"
+  },
+  "stage_c": {
+    "conditions": ["P_boundary_structured_meta", "P_boundary_shuffled_meta"],
+    "hidden_size": 128,
+    "initialization_regime": "I3_orthogonal",
+    "inner_alpha": 0.01,
+    "inner_steps": 10,
+    "meta_batch": 16,
+    "outer_learning_rate": 0.001,
+    "outer_gradient_clip": 1.0,
+    "copy_weight": 1.0,
+    "pilot_families": 5000,
+    "confirmatory_families": 5000,
+    "validation_families": 200,
+    "episode_mixture": {"smooth_interpolation": 0.4, "boundary_discrimination": 0.4, "ambiguous_boundary": 0.2},
+    "gate_seed_fraction": 0.8,
+    "human_groups": ["boundary_structured", "boundary_shuffled", "P2_meta", "random_I3", "H8_exact"]
+  },
+  "seeds": {
+    "stage_a": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19],
+    "stage_b_pilot": [0, 1, 2],
+    "stage_b_confirmatory": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19],
+    "stage_c_pilot": [0, 1, 2, 3, 4],
+    "stage_c_confirmatory": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
+  },
+  "smoke": {
+    "stage_a_seeds": [0],
+    "stage_b_seeds": [0, 1, 2],
+    "stage_c_seeds": [0],
+    "stage_c_families": 4,
+    "stage_c_validation_families": 10,
+    "bootstrap_draws": 100,
+    "permutation_draws": 100
+  }
+}

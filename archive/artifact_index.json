@@ -1,0 +1,530 @@
+{
+  "created": "2026-09-25",
+  "pre_freeze_snapshot": "artifacts/manifests/pre_freeze_snapshot.json",
+  "historical_evidence_roots_retained": [
+    "analysis/",
+    "outputs/",
+    "archive/old_outputs/",
+    "data/"
+  ],
+  "moved_or_copied_paths": [
+    {
+      "old_path": "README.md",
+      "new_path_or_archive_reference": "archive/research_history/README_pre_paper_freeze.md",
+      "sha256": "6620cdb232a8514e412e9433170aaace8e2beb364543e28cb82cb5800d1d8613",
+      "reason": "superseded paper-facing README preserved verbatim",
+      "paper_dependency": "historical context only"
+    },
+    {
+      "old_path": "CHECKPOINT_SWEEP_RANDOM_CONTROLS_SCRATCHPAD.md",
+      "new_path_or_archive_reference": "archive/research_history/scratch_and_reports/CHECKPOINT_SWEEP_RANDOM_CONTROLS_SCRATCHPAD.md",
+      "sha256": "ca545632afa29d4765f4f9259e3af190df3b617add5ba0df05bc95210c54b59e",
+      "reason": "historical research document moved out of paper root",
+      "paper_dependency": "historical provenance; not imported by evaluation"
+    },
+    {
+      "old_path": "CLEANUP_REPORT.md",
+      "new_path_or_archive_reference": "archive/research_history/scratch_and_reports/CLEANUP_REPORT.md",
+      "sha256": "f5d0c8ff159b4904c43bace0f6996e4e868e5816e489ef8ffd47c6903bda11bb",
+      "reason": "historical research document moved out of paper root",
+      "paper_dependency": "historical provenance; not imported by evaluation"
+    },
+    {
+      "old_path": "COMPARE_PRETRAINING_ECOLOGIES_SCRATCHPAD.md",
+      "new_path_or_archive_reference": "archive/research_history/scratch_and_reports/COMPARE_PRETRAINING_ECOLOGIES_SCRATCHPAD.md",
+      "sha256": "cb6cbb89d58797bc9d2d9fff0c839316e1ac581a48b06307d9ce06e885cc0cf6",
+      "reason": "historical research document moved out of paper root",
+      "paper_dependency": "historical provenance; not imported by evaluation"
+    },
+    {
+      "old_path": "DIFFERENTIATION_TRANSFER_FRONTIER_SCRATCHPAD.md",
+      "new_path_or_archive_reference": "archive/research_history/scratch_and_reports/DIFFERENTIATION_TRANSFER_FRONTIER_SCRATCHPAD.md",
+      "sha256": "a263dd368013a9c1f068e0a21a97629101c16ce4960b7843b4fb509c6f8a8aef",
+      "reason": "historical research document moved out of paper root",
+      "paper_dependency": "historical provenance; not imported by evaluation"
+    },
+    {
+      "old_path": "EMERGENT_RETRIEVAL_PROGRAM_SCRATCHPAD.md",
+      "new_path_or_archive_reference": "archive/research_history/scratch_and_reports/EMERGENT_RETRIEVAL_PROGRAM_SCRATCHPAD.md",
+      "sha256": "f060ec05730be8301375ca6e655ebf5105dd69ff3ecbcc9ea0a4ec9e8427c500",
+      "reason": "historical research document moved out of paper root",
+      "paper_dependency": "historical provenance; not imported by evaluation"
+    },
+    {
+      "old_path": "EPISODIC_META_LEARNING_CAPACITY_SCRATCHPAD.md",
+      "new_path_or_archive_reference": "archive/research_history/scratch_and_reports/EPISODIC_META_LEARNING_CAPACITY_SCRATCHPAD.md",
+      "sha256": "dca260cd5cf5dd8df898c361b9855037071e42b71bb32830cecda55aa38422e4",
+      "reason": "historical research document moved out of paper root",
+      "paper_dependency": "historical provenance; not imported by evaluation"
+    },
+    {
+      "old_path": "EXECUTION_OBJECTIVE_SEARCH_REPORT.md",
+      "new_path_or_archive_reference": "archive/research_history/scratch_and_reports/EXECUTION_OBJECTIVE_SEARCH_REPORT.md",
+      "sha256": "66a7b1e24b49bda06b039429784a4f33c12880ab4dd203451f470f8315726b42",
+      "reason": "historical research document moved out of paper root",
+      "paper_dependency": "historical provenance; not imported by evaluation"
+    },
+    {
+      "old_path": "HIERARCHICAL_PRETRAINING_ECOLOGY_SCRATCHPAD.md",
+      "new_path_or_archive_reference": "archive/research_history/scratch_and_reports/HIERARCHICAL_PRETRAINING_ECOLOGY_SCRATCHPAD.md",
+      "sha256": "3a37eee92a6779276a88312af7d75f41c3b73e07067de2ef4c5882975cf4dcb7",
+      "reason": "historical research document moved out of paper root",
+      "paper_dependency": "historical provenance; not imported by evaluation"
+    },
+    {
+      "old_path": "HUMAN_CONTEXT_CONTROL_TRANSFER_SCRATCHPAD.md",
+      "new_path_or_archive_reference": "archive/research_history/scratch_and_reports/HUMAN_CONTEXT_CONTROL_TRANSFER_SCRATCHPAD.md",
+      "sha256": "8cd41cc66afea214fa7290bb7b635f73b69a36fe5ebe8a7639e6745e2cc1c21e",
+      "reason": "historical research document moved out of paper root",
+      "paper_dependency": "historical provenance; not imported by evaluation"
+    },
+    {
+      "old_path": "HUMAN_META_PRIOR_TRANSFER_SCRATCHPAD.md",
+      "new_path_or_archive_reference": "archive/research_history/scratch_and_reports/HUMAN_META_PRIOR_TRANSFER_SCRATCHPAD.md",
+      "sha256": "16206f1d8e0bcad7a1cea8a0bc9ac845d66e714c221035bf07fdc555fe099c3b",
+      "reason": "historical research document moved out of paper root",
+      "paper_dependency": "historical provenance; not imported by evaluation"
+    },
+    {
+      "old_path": "MINI_PRD_probe_prediction_vs_execution.md",
+      "new_path_or_archive_reference": "archive/research_history/specs/MINI_PRD_probe_prediction_vs_execution.md",
+      "sha256": "d572e83bda7b9ca9f6b165203b56cf2d4259c109e5eabb5ccdd430f3eac3bc17",
+      "reason": "historical research document moved out of paper root",
+      "paper_dependency": "historical provenance; not imported by evaluation"
+    },
+    {
+      "old_path": "PHASE1E_OPTIMIZER_AUDIT.md",
+      "new_path_or_archive_reference": "archive/research_history/scratch_and_reports/PHASE1E_OPTIMIZER_AUDIT.md",
+      "sha256": "e9c7424a4ed2fb1549a9231371da15b7094ba4d174f2adf98d21c3f8783a8250",
+      "reason": "historical research document moved out of paper root",
+      "paper_dependency": "historical provenance; not imported by evaluation"
+    },
+    {
+      "old_path": "PRD_Phase1E_Manifold_Following_Constrained_Retrofit.md",
+      "new_path_or_archive_reference": "archive/research_history/specs/PRD_Phase1E_Manifold_Following_Constrained_Retrofit.md",
+      "sha256": "38f9835f3f4fe76cd82bb0387998d1d6b18fdef2a12db8adc2d5b10a520e4163",
+      "reason": "historical research document moved out of paper root",
+      "paper_dependency": "historical provenance; not imported by evaluation"
+    },
+    {
+      "old_path": "PRD_Phase1F_Shared_Sequence_Backbone.md",
+      "new_path_or_archive_reference": "archive/research_history/specs/PRD_Phase1F_Shared_Sequence_Backbone.md",
+      "sha256": "2a84398980971834c953814bf68d02ba8d58d60c061370d7e7b74af866c5886c",
+      "reason": "historical research document moved out of paper root",
+      "paper_dependency": "historical provenance; not imported by evaluation"
+    },
+    {
+      "old_path": "PRD_Phase1G_Shared_Trajectory_Learning.md",
+      "new_path_or_archive_reference": "archive/research_history/specs/PRD_Phase1G_Shared_Trajectory_Learning.md",
+      "sha256": "c85e85b154826103087231632b1fe8fde6e4b794b92e94b7080fcc01d09de406",
+      "reason": "historical research document moved out of paper root",
+      "paper_dependency": "historical provenance; not imported by evaluation"
+    },
+    {
+      "old_path": "PRD_Phase1H_Shared_Private_Plasticity_Audit.md",
+      "new_path_or_archive_reference": "archive/research_history/specs/PRD_Phase1H_Shared_Private_Plasticity_Audit.md",
+      "sha256": "8da115bebaddac2fababaffd8c84ca1de9dcf99e7467f4fe01e719f49a068f45",
+      "reason": "historical research document moved out of paper root",
+      "paper_dependency": "historical provenance; not imported by evaluation"
+    },
+    {
+      "old_path": "PRD_Phase1I_Compositional_Context_Transformations.md",
+      "new_path_or_archive_reference": "archive/research_history/specs/PRD_Phase1I_Compositional_Context_Transformations.md",
+      "sha256": "ebd752ec9636b262d5b4bcda3617399684378bf404a6cc340aa7d547a6b005d5",
+      "reason": "historical research document moved out of paper root",
+      "paper_dependency": "historical provenance; not imported by evaluation"
+    },
+    {
+      "old_path": "PRD_SRN_nonlinearity_output_relevant_compositionality.md",
+      "new_path_or_archive_reference": "archive/research_history/specs/PRD_SRN_nonlinearity_output_relevant_compositionality.md",
+      "sha256": "aaa938e255b90f15096337764096edb1935fefce7905ebb874b049f4c5bcde01",
+      "reason": "historical research document moved out of paper root",
+      "paper_dependency": "historical provenance; not imported by evaluation"
+    },
+    {
+      "old_path": "PRD_SRN_training_timeline_audit.md",
+      "new_path_or_archive_reference": "archive/research_history/specs/PRD_SRN_training_timeline_audit.md",
+      "sha256": "8af84e2e263d610f23e9c2ab2472b15e6600ca8c611e01bcf094f9475bf9251e",
+      "reason": "historical research document moved out of paper root",
+      "paper_dependency": "historical provenance; not imported by evaluation"
+    },
+    {
+      "old_path": "PRD_absolute_fit_retrieval_diagnostics.md",
+      "new_path_or_archive_reference": "archive/research_history/specs/PRD_absolute_fit_retrieval_diagnostics.md",
+      "sha256": "c473539c7b544bd993e768bf7c4008d561b821ea889735fb48453241612ce924",
+      "reason": "historical research document moved out of paper root",
+      "paper_dependency": "historical provenance; not imported by evaluation"
+    },
+    {
+      "old_path": "PRD_checkpoint_sweep_random_controls.md",
+      "new_path_or_archive_reference": "archive/research_history/specs/PRD_checkpoint_sweep_random_controls.md",
+      "sha256": "1ef5f3f9c46eed2eb25b90d599ae45047a66f09e1803a3a1cf09ef325a9d60dd",
+      "reason": "historical research document moved out of paper root",
+      "paper_dependency": "historical provenance; not imported by evaluation"
+    },
+    {
+      "old_path": "PRD_compare_pretraining_ecologies.md",
+      "new_path_or_archive_reference": "archive/research_history/specs/PRD_compare_pretraining_ecologies.md",
+      "sha256": "332d02e4d44a72d4b4e26860f512e7eb1f017e3619958812a0509854ea8ecb4a",
+      "reason": "historical research document moved out of paper root",
+      "paper_dependency": "historical provenance; not imported by evaluation"
+    },
+    {
+      "old_path": "PRD_confirmatory_SRN_pipeline.md",
+      "new_path_or_archive_reference": "archive/research_history/specs/PRD_confirmatory_SRN_pipeline.md",
+      "sha256": "5ac0834c77c0b9bb9fb9955181e720e62645199c08579cf30460312e9105ea1f",
+      "reason": "historical research document moved out of paper root",
+      "paper_dependency": "historical provenance; not imported by evaluation"
+    },
+    {
+      "old_path": "PRD_context_controlled_recurrent_architectures.md",
+      "new_path_or_archive_reference": "archive/research_history/specs/PRD_context_controlled_recurrent_architectures.md",
+      "sha256": "d17c71c4928d37775326a476ee0134d2fb6900bfe164e5bd93bc0bcd27cc456d",
+      "reason": "historical research document moved out of paper root",
+      "paper_dependency": "historical provenance; not imported by evaluation"
+    },
+    {
+      "old_path": "PRD_diagnose_and_rescue_meta_prior_transfer.md",
+      "new_path_or_archive_reference": "archive/research_history/specs/PRD_diagnose_and_rescue_meta_prior_transfer.md",
+      "sha256": "bfc53e9042878acbe0c954a563702b2f5673058b17f2606a208afdfde23459b7",
+      "reason": "historical research document moved out of paper root",
+      "paper_dependency": "historical provenance; not imported by evaluation"
+    },
+    {
+      "old_path": "PRD_differentiation_transfer_frontier.md",
+      "new_path_or_archive_reference": "archive/research_history/specs/PRD_differentiation_transfer_frontier.md",
+      "sha256": "42ba52018385bd83788baf431a0019b0964ff22fb9ae89b26616e03adaff5937",
+      "reason": "historical research document moved out of paper root",
+      "paper_dependency": "historical provenance; not imported by evaluation"
+    },
+    {
+      "old_path": "PRD_emergent_RT_recurrent_preparation_commitment.md",
+      "new_path_or_archive_reference": "archive/research_history/specs/PRD_emergent_RT_recurrent_preparation_commitment.md",
+      "sha256": "0a904a2bc7987a68115a35ace2c11cd9b0cf20188cb61908f6e1cb39f7be762d",
+      "reason": "historical research document moved out of paper root",
+      "paper_dependency": "historical provenance; not imported by evaluation"
+    },
+    {
+      "old_path": "PRD_emergent_retrieval_context_inference_program.md",
+      "new_path_or_archive_reference": "archive/research_history/specs/PRD_emergent_retrieval_context_inference_program.md",
+      "sha256": "b046592c5acaca1bd5ad21624182c561fa48c2be4aeefc7d4305bec3688062ac",
+      "reason": "historical research document moved out of paper root",
+      "paper_dependency": "historical provenance; not imported by evaluation"
+    },
+    {
+      "old_path": "PRD_episodic_meta_learning_capacity_v2.md",
+      "new_path_or_archive_reference": "archive/research_history/specs/PRD_episodic_meta_learning_capacity_v2.md",
+      "sha256": "fded8158d912d790994ae81a369e17f015e0e2983bcdac9d27ca049cba89fe7c",
+      "reason": "historical research document moved out of paper root",
+      "paper_dependency": "historical provenance; not imported by evaluation"
+    },
+    {
+      "old_path": "PRD_final_task_space_compositionality_synthesis.md",
+      "new_path_or_archive_reference": "archive/research_history/specs/PRD_final_task_space_compositionality_synthesis.md",
+      "sha256": "131108b688da19e509804a572432cc4232e8632a8a68971608fa515bb9caa600",
+      "reason": "historical research document moved out of paper root",
+      "paper_dependency": "historical provenance; not imported by evaluation"
+    },
+    {
+      "old_path": "PRD_hierarchical_compositional_pretraining_ecology.md",
+      "new_path_or_archive_reference": "archive/research_history/specs/PRD_hierarchical_compositional_pretraining_ecology.md",
+      "sha256": "20c7871a8c0495148ebec1ef85ffe638e77c753d76f1936705007cce6f2fdb6a",
+      "reason": "historical research document moved out of paper root",
+      "paper_dependency": "historical provenance; not imported by evaluation"
+    },
+    {
+      "old_path": "PRD_human_SRN_transfer_experiment_program.md",
+      "new_path_or_archive_reference": "archive/research_history/specs/PRD_human_SRN_transfer_experiment_program.md",
+      "sha256": "a227c10d88e8d090e9b5a9f523672963c8fb8255ffc39303b66d1c979c8b16be",
+      "reason": "historical research document moved out of paper root",
+      "paper_dependency": "historical provenance; not imported by evaluation"
+    },
+    {
+      "old_path": "PRD_human_SVG_geometry_transfer_experiment_v2.md",
+      "new_path_or_archive_reference": "archive/research_history/specs/PRD_human_SVG_geometry_transfer_experiment_v2.md",
+      "sha256": "848ad9d52f1e3f9e08a4774274b85d56036647c708e49cce881fe23e0f7748be",
+      "reason": "historical research document moved out of paper root",
+      "paper_dependency": "historical provenance; not imported by evaluation"
+    },
+    {
+      "old_path": "PRD_human_context_control_transfer.md",
+      "new_path_or_archive_reference": "archive/research_history/specs/PRD_human_context_control_transfer.md",
+      "sha256": "b0e8cd20a2e2f1babf68e022e617a03f22d6cd179298def0d1a68b0b0cb59b60",
+      "reason": "historical research document moved out of paper root",
+      "paper_dependency": "historical provenance; not imported by evaluation"
+    },
+    {
+      "old_path": "PRD_human_meta_prior_transfer.md",
+      "new_path_or_archive_reference": "archive/research_history/specs/PRD_human_meta_prior_transfer.md",
+      "sha256": "f6c5c998e4321f911b9e6597a97d4beea464cdbf4ec9a80db7e7f1526889f205",
+      "reason": "historical research document moved out of paper root",
+      "paper_dependency": "historical provenance; not imported by evaluation"
+    },
+    {
+      "old_path": "PRD_human_state_space_adjudication.md",
+      "new_path_or_archive_reference": "archive/research_history/specs/PRD_human_state_space_adjudication.md",
+      "sha256": "5e0dbfc992acec5bf364fc56f5b71fd1d5a49efd2f35136df3c2e0594d73277e",
+      "reason": "historical research document moved out of paper root",
+      "paper_dependency": "historical provenance; not imported by evaluation"
+    },
+    {
+      "old_path": "PRD_mechanism_first_probe_diagnostics.md",
+      "new_path_or_archive_reference": "archive/research_history/specs/PRD_mechanism_first_probe_diagnostics.md",
+      "sha256": "d5bb15a66f9f1bd629b33579576d5020cadeba309c27821cf64c3a9753120e7a",
+      "reason": "historical research document moved out of paper root",
+      "paper_dependency": "historical provenance; not imported by evaluation"
+    },
+    {
+      "old_path": "PRD_mixed_novel_retrieval_corrected.md",
+      "new_path_or_archive_reference": "archive/research_history/specs/PRD_mixed_novel_retrieval_corrected.md",
+      "sha256": "d9da855244f9da50f1b675b6ed993af4d2a6bd77f808023e0c45ac9e0d653d0d",
+      "reason": "historical research document moved out of paper root",
+      "paper_dependency": "historical provenance; not imported by evaluation"
+    },
+    {
+      "old_path": "PRD_ordinal_sequence_spatial_layout_ecology.md",
+      "new_path_or_archive_reference": "archive/research_history/specs/PRD_ordinal_sequence_spatial_layout_ecology.md",
+      "sha256": "58654a3f43f1305cd266ea911cb40990f7e1fa967cb8ae14efea006c1ae44cc6",
+      "reason": "historical research document moved out of paper root",
+      "paper_dependency": "historical provenance; not imported by evaluation"
+    },
+    {
+      "old_path": "PRD_output_relevant_compositionality_sufficiency_and_emergence.md",
+      "new_path_or_archive_reference": "archive/research_history/specs/PRD_output_relevant_compositionality_sufficiency_and_emergence.md",
+      "sha256": "5cbbe3b26b58ccf5052d8365409f089a6b92e1be99fdc75c8fd26a4e2367264b",
+      "reason": "historical research document moved out of paper root",
+      "paper_dependency": "historical provenance; not imported by evaluation"
+    },
+    {
+      "old_path": "PRD_phase1b_direct_task_space_path_sufficiency.md",
+      "new_path_or_archive_reference": "archive/research_history/specs/PRD_phase1b_direct_task_space_path_sufficiency.md",
+      "sha256": "5c6627c2f56cb00c57c7f22972d2c5301ae34d8eae3abdc9656b85e8838da0ae",
+      "reason": "historical research document moved out of paper root",
+      "paper_dependency": "historical provenance; not imported by evaluation"
+    },
+    {
+      "old_path": "PRD_phase1c_pareto_path_sufficiency.md",
+      "new_path_or_archive_reference": "archive/research_history/specs/PRD_phase1c_pareto_path_sufficiency.md",
+      "sha256": "cf43f2a04a0bb8b3d6a67380e3b2ae0b091f87001947084c7742e223a857fcee",
+      "reason": "historical research document moved out of paper root",
+      "paper_dependency": "historical provenance; not imported by evaluation"
+    },
+    {
+      "old_path": "PRD_phase1d_constrained_task_path_retrofit.md",
+      "new_path_or_archive_reference": "archive/research_history/specs/PRD_phase1d_constrained_task_path_retrofit.md",
+      "sha256": "61eff45fc3fdfbcb23e83d6fd6c195a53133d0a89bcd66987972236d484e425f",
+      "reason": "historical research document moved out of paper root",
+      "paper_dependency": "historical provenance; not imported by evaluation"
+    },
+    {
+      "old_path": "PRD_phase1j_single_injection_context_stability.md",
+      "new_path_or_archive_reference": "archive/research_history/specs/PRD_phase1j_single_injection_context_stability.md",
+      "sha256": "516fa7216db13a53748343d8263db34a9422e5e6cb7648ee9dce898e82ff4d34",
+      "reason": "historical research document moved out of paper root",
+      "paper_dependency": "historical provenance; not imported by evaluation"
+    },
+    {
+      "old_path": "PRD_phase1k_cue_only_composite_generation.md",
+      "new_path_or_archive_reference": "archive/research_history/specs/PRD_phase1k_cue_only_composite_generation.md",
+      "sha256": "0d8e1e249e70faab83b0ee0e5465c42e19e888213bbedb438cf720def2219fee",
+      "reason": "historical research document moved out of paper root",
+      "paper_dependency": "historical provenance; not imported by evaluation"
+    },
+    {
+      "old_path": "PRD_phase1l_contrast_bottleneck_trajectory_closure.md",
+      "new_path_or_archive_reference": "archive/research_history/specs/PRD_phase1l_contrast_bottleneck_trajectory_closure.md",
+      "sha256": "2ee77aee94a440a6a496722d83dc7c64f1b34a4df5132d3f507505679ee8e13c",
+      "reason": "historical research document moved out of paper root",
+      "paper_dependency": "historical provenance; not imported by evaluation"
+    },
+    {
+      "old_path": "PRD_posthoc_transition_switch_analysis.md",
+      "new_path_or_archive_reference": "archive/research_history/specs/PRD_posthoc_transition_switch_analysis.md",
+      "sha256": "629c17831c033ba21f4e4b2d94945eb41ebf7bda946b7cecc9838295c275863b",
+      "reason": "historical research document moved out of paper root",
+      "paper_dependency": "historical provenance; not imported by evaluation"
+    },
+    {
+      "old_path": "PRD_srn_meta_learning_calibration.md",
+      "new_path_or_archive_reference": "archive/research_history/specs/PRD_srn_meta_learning_calibration.md",
+      "sha256": "aac9796c92f618eab8f6de77c4841568017257ec2fdc8bbe9b8b2be72a38cba2",
+      "reason": "historical research document moved out of paper root",
+      "paper_dependency": "historical provenance; not imported by evaluation"
+    },
+    {
+      "old_path": "PRD_srn_mixed_novel_representation_diagnostics.md",
+      "new_path_or_archive_reference": "archive/research_history/specs/PRD_srn_mixed_novel_representation_diagnostics.md",
+      "sha256": "e4e4fd57be7e9a5db7506b01adfeea302f11d0e46366c75cdbd2a913b3a5ea27",
+      "reason": "historical research document moved out of paper root",
+      "paper_dependency": "historical provenance; not imported by evaluation"
+    },
+    {
+      "old_path": "PRD_state_space_bridge_SRN_human_retrieval.md",
+      "new_path_or_archive_reference": "archive/research_history/specs/PRD_state_space_bridge_SRN_human_retrieval.md",
+      "sha256": "f2f6b1c18a1cd253fe94cbb34c7e333b6ffdfb4f7fc5f8710769b761bca9d2ec",
+      "reason": "historical research document moved out of paper root",
+      "paper_dependency": "historical provenance; not imported by evaluation"
+    },
+    {
+      "old_path": "PRD_structural_prior_curriculum.md",
+      "new_path_or_archive_reference": "archive/research_history/specs/PRD_structural_prior_curriculum.md",
+      "sha256": "d0b3f5a292819cba8bbc81694c3225ba2c1e8a9742a0fac09affd8bdc716e747",
+      "reason": "historical research document moved out of paper root",
+      "paper_dependency": "historical provenance; not imported by evaluation"
+    },
+    {
+      "old_path": "PRD_structured_context_ecology_stepwise.md",
+      "new_path_or_archive_reference": "archive/research_history/specs/PRD_structured_context_ecology_stepwise.md",
+      "sha256": "4e0ea39a8c45352084c01c8e4aa0dbe764e7e905ec724e51f9e1fd9b86bc588d",
+      "reason": "historical research document moved out of paper root",
+      "paper_dependency": "historical provenance; not imported by evaluation"
+    },
+    {
+      "old_path": "PRD_time_matched_sequence_probe_overlay.md",
+      "new_path_or_archive_reference": "archive/research_history/specs/PRD_time_matched_sequence_probe_overlay.md",
+      "sha256": "2d24849fe98205c72d1a853c1f293efdfad0a24550b0e5e26cadb9f8d29628c2",
+      "reason": "historical research document moved out of paper root",
+      "paper_dependency": "historical provenance; not imported by evaluation"
+    },
+    {
+      "old_path": "SCRATCHPAD_COMMITMENT_RT.md",
+      "new_path_or_archive_reference": "archive/research_history/scratch_and_reports/SCRATCHPAD_COMMITMENT_RT.md",
+      "sha256": "394132664a0e2b4381d4fb63ab9d4b70aed64cfa37ea586fc68ae2568e479cce",
+      "reason": "historical research document moved out of paper root",
+      "paper_dependency": "historical provenance; not imported by evaluation"
+    },
+    {
+      "old_path": "SCRATCHPAD_context_controlled_recurrent_architectures.md",
+      "new_path_or_archive_reference": "archive/research_history/scratch_and_reports/SCRATCHPAD_context_controlled_recurrent_architectures.md",
+      "sha256": "7c4984a5981a089ce3e168785f167c5a5edb00780ee66824c52625c23640ca6c",
+      "reason": "historical research document moved out of paper root",
+      "paper_dependency": "historical provenance; not imported by evaluation"
+    },
+    {
+      "old_path": "SCRATCHPAD_diagnose_rescue_meta_prior_transfer.md",
+      "new_path_or_archive_reference": "archive/research_history/scratch_and_reports/SCRATCHPAD_diagnose_rescue_meta_prior_transfer.md",
+      "sha256": "9560e0afedfabc5865fe1cd118947f87ce4dbb00dc73c47572e2064987b08cd2",
+      "reason": "historical research document moved out of paper root",
+      "paper_dependency": "historical provenance; not imported by evaluation"
+    },
+    {
+      "old_path": "SCRATCHPAD_final_task_space_compositionality_synthesis.md",
+      "new_path_or_archive_reference": "archive/research_history/scratch_and_reports/SCRATCHPAD_final_task_space_compositionality_synthesis.md",
+      "sha256": "70e27da7de65711803ff3ced9b41b78444d34173f9c03db5a0db5aa4d0d49767",
+      "reason": "historical research document moved out of paper root",
+      "paper_dependency": "historical provenance; not imported by evaluation"
+    },
+    {
+      "old_path": "SCRATCHPAD_output_relevant_compositionality_sufficiency_emergence.md",
+      "new_path_or_archive_reference": "archive/research_history/scratch_and_reports/SCRATCHPAD_output_relevant_compositionality_sufficiency_emergence.md",
+      "sha256": "12a4459f9f271170b1f2db6478f4316b537faabe1f327df8cfaa109577975148",
+      "reason": "historical research document moved out of paper root",
+      "paper_dependency": "historical provenance; not imported by evaluation"
+    },
+    {
+      "old_path": "SCRATCHPAD_phase1b_direct_task_space_path_sufficiency.md",
+      "new_path_or_archive_reference": "archive/research_history/scratch_and_reports/SCRATCHPAD_phase1b_direct_task_space_path_sufficiency.md",
+      "sha256": "65539dc89a6335970e7a941a47899bfa2d47a76122bc6189637e188ced7c0d91",
+      "reason": "historical research document moved out of paper root",
+      "paper_dependency": "historical provenance; not imported by evaluation"
+    },
+    {
+      "old_path": "SCRATCHPAD_phase1c_pareto_path_sufficiency.md",
+      "new_path_or_archive_reference": "archive/research_history/scratch_and_reports/SCRATCHPAD_phase1c_pareto_path_sufficiency.md",
+      "sha256": "b539c23689f067f2ccc9cefd0ab245a960ae56b5b6c06876fecf2648e7852f98",
+      "reason": "historical research document moved out of paper root",
+      "paper_dependency": "historical provenance; not imported by evaluation"
+    },
+    {
+      "old_path": "SCRATCHPAD_phase1d_constrained_task_path_retrofit.md",
+      "new_path_or_archive_reference": "archive/research_history/scratch_and_reports/SCRATCHPAD_phase1d_constrained_task_path_retrofit.md",
+      "sha256": "4879acc4fbac473d04ebbd07afe5d36aa15cdef11c622ef597bcec3beccb8f66",
+      "reason": "historical research document moved out of paper root",
+      "paper_dependency": "historical provenance; not imported by evaluation"
+    },
+    {
+      "old_path": "SCRATCHPAD_phase1e_manifold_following_constrained_retrofit.md",
+      "new_path_or_archive_reference": "archive/research_history/scratch_and_reports/SCRATCHPAD_phase1e_manifold_following_constrained_retrofit.md",
+      "sha256": "d5bf548232ac6c90562a4583a7a34660cc3712f0bfdf3820d22f031690efa8a7",
+      "reason": "historical research document moved out of paper root",
+      "paper_dependency": "historical provenance; not imported by evaluation"
+    },
+    {
+      "old_path": "SCRATCHPAD_phase1f_shared_sequence_backbone.md",
+      "new_path_or_archive_reference": "archive/research_history/scratch_and_reports/SCRATCHPAD_phase1f_shared_sequence_backbone.md",
+      "sha256": "2abaae70a5f0505c377f7dd0230d76d01a59c2a704578e716577cd1b33154bfb",
+      "reason": "historical research document moved out of paper root",
+      "paper_dependency": "historical provenance; not imported by evaluation"
+    },
+    {
+      "old_path": "SCRATCHPAD_srn_mixed_novel_representation_diagnostics.md",
+      "new_path_or_archive_reference": "archive/research_history/scratch_and_reports/SCRATCHPAD_srn_mixed_novel_representation_diagnostics.md",
+      "sha256": "c27c1c9bf3a23716bf26c46ec094d9180fa3084c3a3e023ed4a8741c62dbbadb",
+      "reason": "historical research document moved out of paper root",
+      "paper_dependency": "historical provenance; not imported by evaluation"
+    },
+    {
+      "old_path": "SCRATCHPAD_srn_nonlinearity_output_compositionality.md",
+      "new_path_or_archive_reference": "archive/research_history/scratch_and_reports/SCRATCHPAD_srn_nonlinearity_output_compositionality.md",
+      "sha256": "419a8dd34c0b599a1cdc8f1a3e77cce6245f5bf05a91baeb61099c1918831352",
+      "reason": "historical research document moved out of paper root",
+      "paper_dependency": "historical provenance; not imported by evaluation"
+    },
+    {
+      "old_path": "SRN_META_LEARNING_CALIBRATION_SCRATCHPAD.md",
+      "new_path_or_archive_reference": "archive/research_history/scratch_and_reports/SRN_META_LEARNING_CALIBRATION_SCRATCHPAD.md",
+      "sha256": "f06c62eaec3bb7bc6db9f9a9d797c47e0ab7ffe7e2e4378e9110174208998337",
+      "reason": "historical research document moved out of paper root",
+      "paper_dependency": "historical provenance; not imported by evaluation"
+    },
+    {
+      "old_path": "STRUCTURAL_PRIOR_CURRICULUM_SCRATCHPAD.md",
+      "new_path_or_archive_reference": "archive/research_history/scratch_and_reports/STRUCTURAL_PRIOR_CURRICULUM_SCRATCHPAD.md",
+      "sha256": "d08e08eeb699aa45daa281f26591d524d7ba4e8d903c174d088607d5b1dcc819",
+      "reason": "historical research document moved out of paper root",
+      "paper_dependency": "historical provenance; not imported by evaluation"
+    },
+    {
+      "old_path": "TRANSFER_EXPERIMENT_PROGRAM_REPORT.md",
+      "new_path_or_archive_reference": "archive/research_history/scratch_and_reports/TRANSFER_EXPERIMENT_PROGRAM_REPORT.md",
+      "sha256": "87e1d7e01bde321444b031523cafe1ee323ab85e0f1b8d2484b9e55a1fffdf62",
+      "reason": "historical research document moved out of paper root",
+      "paper_dependency": "historical provenance; not imported by evaluation"
+    },
+    {
+      "old_path": "TRANSFER_EXPERIMENT_PROGRAM_SCRATCHPAD.md",
+      "new_path_or_archive_reference": "archive/research_history/scratch_and_reports/TRANSFER_EXPERIMENT_PROGRAM_SCRATCHPAD.md",
+      "sha256": "7cbb24664ef001134bd484396874ffad5403d131408db1a63ae2202a4172cc62",
+      "reason": "historical research document moved out of paper root",
+      "paper_dependency": "historical provenance; not imported by evaluation"
+    },
+    {
+      "old_path": "scripts/run_all_final.py",
+      "new_path_or_archive_reference": "archive/research_history/legacy_runners/run_all_final.py",
+      "sha256": "60c6db9c62106c12a543892316c441610a6c63dd2d68da37e38c3376b16ef997",
+      "reason": "archived original runner; original retained as compatibility entry point",
+      "paper_dependency": "not used by four-experiment pipeline"
+    },
+    {
+      "old_path": "scripts/run_srn_final.py",
+      "new_path_or_archive_reference": "archive/research_history/legacy_runners/run_srn_final.py",
+      "sha256": "4570ca1f4c05d572034cd2c6650aa38a5bfcd28461d002879617f251f57a72cd",
+      "reason": "archived original runner; original retained as compatibility entry point",
+      "paper_dependency": "not used by four-experiment pipeline"
+    },
+    {
+      "old_path": "scripts/run_human_final.py",
+      "new_path_or_archive_reference": "archive/research_history/legacy_runners/run_human_final.py",
+      "sha256": "2ce57e47b2509f92baf9ab762fb22210e877cf5a2e26345cde019204496506fa",
+      "reason": "archived original runner; original retained as compatibility entry point",
+      "paper_dependency": "not used by four-experiment pipeline"
+    },
+    {
+      "old_path": "scripts/make_paper_figures.py",
+      "new_path_or_archive_reference": "archive/research_history/legacy_runners/make_paper_figures.py",
+      "sha256": "f1374f0f033b3674eb5e7e2045293aa127f7f0ec6acd7a358cdcd1bdc9dd389d",
+      "reason": "archived original runner; original retained as compatibility entry point",
+      "paper_dependency": "not used by four-experiment pipeline"
+    }
+  ]
+}

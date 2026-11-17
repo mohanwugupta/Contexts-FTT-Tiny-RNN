@@ -1,0 +1,1735 @@
+{
+  "timestamp_utc": "2026-11-04T04:39:50.030971+00:00",
+  "git_commit": "584d482221203b54e98cf78879c6192153cfea40",
+  "python": "3.11.8 (main, Aug 21 2025, 14:08:53) [Clang 17.0.0 (clang-1700.0.13.3)]",
+  "platform": "macOS-26.7.1-arm64-arm-64bit",
+  "numpy": "2.2.6",
+  "pandas": "2.3.2",
+  "torch": "2.8.0",
+  "stage": "e1",
+  "program_config_sha256": "7a8f75bcf2a818c31c6c3b405d45df9a8fe4143bf738e9b5a87336b85df3b62d",
+  "novelty_registry_sha256": "2b28095562ea69a33d96c521817dcd0743f3d66658385ac425212f6951e00727",
+  "source_files": {
+    "confirmatory_srn/config.py": "2b1080b6edaea9436c6cef0724e5d6051a7e18918e05269546d9c9b640b6f60c",
+    "confirmatory_srn/model.py": "49e94c644293caad9d7ce7d1bc232985350e7b06ca4aae44ccbaa0220ab3ac4d",
+    "confirmatory_srn/training.py": "d461a088104f0444b5caf385509dbca7d9922a4e057cdbccaedb6253c1109eaa",
+    "ftt_srn_execution_v2/training/ftt_schedule.py": "bd2f8f2244b8c46aae51b8b81306a4967a1b041a966858225919fad82fc89ca4",
+    "phase1l_contrast_closure/model.py": "d8222e357b76f331704feae5c2599f64a67f82f8dfd28694603deb79b4e94c7b",
+    "phase1l_contrast_closure/training.py": "c3b5a56f3f83ffa73bec974c104780bde323d862d6183723b86a37ffa7428900",
+    "scripts/audit_dynamical_generalization_inputs.py": "f05086e4fe22b7cb6e6e77074c5203e953d7983bff11e53637ccbe6082067992",
+    "scripts/freeze_dynamical_generalization_design.py": "cf1047f27249bfb7a8377209c9d9be613e2762cc98999b1fc7da54f0c7d85bac",
+    "scripts/run_dynamical_generalization.py": "7e93d434cb18cd1f2e8f1e5ef3dc6eed47b6f2651e38046fb171a36e6291cb60",
+    "scripts/verify_dynamical_generalization.py": "db7febbacb76aab43166895a5fd3380283d07f223d6a004cab10e89ff031c6a6",
+    "src/context_sequence/__init__.py": "d347d5c49b01aec2e83bb439c9d1e355ce827c6eb0f1015d5311d8c312968399",
+    "src/context_sequence/analysis/__init__.py": "0cbaa9a84ebc8ff46089c06f7266fc1a6f4223c85e296a9807b8d93e8a2b74f4",
+    "src/context_sequence/analysis/aggregation.py": "1d62433bc002c8a92fa6839b9e61433f10076ee37279016fddbde089579f0111",
+    "src/context_sequence/analysis/contrasts.py": "348b42ab0c994195be42d36fdfbd1b02c0b03367cfb1db843ccc1ba00c012016",
+    "src/context_sequence/analysis/figures.py": "489d10e4376e982c79908a8f2239121666c166efc2e63eede0f1fbd0032dc6a2",
+    "src/context_sequence/analysis/reporting.py": "a6c75d859f7c13655546ce7412731b1940120e505e33384d28b197aa011165c8",
+    "src/context_sequence/dynamics/__init__.py": "4626a0083af7dcb04523dbfb876d28e115dfa56cf9a205f2e0360fbb45353f2e",
+    "src/context_sequence/dynamics/closure.py": "0f57fb1a2d0ed117b7b8920788169a7ac6fc511349a9c25508efb7aeef00146a",
+    "src/context_sequence/dynamics/jacobian.py": "f9292292e1ceea8db630567d73c1bcff70d0bf810e7d6348107cf8f731abc5ed",
+    "src/context_sequence/dynamics/pipeline.py": "8ab9f61405f9939ac8fa6aca827c1ecd47c5e2ba434b638910eb1f8fb828f622",
+    "src/context_sequence/dynamics/propagation.py": "b6c984ec17fb1ddf9459d73f0841241fb48d1f63d2f512c4336e3277bc21db41",
+    "src/context_sequence/dynamics/registry.py": "d8d644c108c64658beee374134d8c79bac017b3bede0502c7cb0d03f04d6306c",
+    "src/context_sequence/evaluation/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src/context_sequence/evaluation/cue_grid.py": "b1a600393a112fdab6816295be286af7bf554c3a82274c4ac8751de6d5df35aa",
+    "src/context_sequence/evaluation/rollout.py": "acda4e7256b78bd8a07a49caace317de2e8bfb34a87de2470e41c9bd16f54861",
+    "src/context_sequence/experiments/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src/context_sequence/experiments/engine.py": "f051547ed8675ef1732ddc348e7846e6d88c7b82637fbc2b7878d52cea6f0ae1",
+    "src/context_sequence/experiments/matching.py": "936dd535ee981ce69258bbeddb31903c2646473d0624f79268f390582b5c522f",
+    "src/context_sequence/human/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src/context_sequence/metrics/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src/context_sequence/metrics/geometry.py": "7aca1668e9f0e0e4b51d85bb810f97478ff00b4f9149a730b1e17d5787d1b4f3",
+    "src/context_sequence/models/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src/context_sequence/paper/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src/context_sequence/paper/contrasts.py": "bd6b4524a9866a9a775dc11a86ddd2477f2154237171789282feff632f022dbb",
+    "src/context_sequence/paper/figures.py": "92ea7e7c3d9b81cfd381acd189a17ad4c27913ae29d4fe9b71a7b7b5530ceb33",
+    "src/context_sequence/paper/pipeline.py": "bb88802ebd70f74f23525b4577b3d066d76a9f0df0c398ae867bf85806fb6dcc",
+    "src/context_sequence/paper/report.py": "3ba3a91ef59d0fd5b39a72c41e7570252db640da16f7ea3e1911562c0b69fce1",
+    "src/context_sequence/provenance/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src/context_sequence/provenance/hashing.py": "86737e58f6d801bc81ce43322719b65f920d2d8e631973ee53ce6c60dab10c03",
+    "src/context_sequence/provenance/registry.py": "7d0142ff151097134094d6d219bbd820fb29385cd9ef10077152d01dfadbdd16",
+    "src/context_sequence/provenance/regression.py": "e608e962e3f8530af004b0d9eac2fea41b2f04dcb1637458583f55d44ade8eac",
+    "src/context_sequence/statistics/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src/context_sequence/statistics/aggregation.py": "49254d0cc00f52851d6dc6246958517a5f87c0a06de3fbbd9fcb5e4343571f0f",
+    "src/context_sequence/statistics/bootstrap.py": "b2256b271791ea1ff8dfb342a56939e68a044cb2569ae99dca34f4274139a47c",
+    "src/context_sequence/task/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src/context_sequence/task/novelty.py": "0f9f8a360fc2315f431d3bb17542fc7d2a2b2b67c4b073c0fff86de34f107aff",
+    "src/context_sequence/task/replication.py": "01352a6f461f9f249901e42b1a3c5c660802e79fa6443406ca29f3104b1418bb",
+    "src/context_sequence/task/sequence.py": "a3b999c776e04cb3e20760f78bb8cee1fc645d5b2359652d450220783fbbc520",
+    "src/context_sequence/training/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src/context_sequence/training/factorial.py": "7db8bd1a7dbd3a1db60d7eefc9aec2d079a9d2208e74370a781e9315c565f3c5",
+    "src/context_sequence/training/separation_regularizers.py": "9e1f42f268248ea3e1d3f343186685446d618d780425b23fd1bbb0ecf120652c",
+    "tests/integration/test_dynamical_program.py": "4238ed3b05f42c7181ca92ef615beddbcc1b4b7c2a3f7c5ebdcda5d68aebdbba",
+    "tests/regression/test_historical_parity.py": "64557efffea80762a22159b8d0498287b08b44c924b9e3acebc6e785999ccadc",
+    "tests/unit/test_e1_dynamics.py": "4a33c9ed76daced7bc46238e4286c644f6a52471f7a6d122528a005bc294baf6",
+    "tests/unit/test_e2_grid.py": "5837a6fbb350be24565eff7623c28ba5ce69d2124f519571829f017ab5e1cb79",
+    "tests/unit/test_e3_factorial.py": "8234cb0c22bdbcd3a7189211258e7b9d538bd4aa4b0a34199b65fd0c45c7be6f",
+    "tests/unit/test_e4_sequences.py": "3994753051f3b92f397fb84c1b35c14271e25a20b1da95ef38671a49d86f7dc2"
+  },
+  "input_files": [
+    {
+      "path": "PRD_RNN_DYNAMICAL_GENERALIZATION_PROGRAM.md",
+      "sha256": "bb3d10ccac23bcab4b3dcb4e86be6d6cdef3d86da7efc6bf5fdbd8363e1b5243"
+    },
+    {
+      "path": "analysis/phase1i_context_composition/PHASE1I_CONTEXT_COMPOSITION_REPORT.md",
+      "sha256": "58abf189cc512a936dd3a9351bbb7e875f8b2d2b122cd75a4e2ebbdcb46c1fc2"
+    },
+    {
+      "path": "analysis/phase1i_context_composition/phase1i_checkpoint_provenance.csv",
+      "sha256": "bc2903b764dc664ef6a1b39068e3e34db0f1f29c814b25135c9babbe0aae349d"
+    },
+    {
+      "path": "analysis/phase1i_context_composition/phase1i_timeline_metrics.csv",
+      "sha256": "00ff0a56b71542920f6d4e89682c839a345339a418e3714e776e28255389b3cc"
+    },
+    {
+      "path": "analysis/phase1i_context_composition/phase1i_true_acquisition.csv",
+      "sha256": "a3a82f372359c9b8d79b191c342e9bb9aa4c5ff334761951ddac3edfb24b9571"
+    },
+    {
+      "path": "analysis/phase1j_single_injection_context_stability/PHASE1J_SINGLE_INJECTION_CONTEXT_STABILITY_REPORT.md",
+      "sha256": "dee300432dc2623aced7dbeb4758ff7de18a3c4ee2dd0ca4ff6c63b6a14e6abe"
+    },
+    {
+      "path": "analysis/phase1k/PHASE1K_CUE_GENERATION_REPORT.md",
+      "sha256": "c49d9efdb0d1ed5ab219a3290d03c059f902e3eb40a2c1f473cb94921e0422e3"
+    },
+    {
+      "path": "analysis/phase1k/phase1k_natural_rollouts.csv",
+      "sha256": "c5354be7b06deb8886ff3f567f96e0b0008f839b4cd47b36534ae00c64fcb0ad"
+    },
+    {
+      "path": "analysis/phase1l/PHASE1L_CONSTRUCTIVE_RECOVERY_REPORT.md",
+      "sha256": "dbf48886eea44cc06cda187dc6cd9a7e84235f9fe68fc099005408df5602a6fe"
+    },
+    {
+      "path": "analysis/phase1l/phase1l_final_transition_metrics.csv",
+      "sha256": "74815a9193e63f70d0cad65f0b5caccf8988347b29d34945bfb7aba8b6de31b9"
+    },
+    {
+      "path": "analysis/phase1l/phase1l_neutral_rollout_metrics.csv",
+      "sha256": "5ed70477af7ce58362c1d68bf505eea4e97b9f297971b729be027841a2be38c8"
+    },
+    {
+      "path": "analysis/phase1l/phase1l_novel_within_seed.csv",
+      "sha256": "b90f9ca57c04e9e4b98a8e3506f3d84a8269389eb2e4fa5d160c996f28efce6e"
+    },
+    {
+      "path": "analysis/phase1l/phase1l_provenance.csv",
+      "sha256": "de3b82c50533f8e53765b7eb4dfbe90352ee69100c3e5818eef9f07c7cf078cf"
+    },
+    {
+      "path": "analysis/phase1l/phase1l_training_sequence_metrics.csv",
+      "sha256": "b6577d4772690e56e243cc7bb9b934437b90f4136b8bcb2a6502c4e9bbfa3909"
+    },
+    {
+      "path": "archive/research_history/specs/PRD_phase1k_cue_only_composite_generation.md",
+      "sha256": "0d8e1e249e70faab83b0ee0e5465c42e19e888213bbedb438cf720def2219fee"
+    },
+    {
+      "path": "archive/research_history/specs/PRD_phase1l_contrast_bottleneck_trajectory_closure.md",
+      "sha256": "2ee77aee94a440a6a496722d83dc7c64f1b34a4df5132d3f507505679ee8e13c"
+    },
+    {
+      "path": "configs/context_grid_v1.json",
+      "sha256": "b605d93141e5009899254f1300f9c9059588a5160190e15fc61e7a7ecddfc89a"
+    },
+    {
+      "path": "configs/factorial_v1.json",
+      "sha256": "96b217b34f2875f3830de8419e854164edf4b3b8a2c68e658376e5e02756a5a8"
+    },
+    {
+      "path": "configs/novelty_registry_v1.json",
+      "sha256": "e622fe0bc727baad9069319c6833d2b1f003ffda81bda1da150966ce2953d7dc"
+    },
+    {
+      "path": "configs/paper_freeze_v2.json",
+      "sha256": "63b0fc1368e42d2b0727e92bdcd332214f622c3e573902f779977e250e5c6cb8"
+    },
+    {
+      "path": "configs/sequence_registry_v1.json",
+      "sha256": "c6ee4ffcc9f794b1e5d07b2d8142b16e9cf17f14d67f773913a98cd2a9f80a93"
+    },
+    {
+      "path": "docs/FINAL_EXPERIMENT_INFRASTRUCTURE.md",
+      "sha256": "c75019cf519e5a36d45054d007509b8ce55344e26c086d2880c30003bf48e8d4"
+    },
+    {
+      "path": "docs/FINAL_EXPERIMENT_INVENTORY.json",
+      "sha256": "3ff2be4eca02f1734f00a1d160d0bb414b512b406d4c994999baf15e12725c51"
+    },
+    {
+      "path": "outputs/confirmatory_srn_final/confirmatory_checkpoints/High_sequence_only_seed_0.pt",
+      "sha256": "6f1e4dfa173943ec89fd3031ddd988079f0a26b3756d9c65cb7bb5e1ac8a3727"
+    },
+    {
+      "path": "outputs/confirmatory_srn_final/confirmatory_checkpoints/High_sequence_only_seed_1.pt",
+      "sha256": "5c7435966e3df4438330ed84b7bff734bd6b8533aa598c872ce9b6f747c6d2ad"
+    },
+    {
+      "path": "outputs/confirmatory_srn_final/confirmatory_checkpoints/High_sequence_only_seed_10.pt",
+      "sha256": "9f24208ca65d96163f0acfd73a6efab8a0b2f0491dc8ef656a0ae0709979bfc7"
+    },
+    {
+      "path": "outputs/confirmatory_srn_final/confirmatory_checkpoints/High_sequence_only_seed_11.pt",
+      "sha256": "c52500665c995b47f574048a4ba088d255497a8a5643e12d0979398c45bf3088"
+    },
+    {
+      "path": "outputs/confirmatory_srn_final/confirmatory_checkpoints/High_sequence_only_seed_12.pt",
+      "sha256": "209e4d8d0a1892f5ccc8ba39a4b49d49d80d5ad01de1016993ee827491294485"
+    },
+    {
+      "path": "outputs/confirmatory_srn_final/confirmatory_checkpoints/High_sequence_only_seed_13.pt",
+      "sha256": "86614b6387846eee6b6da0cee7d9e02f167358099e506025fb514990de200041"
+    },
+    {
+      "path": "outputs/confirmatory_srn_final/confirmatory_checkpoints/High_sequence_only_seed_14.pt",
+      "sha256": "94b9019c2bca0bd5f0508e405900f27a81be557292544179877dfad6dfb2246b"
+    },
+    {
+      "path": "outputs/confirmatory_srn_final/confirmatory_checkpoints/High_sequence_only_seed_15.pt",
+      "sha256": "17da500416d4abbad59b7ee8f479a7bd66aa33ae91f7c0238c5f0fed8148b8ff"
+    },
+    {
+      "path": "outputs/confirmatory_srn_final/confirmatory_checkpoints/High_sequence_only_seed_16.pt",
+      "sha256": "91e158d1ed1f763116bb206e55004a3bbd05afac292179b9091a5e2ba0ef5cbd"
+    },
+    {
+      "path": "outputs/confirmatory_srn_final/confirmatory_checkpoints/High_sequence_only_seed_17.pt",
+      "sha256": "51e2fcd2673ebc8864f3d76d174f1b48ba46e976cf1987cbdaf5468cb41fdea3"
+    },
+    {
+      "path": "outputs/confirmatory_srn_final/confirmatory_checkpoints/High_sequence_only_seed_18.pt",
+      "sha256": "08dd223d7de9caa4f4d228f434180fb49724c3c9bcaca7962444b2de9055d754"
+    },
+    {
+      "path": "outputs/confirmatory_srn_final/confirmatory_checkpoints/High_sequence_only_seed_19.pt",
+      "sha256": "b36f3c2e0e9ae9367097ef1f07318e7edb42fe6f33cb9436ebf523edb8990012"
+    },
+    {
+      "path": "outputs/confirmatory_srn_final/confirmatory_checkpoints/High_sequence_only_seed_2.pt",
+      "sha256": "18401fb98e0ac6dfb1bb8f801d7875a7842accb6f6f92121483391b5a120a6d2"
+    },
+    {
+      "path": "outputs/confirmatory_srn_final/confirmatory_checkpoints/High_sequence_only_seed_3.pt",
+      "sha256": "7845bf7a27a24ec2121ad55fc8044dc48031fd411cf0bddfb41d9d334082e600"
+    },
+    {
+      "path": "outputs/confirmatory_srn_final/confirmatory_checkpoints/High_sequence_only_seed_4.pt",
+      "sha256": "3f4d233c69668c4dc5dc7aecbb1d3f42dd0c0a0c838200aa271014db4f3e381d"
+    },
+    {
+      "path": "outputs/confirmatory_srn_final/confirmatory_checkpoints/High_sequence_only_seed_5.pt",
+      "sha256": "0bf587d39b519a421aae9403f68fb243f2621f8a221785a6c0d559293d921574"
+    },
+    {
+      "path": "outputs/confirmatory_srn_final/confirmatory_checkpoints/High_sequence_only_seed_6.pt",
+      "sha256": "46b331078e08d5aeba0f38cdc46a606e30812be2d7c643af3a88668f88faa842"
+    },
+    {
+      "path": "outputs/confirmatory_srn_final/confirmatory_checkpoints/High_sequence_only_seed_7.pt",
+      "sha256": "1849e0c19943f7ab82fb8818e4fd98e811f8999d942e678f9bddc3bc42a23762"
+    },
+    {
+      "path": "outputs/confirmatory_srn_final/confirmatory_checkpoints/High_sequence_only_seed_8.pt",
+      "sha256": "4c4f625cfcf1d0788679d298e54a64552a2d469a8a699bde1d7cab8752ea459d"
+    },
+    {
+      "path": "outputs/confirmatory_srn_final/confirmatory_checkpoints/High_sequence_only_seed_9.pt",
+      "sha256": "5ac625d6ca60f236b22a5d9481c03ebfc062f355aeac75814375765d86a8aaaa"
+    },
+    {
+      "path": "outputs/phase1f_shared_sequence_backbone/PHASE1F_SHARED_SEQUENCE_BACKBONE_REPORT.md",
+      "sha256": "37cffdbe8815616a7221b714a709b6b9aed6bfcd8bb12df46fa1de65cb21835d"
+    },
+    {
+      "path": "outputs/transfer_experiment_program/e1_acquisition/strict_match_outcomes.csv",
+      "sha256": "808fde076fe4091f98ff5ebe73699f6005067fa54b710154a37d31ee7b99fce6"
+    },
+    {
+      "path": "results/paper/v2_20260925_novelty30_60_r2/FINAL_FOUR_EXPERIMENT_FREEZE_REPORT.md",
+      "sha256": "8ca14d965dcff47a2dcdb5351a22d610998a6ea55fbae704fc6fdc69e9ce4251"
+    },
+    {
+      "path": "results/paper/v2_20260925_novelty30_60_r2/manifest.json",
+      "sha256": "ac65e14f51b841bb46efc0813f5ebf1083cdf97a999ba277c646aeef3f37cd4e"
+    },
+    {
+      "path": "scratchpads/dynamical_generalization_reference_index.json",
+      "sha256": "71eba16eee4ef31ec0670aaef09ada40b93ec2e6b6b9d8ef68f2b217273b57d4"
+    }
+  ],
+  "checkpoints": [
+    {
+      "cohort": "canonical",
+      "model_family": "canonical_srn",
+      "training_objective": "sequence_plus_monotonic_execution",
+      "family": "High_monotonic",
+      "condition": "High_monotonic",
+      "seed": 0,
+      "checkpoint_step": 170,
+      "path": "outputs/confirmatory_srn_final/confirmatory_checkpoints/High_monotonic_seed_0.pt",
+      "checkpoint_sha256": "6f3f6fa932c4f7c17a0ff607efde967eb44ad128e6a8574439ffe99ef69642cb",
+      "historical_label": "High_monotonic"
+    },
+    {
+      "cohort": "canonical",
+      "model_family": "canonical_srn",
+      "training_objective": "sequence_plus_monotonic_execution",
+      "family": "High_monotonic",
+      "condition": "High_monotonic",
+      "seed": 1,
+      "checkpoint_step": 170,
+      "path": "outputs/confirmatory_srn_final/confirmatory_checkpoints/High_monotonic_seed_1.pt",
+      "checkpoint_sha256": "67d39630497d3a306ed691341a4a098bad59589e1824ba85816ba3398f37a8f0",
+      "historical_label": "High_monotonic"
+    },
+    {
+      "cohort": "canonical",
+      "model_family": "canonical_srn",
+      "training_objective": "sequence_plus_monotonic_execution",
+      "family": "High_monotonic",
+      "condition": "High_monotonic",
+      "seed": 2,
+      "checkpoint_step": 170,
+      "path": "outputs/confirmatory_srn_final/confirmatory_checkpoints/High_monotonic_seed_2.pt",
+      "checkpoint_sha256": "c79d661944f2e1e92d339b724492dda0c29ad35f3853ab9bd32c3619722e8239",
+      "historical_label": "High_monotonic"
+    },
+    {
+      "cohort": "canonical",
+      "model_family": "canonical_srn",
+      "training_objective": "sequence_plus_monotonic_execution",
+      "family": "High_monotonic",
+      "condition": "High_monotonic",
+      "seed": 3,
+      "checkpoint_step": 170,
+      "path": "outputs/confirmatory_srn_final/confirmatory_checkpoints/High_monotonic_seed_3.pt",
+      "checkpoint_sha256": "5d31256a97c1759662c2f215fa94cee7cd246d16ff32c916cdc4a683b4499740",
+      "historical_label": "High_monotonic"
+    },
+    {
+      "cohort": "canonical",
+      "model_family": "canonical_srn",
+      "training_objective": "sequence_plus_monotonic_execution",
+      "family": "High_monotonic",
+      "condition": "High_monotonic",
+      "seed": 4,
+      "checkpoint_step": 170,
+      "path": "outputs/confirmatory_srn_final/confirmatory_checkpoints/High_monotonic_seed_4.pt",
+      "checkpoint_sha256": "8dd5d408afffea08e18173d6ab48ecd4525d4a277afef04bf2c240554709eb36",
+      "historical_label": "High_monotonic"
+    },
+    {
+      "cohort": "canonical",
+      "model_family": "canonical_srn",
+      "training_objective": "sequence_plus_monotonic_execution",
+      "family": "High_monotonic",
+      "condition": "High_monotonic",
+      "seed": 5,
+      "checkpoint_step": 170,
+      "path": "outputs/confirmatory_srn_final/confirmatory_checkpoints/High_monotonic_seed_5.pt",
+      "checkpoint_sha256": "4608e57769473ef723ff75fabe6f5b81c1ee78490a3023941b8b194a74425f07",
+      "historical_label": "High_monotonic"
+    },
+    {
+      "cohort": "canonical",
+      "model_family": "canonical_srn",
+      "training_objective": "sequence_plus_monotonic_execution",
+      "family": "High_monotonic",
+      "condition": "High_monotonic",
+      "seed": 6,
+      "checkpoint_step": 170,
+      "path": "outputs/confirmatory_srn_final/confirmatory_checkpoints/High_monotonic_seed_6.pt",
+      "checkpoint_sha256": "6bc4f14bc8218e9695e1dd89a18c81276a7c5289ab8b20215b5c40ee015920c0",
+      "historical_label": "High_monotonic"
+    },
+    {
+      "cohort": "canonical",
+      "model_family": "canonical_srn",
+      "training_objective": "sequence_plus_monotonic_execution",
+      "family": "High_monotonic",
+      "condition": "High_monotonic",
+      "seed": 7,
+      "checkpoint_step": 170,
+      "path": "outputs/confirmatory_srn_final/confirmatory_checkpoints/High_monotonic_seed_7.pt",
+      "checkpoint_sha256": "3a5cdb7ceda7eb860cf8dd7c5efd1cf2162a96a2e326a5cc3e22382b0b43240b",
+      "historical_label": "High_monotonic"
+    },
+    {
+      "cohort": "canonical",
+      "model_family": "canonical_srn",
+      "training_objective": "sequence_plus_monotonic_execution",
+      "family": "High_monotonic",
+      "condition": "High_monotonic",
+      "seed": 8,
+      "checkpoint_step": 170,
+      "path": "outputs/confirmatory_srn_final/confirmatory_checkpoints/High_monotonic_seed_8.pt",
+      "checkpoint_sha256": "fa98939eef75550a2175d7040244a40f04d9a0c76e54a473eec808be2bdfb689",
+      "historical_label": "High_monotonic"
+    },
+    {
+      "cohort": "canonical",
+      "model_family": "canonical_srn",
+      "training_objective": "sequence_plus_monotonic_execution",
+      "family": "High_monotonic",
+      "condition": "High_monotonic",
+      "seed": 9,
+      "checkpoint_step": 170,
+      "path": "outputs/confirmatory_srn_final/confirmatory_checkpoints/High_monotonic_seed_9.pt",
+      "checkpoint_sha256": "5741388abaff0ec1f54a20ed5339452c5e684351dccd9a129d5b089073ee7bc9",
+      "historical_label": "High_monotonic"
+    },
+    {
+      "cohort": "canonical",
+      "model_family": "canonical_srn",
+      "training_objective": "sequence_plus_monotonic_execution",
+      "family": "High_monotonic",
+      "condition": "High_monotonic",
+      "seed": 10,
+      "checkpoint_step": 170,
+      "path": "outputs/confirmatory_srn_final/confirmatory_checkpoints/High_monotonic_seed_10.pt",
+      "checkpoint_sha256": "045d68fc175e57cd15065180223372fe57658e9b204e7896f98e36d78a7f8d7e",
+      "historical_label": "High_monotonic"
+    },
+    {
+      "cohort": "canonical",
+      "model_family": "canonical_srn",
+      "training_objective": "sequence_plus_monotonic_execution",
+      "family": "High_monotonic",
+      "condition": "High_monotonic",
+      "seed": 11,
+      "checkpoint_step": 170,
+      "path": "outputs/confirmatory_srn_final/confirmatory_checkpoints/High_monotonic_seed_11.pt",
+      "checkpoint_sha256": "8edf36049d1c0d4e96c7df099675377cbe09fc685a45377e07f6ce72f41b2511",
+      "historical_label": "High_monotonic"
+    },
+    {
+      "cohort": "canonical",
+      "model_family": "canonical_srn",
+      "training_objective": "sequence_plus_monotonic_execution",
+      "family": "High_monotonic",
+      "condition": "High_monotonic",
+      "seed": 12,
+      "checkpoint_step": 170,
+      "path": "outputs/confirmatory_srn_final/confirmatory_checkpoints/High_monotonic_seed_12.pt",
+      "checkpoint_sha256": "47620d2fbb69800e05da1cee778fb1aa121e63e3e57959207b0375ef2ec34ad7",
+      "historical_label": "High_monotonic"
+    },
+    {
+      "cohort": "canonical",
+      "model_family": "canonical_srn",
+      "training_objective": "sequence_plus_monotonic_execution",
+      "family": "High_monotonic",
+      "condition": "High_monotonic",
+      "seed": 13,
+      "checkpoint_step": 170,
+      "path": "outputs/confirmatory_srn_final/confirmatory_checkpoints/High_monotonic_seed_13.pt",
+      "checkpoint_sha256": "2be77d67584701d85b97ddb795ae213ded76c626a7a95b4fd9afd5ba60ed2687",
+      "historical_label": "High_monotonic"
+    },
+    {
+      "cohort": "canonical",
+      "model_family": "canonical_srn",
+      "training_objective": "sequence_plus_monotonic_execution",
+      "family": "High_monotonic",
+      "condition": "High_monotonic",
+      "seed": 14,
+      "checkpoint_step": 170,
+      "path": "outputs/confirmatory_srn_final/confirmatory_checkpoints/High_monotonic_seed_14.pt",
+      "checkpoint_sha256": "196433f5a309d531e8b08f2ecf1426b25feb4029c615ea3e1eb25b39c2c0d7a7",
+      "historical_label": "High_monotonic"
+    },
+    {
+      "cohort": "canonical",
+      "model_family": "canonical_srn",
+      "training_objective": "sequence_plus_monotonic_execution",
+      "family": "High_monotonic",
+      "condition": "High_monotonic",
+      "seed": 15,
+      "checkpoint_step": 170,
+      "path": "outputs/confirmatory_srn_final/confirmatory_checkpoints/High_monotonic_seed_15.pt",
+      "checkpoint_sha256": "bb58fbbed72b77d58bbc6bc165e9fd631c77210af6346274d4967c8b7cbd190d",
+      "historical_label": "High_monotonic"
+    },
+    {
+      "cohort": "canonical",
+      "model_family": "canonical_srn",
+      "training_objective": "sequence_plus_monotonic_execution",
+      "family": "High_monotonic",
+      "condition": "High_monotonic",
+      "seed": 16,
+      "checkpoint_step": 170,
+      "path": "outputs/confirmatory_srn_final/confirmatory_checkpoints/High_monotonic_seed_16.pt",
+      "checkpoint_sha256": "1aa223d438acbdf140a4c3aec2874fcdd29b3737c95561331b5a2465ebea5a62",
+      "historical_label": "High_monotonic"
+    },
+    {
+      "cohort": "canonical",
+      "model_family": "canonical_srn",
+      "training_objective": "sequence_plus_monotonic_execution",
+      "family": "High_monotonic",
+      "condition": "High_monotonic",
+      "seed": 17,
+      "checkpoint_step": 170,
+      "path": "outputs/confirmatory_srn_final/confirmatory_checkpoints/High_monotonic_seed_17.pt",
+      "checkpoint_sha256": "cb7c8d0ef2477a204f45aa52f52b4f2069342d591f80785d6c96badfbbac38da",
+      "historical_label": "High_monotonic"
+    },
+    {
+      "cohort": "canonical",
+      "model_family": "canonical_srn",
+      "training_objective": "sequence_plus_monotonic_execution",
+      "family": "High_monotonic",
+      "condition": "High_monotonic",
+      "seed": 18,
+      "checkpoint_step": 170,
+      "path": "outputs/confirmatory_srn_final/confirmatory_checkpoints/High_monotonic_seed_18.pt",
+      "checkpoint_sha256": "7891bf4ce75cb0c1508f2f48bc2458720a5ee74c68e0b579c469722c29cc68c8",
+      "historical_label": "High_monotonic"
+    },
+    {
+      "cohort": "canonical",
+      "model_family": "canonical_srn",
+      "training_objective": "sequence_plus_monotonic_execution",
+      "family": "High_monotonic",
+      "condition": "High_monotonic",
+      "seed": 19,
+      "checkpoint_step": 170,
+      "path": "outputs/confirmatory_srn_final/confirmatory_checkpoints/High_monotonic_seed_19.pt",
+      "checkpoint_sha256": "4ae39d3875ce89d675ac25f1df9a57b5a0f9dc2a5e40c78c9daa76f8350344c3",
+      "historical_label": "High_monotonic"
+    },
+    {
+      "cohort": "canonical",
+      "model_family": "canonical_srn",
+      "training_objective": "sequence_plus_monotonic_execution",
+      "family": "Low_monotonic",
+      "condition": "Low_monotonic",
+      "seed": 0,
+      "checkpoint_step": 170,
+      "path": "outputs/confirmatory_srn_final/confirmatory_checkpoints/Low_monotonic_seed_0.pt",
+      "checkpoint_sha256": "e9d7867a7c60b05414c88ea3888e12e643a77354a8f1f0895df99f48d98052d1",
+      "historical_label": "Low_monotonic"
+    },
+    {
+      "cohort": "canonical",
+      "model_family": "canonical_srn",
+      "training_objective": "sequence_plus_monotonic_execution",
+      "family": "Low_monotonic",
+      "condition": "Low_monotonic",
+      "seed": 1,
+      "checkpoint_step": 170,
+      "path": "outputs/confirmatory_srn_final/confirmatory_checkpoints/Low_monotonic_seed_1.pt",
+      "checkpoint_sha256": "5dfb6b565f73e7569b8f18bde13d07e5cf83e0d260ea1b367433d8bad3ee2244",
+      "historical_label": "Low_monotonic"
+    },
+    {
+      "cohort": "canonical",
+      "model_family": "canonical_srn",
+      "training_objective": "sequence_plus_monotonic_execution",
+      "family": "Low_monotonic",
+      "condition": "Low_monotonic",
+      "seed": 2,
+      "checkpoint_step": 170,
+      "path": "outputs/confirmatory_srn_final/confirmatory_checkpoints/Low_monotonic_seed_2.pt",
+      "checkpoint_sha256": "38902560776fb1b906fc48c4dfa62fa55909e3860117d0721fd410bdad2e8cc3",
+      "historical_label": "Low_monotonic"
+    },
+    {
+      "cohort": "canonical",
+      "model_family": "canonical_srn",
+      "training_objective": "sequence_plus_monotonic_execution",
+      "family": "Low_monotonic",
+      "condition": "Low_monotonic",
+      "seed": 3,
+      "checkpoint_step": 170,
+      "path": "outputs/confirmatory_srn_final/confirmatory_checkpoints/Low_monotonic_seed_3.pt",
+      "checkpoint_sha256": "c06a3cbd42f6ef4e0e085e8f37f42b45bb143ef300da100222e696ce2f95e334",
+      "historical_label": "Low_monotonic"
+    },
+    {
+      "cohort": "canonical",
+      "model_family": "canonical_srn",
+      "training_objective": "sequence_plus_monotonic_execution",
+      "family": "Low_monotonic",
+      "condition": "Low_monotonic",
+      "seed": 4,
+      "checkpoint_step": 170,
+      "path": "outputs/confirmatory_srn_final/confirmatory_checkpoints/Low_monotonic_seed_4.pt",
+      "checkpoint_sha256": "7077ee6b060b8f734769c533d8da54abd333b1ad9bb1d634a0ccfa2ae755e6d8",
+      "historical_label": "Low_monotonic"
+    },
+    {
+      "cohort": "canonical",
+      "model_family": "canonical_srn",
+      "training_objective": "sequence_plus_monotonic_execution",
+      "family": "Low_monotonic",
+      "condition": "Low_monotonic",
+      "seed": 5,
+      "checkpoint_step": 170,
+      "path": "outputs/confirmatory_srn_final/confirmatory_checkpoints/Low_monotonic_seed_5.pt",
+      "checkpoint_sha256": "6251927376e5170359c1ce4e2ea431ef7a35b8650d94b9cad7aa6dc66762d641",
+      "historical_label": "Low_monotonic"
+    },
+    {
+      "cohort": "canonical",
+      "model_family": "canonical_srn",
+      "training_objective": "sequence_plus_monotonic_execution",
+      "family": "Low_monotonic",
+      "condition": "Low_monotonic",
+      "seed": 6,
+      "checkpoint_step": 170,
+      "path": "outputs/confirmatory_srn_final/confirmatory_checkpoints/Low_monotonic_seed_6.pt",
+      "checkpoint_sha256": "8c7d1975c1a32028797006ac7adff672708ee5308d27ea4768665863945fc160",
+      "historical_label": "Low_monotonic"
+    },
+    {
+      "cohort": "canonical",
+      "model_family": "canonical_srn",
+      "training_objective": "sequence_plus_monotonic_execution",
+      "family": "Low_monotonic",
+      "condition": "Low_monotonic",
+      "seed": 7,
+      "checkpoint_step": 170,
+      "path": "outputs/confirmatory_srn_final/confirmatory_checkpoints/Low_monotonic_seed_7.pt",
+      "checkpoint_sha256": "3c489625ab5cead8e290756ccdd36b1d4473aa35cbb663aa43638741318ff790",
+      "historical_label": "Low_monotonic"
+    },
+    {
+      "cohort": "canonical",
+      "model_family": "canonical_srn",
+      "training_objective": "sequence_plus_monotonic_execution",
+      "family": "Low_monotonic",
+      "condition": "Low_monotonic",
+      "seed": 8,
+      "checkpoint_step": 170,
+      "path": "outputs/confirmatory_srn_final/confirmatory_checkpoints/Low_monotonic_seed_8.pt",
+      "checkpoint_sha256": "1f433e2efafec8361a0255b3c1fa69314e106e97006e25e96b6f245234e729fb",
+      "historical_label": "Low_monotonic"
+    },
+    {
+      "cohort": "canonical",
+      "model_family": "canonical_srn",
+      "training_objective": "sequence_plus_monotonic_execution",
+      "family": "Low_monotonic",
+      "condition": "Low_monotonic",
+      "seed": 9,
+      "checkpoint_step": 170,
+      "path": "outputs/confirmatory_srn_final/confirmatory_checkpoints/Low_monotonic_seed_9.pt",
+      "checkpoint_sha256": "678872dd47d959d792d209566a111f912eac3fc5e0ee4b1052e3e4bd4279d2ce",
+      "historical_label": "Low_monotonic"
+    },
+    {
+      "cohort": "canonical",
+      "model_family": "canonical_srn",
+      "training_objective": "sequence_plus_monotonic_execution",
+      "family": "Low_monotonic",
+      "condition": "Low_monotonic",
+      "seed": 10,
+      "checkpoint_step": 170,
+      "path": "outputs/confirmatory_srn_final/confirmatory_checkpoints/Low_monotonic_seed_10.pt",
+      "checkpoint_sha256": "89b41273304fb213feb444525da4459b11def9695d74889c3bc039015146e40c",
+      "historical_label": "Low_monotonic"
+    },
+    {
+      "cohort": "canonical",
+      "model_family": "canonical_srn",
+      "training_objective": "sequence_plus_monotonic_execution",
+      "family": "Low_monotonic",
+      "condition": "Low_monotonic",
+      "seed": 11,
+      "checkpoint_step": 170,
+      "path": "outputs/confirmatory_srn_final/confirmatory_checkpoints/Low_monotonic_seed_11.pt",
+      "checkpoint_sha256": "f333a6639ae515c7caa1b16713d390af2cfd305bdb7cafd781ae20e022576d13",
+      "historical_label": "Low_monotonic"
+    },
+    {
+      "cohort": "canonical",
+      "model_family": "canonical_srn",
+      "training_objective": "sequence_plus_monotonic_execution",
+      "family": "Low_monotonic",
+      "condition": "Low_monotonic",
+      "seed": 12,
+      "checkpoint_step": 170,
+      "path": "outputs/confirmatory_srn_final/confirmatory_checkpoints/Low_monotonic_seed_12.pt",
+      "checkpoint_sha256": "e87e211015b2c6ff2c79e399cd45ee4c9ca64b77757692f02a1d2998676411a1",
+      "historical_label": "Low_monotonic"
+    },
+    {
+      "cohort": "canonical",
+      "model_family": "canonical_srn",
+      "training_objective": "sequence_plus_monotonic_execution",
+      "family": "Low_monotonic",
+      "condition": "Low_monotonic",
+      "seed": 13,
+      "checkpoint_step": 170,
+      "path": "outputs/confirmatory_srn_final/confirmatory_checkpoints/Low_monotonic_seed_13.pt",
+      "checkpoint_sha256": "2a28af71b45fb63f3d1b1ef5675d297952937ea0e4e79611b853a6d8bc0f1360",
+      "historical_label": "Low_monotonic"
+    },
+    {
+      "cohort": "canonical",
+      "model_family": "canonical_srn",
+      "training_objective": "sequence_plus_monotonic_execution",
+      "family": "Low_monotonic",
+      "condition": "Low_monotonic",
+      "seed": 14,
+      "checkpoint_step": 170,
+      "path": "outputs/confirmatory_srn_final/confirmatory_checkpoints/Low_monotonic_seed_14.pt",
+      "checkpoint_sha256": "cf38e15675888f539c92f7ce94350a81c2d81d593fda092cad7d71f2cdf766cb",
+      "historical_label": "Low_monotonic"
+    },
+    {
+      "cohort": "canonical",
+      "model_family": "canonical_srn",
+      "training_objective": "sequence_plus_monotonic_execution",
+      "family": "Low_monotonic",
+      "condition": "Low_monotonic",
+      "seed": 15,
+      "checkpoint_step": 170,
+      "path": "outputs/confirmatory_srn_final/confirmatory_checkpoints/Low_monotonic_seed_15.pt",
+      "checkpoint_sha256": "507b6b1ac202f27d3a2f45753a82de0fc4d98945128f52f87a759647feca81d7",
+      "historical_label": "Low_monotonic"
+    },
+    {
+      "cohort": "canonical",
+      "model_family": "canonical_srn",
+      "training_objective": "sequence_plus_monotonic_execution",
+      "family": "Low_monotonic",
+      "condition": "Low_monotonic",
+      "seed": 16,
+      "checkpoint_step": 170,
+      "path": "outputs/confirmatory_srn_final/confirmatory_checkpoints/Low_monotonic_seed_16.pt",
+      "checkpoint_sha256": "05380e6b9db654a9672ede3a29d97fa00fc704df3ba903b6319a6cf33dc53150",
+      "historical_label": "Low_monotonic"
+    },
+    {
+      "cohort": "canonical",
+      "model_family": "canonical_srn",
+      "training_objective": "sequence_plus_monotonic_execution",
+      "family": "Low_monotonic",
+      "condition": "Low_monotonic",
+      "seed": 17,
+      "checkpoint_step": 170,
+      "path": "outputs/confirmatory_srn_final/confirmatory_checkpoints/Low_monotonic_seed_17.pt",
+      "checkpoint_sha256": "3b8a730662a6a50c4462659da4404cb624c60e8a53d1acfcf1420628002480db",
+      "historical_label": "Low_monotonic"
+    },
+    {
+      "cohort": "canonical",
+      "model_family": "canonical_srn",
+      "training_objective": "sequence_plus_monotonic_execution",
+      "family": "Low_monotonic",
+      "condition": "Low_monotonic",
+      "seed": 18,
+      "checkpoint_step": 170,
+      "path": "outputs/confirmatory_srn_final/confirmatory_checkpoints/Low_monotonic_seed_18.pt",
+      "checkpoint_sha256": "edcc2d26ca5739e1eff2de98df7e17a3f703eca99bebbba6f30272dab7e14d84",
+      "historical_label": "Low_monotonic"
+    },
+    {
+      "cohort": "canonical",
+      "model_family": "canonical_srn",
+      "training_objective": "sequence_plus_monotonic_execution",
+      "family": "Low_monotonic",
+      "condition": "Low_monotonic",
+      "seed": 19,
+      "checkpoint_step": 170,
+      "path": "outputs/confirmatory_srn_final/confirmatory_checkpoints/Low_monotonic_seed_19.pt",
+      "checkpoint_sha256": "9cdf0573959159c91025f56fbaf5e3fc114189b007e4b29edaed20345105d576",
+      "historical_label": "Low_monotonic"
+    },
+    {
+      "cohort": "constructive",
+      "model_family": "canonical_srn",
+      "training_objective": "sequence_CE",
+      "family": "High_monotonic",
+      "condition": "C0_canonical",
+      "seed": 0,
+      "checkpoint_step": 170,
+      "path": "analysis/phase1l/checkpoints/C0_canonical_High_monotonic_seed_0.pt",
+      "checkpoint_sha256": "afb28604e9fc2eeff722abc12b89fa389d7896225e9a3414dfefcbf2ebcbf2ce",
+      "historical_label": "C0_canonical"
+    },
+    {
+      "cohort": "constructive",
+      "model_family": "canonical_srn",
+      "training_objective": "sequence_CE",
+      "family": "High_monotonic",
+      "condition": "C0_canonical",
+      "seed": 1,
+      "checkpoint_step": 170,
+      "path": "analysis/phase1l/checkpoints/C0_canonical_High_monotonic_seed_1.pt",
+      "checkpoint_sha256": "08dc9bb2c4daf5d1d92914b2ab7f665dce9fc9c7fe5d94d1bacbe0f266f752f4",
+      "historical_label": "C0_canonical"
+    },
+    {
+      "cohort": "constructive",
+      "model_family": "canonical_srn",
+      "training_objective": "sequence_CE",
+      "family": "High_monotonic",
+      "condition": "C0_canonical",
+      "seed": 2,
+      "checkpoint_step": 170,
+      "path": "analysis/phase1l/checkpoints/C0_canonical_High_monotonic_seed_2.pt",
+      "checkpoint_sha256": "ff93eac73ab67b1d3842320b153f4370e80e64821e1c129e63dea2462bc51966",
+      "historical_label": "C0_canonical"
+    },
+    {
+      "cohort": "constructive",
+      "model_family": "canonical_srn",
+      "training_objective": "sequence_CE",
+      "family": "High_monotonic",
+      "condition": "C0_canonical",
+      "seed": 3,
+      "checkpoint_step": 170,
+      "path": "analysis/phase1l/checkpoints/C0_canonical_High_monotonic_seed_3.pt",
+      "checkpoint_sha256": "0666a8b9f5c16943107bda74ce910c322f4abe9402eead30be8dcd49efc884f0",
+      "historical_label": "C0_canonical"
+    },
+    {
+      "cohort": "constructive",
+      "model_family": "canonical_srn",
+      "training_objective": "sequence_CE",
+      "family": "High_monotonic",
+      "condition": "C0_canonical",
+      "seed": 4,
+      "checkpoint_step": 170,
+      "path": "analysis/phase1l/checkpoints/C0_canonical_High_monotonic_seed_4.pt",
+      "checkpoint_sha256": "3fb3b24625b2410a27c72f52ff53e919d7251eed770251056c87fff96147839e",
+      "historical_label": "C0_canonical"
+    },
+    {
+      "cohort": "constructive",
+      "model_family": "canonical_srn",
+      "training_objective": "sequence_CE",
+      "family": "High_monotonic",
+      "condition": "C0_canonical",
+      "seed": 5,
+      "checkpoint_step": 170,
+      "path": "analysis/phase1l/checkpoints/C0_canonical_High_monotonic_seed_5.pt",
+      "checkpoint_sha256": "ed5ae51839c954a88ea6d4b0db6b0d3020cc4018f859ab64bfae8e26c123eff0",
+      "historical_label": "C0_canonical"
+    },
+    {
+      "cohort": "constructive",
+      "model_family": "canonical_srn",
+      "training_objective": "sequence_CE",
+      "family": "High_monotonic",
+      "condition": "C0_canonical",
+      "seed": 6,
+      "checkpoint_step": 170,
+      "path": "analysis/phase1l/checkpoints/C0_canonical_High_monotonic_seed_6.pt",
+      "checkpoint_sha256": "70ac10de5870d2ff23ff58c88abb8c619ae1f8fab2894ff41555a01b3bfbe9d2",
+      "historical_label": "C0_canonical"
+    },
+    {
+      "cohort": "constructive",
+      "model_family": "canonical_srn",
+      "training_objective": "sequence_CE",
+      "family": "High_monotonic",
+      "condition": "C0_canonical",
+      "seed": 7,
+      "checkpoint_step": 170,
+      "path": "analysis/phase1l/checkpoints/C0_canonical_High_monotonic_seed_7.pt",
+      "checkpoint_sha256": "f951b4cbf8e064fb7e1d3775b64cc75cd92c1e43b68f963775ea6fc12d2b1a72",
+      "historical_label": "C0_canonical"
+    },
+    {
+      "cohort": "constructive",
+      "model_family": "canonical_srn",
+      "training_objective": "sequence_CE",
+      "family": "High_monotonic",
+      "condition": "C0_canonical",
+      "seed": 8,
+      "checkpoint_step": 170,
+      "path": "analysis/phase1l/checkpoints/C0_canonical_High_monotonic_seed_8.pt",
+      "checkpoint_sha256": "7006b3505e1e932efa559be7c53403096de753a901e23ad6740fee1483564860",
+      "historical_label": "C0_canonical"
+    },
+    {
+      "cohort": "constructive",
+      "model_family": "canonical_srn",
+      "training_objective": "sequence_CE",
+      "family": "High_monotonic",
+      "condition": "C0_canonical",
+      "seed": 9,
+      "checkpoint_step": 170,
+      "path": "analysis/phase1l/checkpoints/C0_canonical_High_monotonic_seed_9.pt",
+      "checkpoint_sha256": "a81a8e84018f27fc7e13b602e380a01a6872ba30991c9575c6db06edcd4c91b9",
+      "historical_label": "C0_canonical"
+    },
+    {
+      "cohort": "constructive",
+      "model_family": "canonical_srn",
+      "training_objective": "sequence_CE",
+      "family": "High_monotonic",
+      "condition": "C0_canonical",
+      "seed": 10,
+      "checkpoint_step": 170,
+      "path": "analysis/phase1l/checkpoints/C0_canonical_High_monotonic_seed_10.pt",
+      "checkpoint_sha256": "1fc1de0ce3b30fba7afae76b6f58a3650abf9c88c1a636f58b89ca997e4df3e9",
+      "historical_label": "C0_canonical"
+    },
+    {
+      "cohort": "constructive",
+      "model_family": "canonical_srn",
+      "training_objective": "sequence_CE",
+      "family": "High_monotonic",
+      "condition": "C0_canonical",
+      "seed": 11,
+      "checkpoint_step": 170,
+      "path": "analysis/phase1l/checkpoints/C0_canonical_High_monotonic_seed_11.pt",
+      "checkpoint_sha256": "89049212825328009396f63a254ffbfe1f2cd2f5b3c290052f5f8039e4b329bb",
+      "historical_label": "C0_canonical"
+    },
+    {
+      "cohort": "constructive",
+      "model_family": "canonical_srn",
+      "training_objective": "sequence_CE",
+      "family": "High_monotonic",
+      "condition": "C0_canonical",
+      "seed": 12,
+      "checkpoint_step": 170,
+      "path": "analysis/phase1l/checkpoints/C0_canonical_High_monotonic_seed_12.pt",
+      "checkpoint_sha256": "3620dce17150b50324caa7a54a25eb8f8557afd9f504dbc1087c0078ddbe0cd6",
+      "historical_label": "C0_canonical"
+    },
+    {
+      "cohort": "constructive",
+      "model_family": "canonical_srn",
+      "training_objective": "sequence_CE",
+      "family": "High_monotonic",
+      "condition": "C0_canonical",
+      "seed": 13,
+      "checkpoint_step": 170,
+      "path": "analysis/phase1l/checkpoints/C0_canonical_High_monotonic_seed_13.pt",
+      "checkpoint_sha256": "07c230b6fadaa2a539863b056881e628f6218a17abfd6198d777fe294822c07e",
+      "historical_label": "C0_canonical"
+    },
+    {
+      "cohort": "constructive",
+      "model_family": "canonical_srn",
+      "training_objective": "sequence_CE",
+      "family": "High_monotonic",
+      "condition": "C0_canonical",
+      "seed": 14,
+      "checkpoint_step": 170,
+      "path": "analysis/phase1l/checkpoints/C0_canonical_High_monotonic_seed_14.pt",
+      "checkpoint_sha256": "c400d0b1e6535a956d2afbddd13150c608e22c46adb66434404257781155da88",
+      "historical_label": "C0_canonical"
+    },
+    {
+      "cohort": "constructive",
+      "model_family": "canonical_srn",
+      "training_objective": "sequence_CE",
+      "family": "High_monotonic",
+      "condition": "C0_canonical",
+      "seed": 15,
+      "checkpoint_step": 170,
+      "path": "analysis/phase1l/checkpoints/C0_canonical_High_monotonic_seed_15.pt",
+      "checkpoint_sha256": "f5aab78dd77d4a81a70b2c6d1235b279ccb9daf81e485da29ed00fb5851f87e3",
+      "historical_label": "C0_canonical"
+    },
+    {
+      "cohort": "constructive",
+      "model_family": "canonical_srn",
+      "training_objective": "sequence_CE",
+      "family": "High_monotonic",
+      "condition": "C0_canonical",
+      "seed": 16,
+      "checkpoint_step": 170,
+      "path": "analysis/phase1l/checkpoints/C0_canonical_High_monotonic_seed_16.pt",
+      "checkpoint_sha256": "d15609427cb1e591d99ad8d5249aa8d5773199445dfa59d34b266e2f149ca8bf",
+      "historical_label": "C0_canonical"
+    },
+    {
+      "cohort": "constructive",
+      "model_family": "canonical_srn",
+      "training_objective": "sequence_CE",
+      "family": "High_monotonic",
+      "condition": "C0_canonical",
+      "seed": 17,
+      "checkpoint_step": 170,
+      "path": "analysis/phase1l/checkpoints/C0_canonical_High_monotonic_seed_17.pt",
+      "checkpoint_sha256": "bff5ab3208f7347b9b850c515d68cd8139a5cbc3276fe63c4bf96fe356c3001b",
+      "historical_label": "C0_canonical"
+    },
+    {
+      "cohort": "constructive",
+      "model_family": "canonical_srn",
+      "training_objective": "sequence_CE",
+      "family": "High_monotonic",
+      "condition": "C0_canonical",
+      "seed": 18,
+      "checkpoint_step": 170,
+      "path": "analysis/phase1l/checkpoints/C0_canonical_High_monotonic_seed_18.pt",
+      "checkpoint_sha256": "da648db81e49fee586d8a8b6d48e973916ed0b1746b50b9a7f07af7e9565a2d2",
+      "historical_label": "C0_canonical"
+    },
+    {
+      "cohort": "constructive",
+      "model_family": "canonical_srn",
+      "training_objective": "sequence_CE",
+      "family": "High_monotonic",
+      "condition": "C0_canonical",
+      "seed": 19,
+      "checkpoint_step": 170,
+      "path": "analysis/phase1l/checkpoints/C0_canonical_High_monotonic_seed_19.pt",
+      "checkpoint_sha256": "a138a105f2ebba4d74b13e9e4208f5755ebc6a638aad9d0b2ca9b9aaa988a70d",
+      "historical_label": "C0_canonical"
+    },
+    {
+      "cohort": "constructive",
+      "model_family": "contrast_srn",
+      "training_objective": "sequence_CE",
+      "family": "High_monotonic",
+      "condition": "C1_contrast_only",
+      "seed": 0,
+      "checkpoint_step": 170,
+      "path": "analysis/phase1l/checkpoints/C1_contrast_only_High_monotonic_seed_0.pt",
+      "checkpoint_sha256": "600ff9c4c8ed39305b824e102b66b4acba62ad2f6bd3225d88ae13b0b4efa2fe",
+      "historical_label": "C1_contrast_only"
+    },
+    {
+      "cohort": "constructive",
+      "model_family": "contrast_srn",
+      "training_objective": "sequence_CE",
+      "family": "High_monotonic",
+      "condition": "C1_contrast_only",
+      "seed": 1,
+      "checkpoint_step": 170,
+      "path": "analysis/phase1l/checkpoints/C1_contrast_only_High_monotonic_seed_1.pt",
+      "checkpoint_sha256": "4869a8cdfd7efa030af618b5a35aed9b67fc7ceb43cae858473d5698f2443c6e",
+      "historical_label": "C1_contrast_only"
+    },
+    {
+      "cohort": "constructive",
+      "model_family": "contrast_srn",
+      "training_objective": "sequence_CE",
+      "family": "High_monotonic",
+      "condition": "C1_contrast_only",
+      "seed": 2,
+      "checkpoint_step": 170,
+      "path": "analysis/phase1l/checkpoints/C1_contrast_only_High_monotonic_seed_2.pt",
+      "checkpoint_sha256": "336165289e2ac65537e64cefdfce9706edafc06e8faedf1abbc1251009dd1038",
+      "historical_label": "C1_contrast_only"
+    },
+    {
+      "cohort": "constructive",
+      "model_family": "contrast_srn",
+      "training_objective": "sequence_CE",
+      "family": "High_monotonic",
+      "condition": "C1_contrast_only",
+      "seed": 3,
+      "checkpoint_step": 170,
+      "path": "analysis/phase1l/checkpoints/C1_contrast_only_High_monotonic_seed_3.pt",
+      "checkpoint_sha256": "ae852d7e0fecdc59f5320e5600fd448b06f1ee06e888bc598471a5bd9997b2c2",
+      "historical_label": "C1_contrast_only"
+    },
+    {
+      "cohort": "constructive",
+      "model_family": "contrast_srn",
+      "training_objective": "sequence_CE",
+      "family": "High_monotonic",
+      "condition": "C1_contrast_only",
+      "seed": 4,
+      "checkpoint_step": 170,
+      "path": "analysis/phase1l/checkpoints/C1_contrast_only_High_monotonic_seed_4.pt",
+      "checkpoint_sha256": "8df07921c83917860a1712968b3198a1d48d0479caee1e77f8d1fdc19c6da9df",
+      "historical_label": "C1_contrast_only"
+    },
+    {
+      "cohort": "constructive",
+      "model_family": "contrast_srn",
+      "training_objective": "sequence_CE",
+      "family": "High_monotonic",
+      "condition": "C1_contrast_only",
+      "seed": 5,
+      "checkpoint_step": 170,
+      "path": "analysis/phase1l/checkpoints/C1_contrast_only_High_monotonic_seed_5.pt",
+      "checkpoint_sha256": "6d70738839ca37eb1a7e190d87f9fa6c0c868b252dcf7ae00c9717850166218c",
+      "historical_label": "C1_contrast_only"
+    },
+    {
+      "cohort": "constructive",
+      "model_family": "contrast_srn",
+      "training_objective": "sequence_CE",
+      "family": "High_monotonic",
+      "condition": "C1_contrast_only",
+      "seed": 6,
+      "checkpoint_step": 170,
+      "path": "analysis/phase1l/checkpoints/C1_contrast_only_High_monotonic_seed_6.pt",
+      "checkpoint_sha256": "fef2dbcfa19cc902213a33d3bfe43ed9d76fcce660996469f84310c560162ffb",
+      "historical_label": "C1_contrast_only"
+    },
+    {
+      "cohort": "constructive",
+      "model_family": "contrast_srn",
+      "training_objective": "sequence_CE",
+      "family": "High_monotonic",
+      "condition": "C1_contrast_only",
+      "seed": 7,
+      "checkpoint_step": 170,
+      "path": "analysis/phase1l/checkpoints/C1_contrast_only_High_monotonic_seed_7.pt",
+      "checkpoint_sha256": "f87f70c79dc6e959df7fa41916a48b8bb4bac86b11eb26e95c5572095da5a783",
+      "historical_label": "C1_contrast_only"
+    },
+    {
+      "cohort": "constructive",
+      "model_family": "contrast_srn",
+      "training_objective": "sequence_CE",
+      "family": "High_monotonic",
+      "condition": "C1_contrast_only",
+      "seed": 8,
+      "checkpoint_step": 170,
+      "path": "analysis/phase1l/checkpoints/C1_contrast_only_High_monotonic_seed_8.pt",
+      "checkpoint_sha256": "669eb63058de69c2e5eceae033920db8f6dfacd9052ff3c236c8720d6e34982e",
+      "historical_label": "C1_contrast_only"
+    },
+    {
+      "cohort": "constructive",
+      "model_family": "contrast_srn",
+      "training_objective": "sequence_CE",
+      "family": "High_monotonic",
+      "condition": "C1_contrast_only",
+      "seed": 9,
+      "checkpoint_step": 170,
+      "path": "analysis/phase1l/checkpoints/C1_contrast_only_High_monotonic_seed_9.pt",
+      "checkpoint_sha256": "6d140d43c4e0b2574ac9fe233273f0383f6f50ef718fa2100542a62b54ff472f",
+      "historical_label": "C1_contrast_only"
+    },
+    {
+      "cohort": "constructive",
+      "model_family": "contrast_srn",
+      "training_objective": "sequence_CE",
+      "family": "High_monotonic",
+      "condition": "C1_contrast_only",
+      "seed": 10,
+      "checkpoint_step": 170,
+      "path": "analysis/phase1l/checkpoints/C1_contrast_only_High_monotonic_seed_10.pt",
+      "checkpoint_sha256": "19f7af327bd2df2dc7ed6ba489235a51155e94c15debf288b408d82f920cbe44",
+      "historical_label": "C1_contrast_only"
+    },
+    {
+      "cohort": "constructive",
+      "model_family": "contrast_srn",
+      "training_objective": "sequence_CE",
+      "family": "High_monotonic",
+      "condition": "C1_contrast_only",
+      "seed": 11,
+      "checkpoint_step": 170,
+      "path": "analysis/phase1l/checkpoints/C1_contrast_only_High_monotonic_seed_11.pt",
+      "checkpoint_sha256": "1773b4dee90fba95551e7a7a02e8efbab4d5855c3380046a2625d807c8720068",
+      "historical_label": "C1_contrast_only"
+    },
+    {
+      "cohort": "constructive",
+      "model_family": "contrast_srn",
+      "training_objective": "sequence_CE",
+      "family": "High_monotonic",
+      "condition": "C1_contrast_only",
+      "seed": 12,
+      "checkpoint_step": 170,
+      "path": "analysis/phase1l/checkpoints/C1_contrast_only_High_monotonic_seed_12.pt",
+      "checkpoint_sha256": "58bc78e0a21e3c18680130e8de50e739a5be9847b351fc3a447855a683d3b266",
+      "historical_label": "C1_contrast_only"
+    },
+    {
+      "cohort": "constructive",
+      "model_family": "contrast_srn",
+      "training_objective": "sequence_CE",
+      "family": "High_monotonic",
+      "condition": "C1_contrast_only",
+      "seed": 13,
+      "checkpoint_step": 170,
+      "path": "analysis/phase1l/checkpoints/C1_contrast_only_High_monotonic_seed_13.pt",
+      "checkpoint_sha256": "83e27973836484487a0371456ac031d03564b1209ce91ef215fa64a711751c5f",
+      "historical_label": "C1_contrast_only"
+    },
+    {
+      "cohort": "constructive",
+      "model_family": "contrast_srn",
+      "training_objective": "sequence_CE",
+      "family": "High_monotonic",
+      "condition": "C1_contrast_only",
+      "seed": 14,
+      "checkpoint_step": 170,
+      "path": "analysis/phase1l/checkpoints/C1_contrast_only_High_monotonic_seed_14.pt",
+      "checkpoint_sha256": "1b99e01cf253069c00b09563bf47f7de02277fc634a0273fc367ace78f751036",
+      "historical_label": "C1_contrast_only"
+    },
+    {
+      "cohort": "constructive",
+      "model_family": "contrast_srn",
+      "training_objective": "sequence_CE",
+      "family": "High_monotonic",
+      "condition": "C1_contrast_only",
+      "seed": 15,
+      "checkpoint_step": 170,
+      "path": "analysis/phase1l/checkpoints/C1_contrast_only_High_monotonic_seed_15.pt",
+      "checkpoint_sha256": "7928103bd8d2f52270c96984d384f1dab74548d42b2ca6f2564b0f635375501a",
+      "historical_label": "C1_contrast_only"
+    },
+    {
+      "cohort": "constructive",
+      "model_family": "contrast_srn",
+      "training_objective": "sequence_CE",
+      "family": "High_monotonic",
+      "condition": "C1_contrast_only",
+      "seed": 16,
+      "checkpoint_step": 170,
+      "path": "analysis/phase1l/checkpoints/C1_contrast_only_High_monotonic_seed_16.pt",
+      "checkpoint_sha256": "5cac043436f4cbea00ac83aeff6368603e05a7ed8b7b28be5a84e7e9297d80e6",
+      "historical_label": "C1_contrast_only"
+    },
+    {
+      "cohort": "constructive",
+      "model_family": "contrast_srn",
+      "training_objective": "sequence_CE",
+      "family": "High_monotonic",
+      "condition": "C1_contrast_only",
+      "seed": 17,
+      "checkpoint_step": 170,
+      "path": "analysis/phase1l/checkpoints/C1_contrast_only_High_monotonic_seed_17.pt",
+      "checkpoint_sha256": "9ac84cf8c2cc795a76c1fd2baa64f66d6c06cb73e72cbc68f2f416a2d7ea1338",
+      "historical_label": "C1_contrast_only"
+    },
+    {
+      "cohort": "constructive",
+      "model_family": "contrast_srn",
+      "training_objective": "sequence_CE",
+      "family": "High_monotonic",
+      "condition": "C1_contrast_only",
+      "seed": 18,
+      "checkpoint_step": 170,
+      "path": "analysis/phase1l/checkpoints/C1_contrast_only_High_monotonic_seed_18.pt",
+      "checkpoint_sha256": "1c22df287800002a927d7e8f856a31ffe8cebc3e3967e4db2832233ff33e20bb",
+      "historical_label": "C1_contrast_only"
+    },
+    {
+      "cohort": "constructive",
+      "model_family": "contrast_srn",
+      "training_objective": "sequence_CE",
+      "family": "High_monotonic",
+      "condition": "C1_contrast_only",
+      "seed": 19,
+      "checkpoint_step": 170,
+      "path": "analysis/phase1l/checkpoints/C1_contrast_only_High_monotonic_seed_19.pt",
+      "checkpoint_sha256": "f8177057c1d97fd8f52fc38e67d9666c5f214b387c607abad41d1a788d920dc2",
+      "historical_label": "C1_contrast_only"
+    },
+    {
+      "cohort": "constructive",
+      "model_family": "canonical_srn",
+      "training_objective": "sequence_CE_plus_closure",
+      "family": "High_monotonic",
+      "condition": "C2_closure_only",
+      "seed": 0,
+      "checkpoint_step": 170,
+      "path": "analysis/phase1l/checkpoints/C2_closure_only_High_monotonic_seed_0.pt",
+      "checkpoint_sha256": "6fffa87ce423ea5f77044e07b94483e078729b4ac2cd5d37776c0f1b39b4040a",
+      "historical_label": "C2_closure_only"
+    },
+    {
+      "cohort": "constructive",
+      "model_family": "canonical_srn",
+      "training_objective": "sequence_CE_plus_closure",
+      "family": "High_monotonic",
+      "condition": "C2_closure_only",
+      "seed": 1,
+      "checkpoint_step": 170,
+      "path": "analysis/phase1l/checkpoints/C2_closure_only_High_monotonic_seed_1.pt",
+      "checkpoint_sha256": "162e553c16b8427559e307f4855e14c9054228d65943e278e02af48a89d862f9",
+      "historical_label": "C2_closure_only"
+    },
+    {
+      "cohort": "constructive",
+      "model_family": "canonical_srn",
+      "training_objective": "sequence_CE_plus_closure",
+      "family": "High_monotonic",
+      "condition": "C2_closure_only",
+      "seed": 2,
+      "checkpoint_step": 170,
+      "path": "analysis/phase1l/checkpoints/C2_closure_only_High_monotonic_seed_2.pt",
+      "checkpoint_sha256": "4e7767db520fc02555f6abbb697b47bc6d41049455b40d0deb8e27585dc87e5b",
+      "historical_label": "C2_closure_only"
+    },
+    {
+      "cohort": "constructive",
+      "model_family": "canonical_srn",
+      "training_objective": "sequence_CE_plus_closure",
+      "family": "High_monotonic",
+      "condition": "C2_closure_only",
+      "seed": 3,
+      "checkpoint_step": 170,
+      "path": "analysis/phase1l/checkpoints/C2_closure_only_High_monotonic_seed_3.pt",
+      "checkpoint_sha256": "058544b3ae03e0b6da86fce9fb2055ae8ba00d702f5e29f31255813ca1869231",
+      "historical_label": "C2_closure_only"
+    },
+    {
+      "cohort": "constructive",
+      "model_family": "canonical_srn",
+      "training_objective": "sequence_CE_plus_closure",
+      "family": "High_monotonic",
+      "condition": "C2_closure_only",
+      "seed": 4,
+      "checkpoint_step": 170,
+      "path": "analysis/phase1l/checkpoints/C2_closure_only_High_monotonic_seed_4.pt",
+      "checkpoint_sha256": "0253ac0b594f10a16f8f70df5e6c693dddabcaefbe974322afd7a46b4cd16603",
+      "historical_label": "C2_closure_only"
+    },
+    {
+      "cohort": "constructive",
+      "model_family": "canonical_srn",
+      "training_objective": "sequence_CE_plus_closure",
+      "family": "High_monotonic",
+      "condition": "C2_closure_only",
+      "seed": 5,
+      "checkpoint_step": 170,
+      "path": "analysis/phase1l/checkpoints/C2_closure_only_High_monotonic_seed_5.pt",
+      "checkpoint_sha256": "6386a2017262fb3946cced65a5796023cb53719520ef4a91aad1d469cef05bc1",
+      "historical_label": "C2_closure_only"
+    },
+    {
+      "cohort": "constructive",
+      "model_family": "canonical_srn",
+      "training_objective": "sequence_CE_plus_closure",
+      "family": "High_monotonic",
+      "condition": "C2_closure_only",
+      "seed": 6,
+      "checkpoint_step": 170,
+      "path": "analysis/phase1l/checkpoints/C2_closure_only_High_monotonic_seed_6.pt",
+      "checkpoint_sha256": "6a56e85b8ecf3d0a330979451eba21013931aee072554bf573c1fe0549140159",
+      "historical_label": "C2_closure_only"
+    },
+    {
+      "cohort": "constructive",
+      "model_family": "canonical_srn",
+      "training_objective": "sequence_CE_plus_closure",
+      "family": "High_monotonic",
+      "condition": "C2_closure_only",
+      "seed": 7,
+      "checkpoint_step": 170,
+      "path": "analysis/phase1l/checkpoints/C2_closure_only_High_monotonic_seed_7.pt",
+      "checkpoint_sha256": "600bd92305c4856de97d30a6b69069381ae42ab39cffe929194291099c2c1960",
+      "historical_label": "C2_closure_only"
+    },
+    {
+      "cohort": "constructive",
+      "model_family": "canonical_srn",
+      "training_objective": "sequence_CE_plus_closure",
+      "family": "High_monotonic",
+      "condition": "C2_closure_only",
+      "seed": 8,
+      "checkpoint_step": 170,
+      "path": "analysis/phase1l/checkpoints/C2_closure_only_High_monotonic_seed_8.pt",
+      "checkpoint_sha256": "c0a513941214f259320716ab81e0762661a76da3035b6f2e5f96e424aa6b6d28",
+      "historical_label": "C2_closure_only"
+    },
+    {
+      "cohort": "constructive",
+      "model_family": "canonical_srn",
+      "training_objective": "sequence_CE_plus_closure",
+      "family": "High_monotonic",
+      "condition": "C2_closure_only",
+      "seed": 9,
+      "checkpoint_step": 170,
+      "path": "analysis/phase1l/checkpoints/C2_closure_only_High_monotonic_seed_9.pt",
+      "checkpoint_sha256": "bf5c4d90ac5cf74ea7a829142052dcdaa9584990f39ff18db4abf81529bb07c6",
+      "historical_label": "C2_closure_only"
+    },
+    {
+      "cohort": "constructive",
+      "model_family": "canonical_srn",
+      "training_objective": "sequence_CE_plus_closure",
+      "family": "High_monotonic",
+      "condition": "C2_closure_only",
+      "seed": 10,
+      "checkpoint_step": 170,
+      "path": "analysis/phase1l/checkpoints/C2_closure_only_High_monotonic_seed_10.pt",
+      "checkpoint_sha256": "e8643d8a3f8ab1a8212c4f131b9b45d5fb1a160ee37547b3bd9636385541ebf5",
+      "historical_label": "C2_closure_only"
+    },
+    {
+      "cohort": "constructive",
+      "model_family": "canonical_srn",
+      "training_objective": "sequence_CE_plus_closure",
+      "family": "High_monotonic",
+      "condition": "C2_closure_only",
+      "seed": 11,
+      "checkpoint_step": 170,
+      "path": "analysis/phase1l/checkpoints/C2_closure_only_High_monotonic_seed_11.pt",
+      "checkpoint_sha256": "6b578689673c1efb0f4b3c911f08a2ec7ac960556fcb18208cf87eb726136d71",
+      "historical_label": "C2_closure_only"
+    },
+    {
+      "cohort": "constructive",
+      "model_family": "canonical_srn",
+      "training_objective": "sequence_CE_plus_closure",
+      "family": "High_monotonic",
+      "condition": "C2_closure_only",
+      "seed": 12,
+      "checkpoint_step": 170,
+      "path": "analysis/phase1l/checkpoints/C2_closure_only_High_monotonic_seed_12.pt",
+      "checkpoint_sha256": "7550c07d20b729c0fade67f5aef6cb39d9e0c9e0e2c411282a4d80506732563c",
+      "historical_label": "C2_closure_only"
+    },
+    {
+      "cohort": "constructive",
+      "model_family": "canonical_srn",
+      "training_objective": "sequence_CE_plus_closure",
+      "family": "High_monotonic",
+      "condition": "C2_closure_only",
+      "seed": 13,
+      "checkpoint_step": 170,
+      "path": "analysis/phase1l/checkpoints/C2_closure_only_High_monotonic_seed_13.pt",
+      "checkpoint_sha256": "000e70eeedfeff781e4d655b5b0c13396aaa36c64d842550d57f8f4887fce121",
+      "historical_label": "C2_closure_only"
+    },
+    {
+      "cohort": "constructive",
+      "model_family": "canonical_srn",
+      "training_objective": "sequence_CE_plus_closure",
+      "family": "High_monotonic",
+      "condition": "C2_closure_only",
+      "seed": 14,
+      "checkpoint_step": 170,
+      "path": "analysis/phase1l/checkpoints/C2_closure_only_High_monotonic_seed_14.pt",
+      "checkpoint_sha256": "4cd7e9b01fae700a3e1073d778a6ed12b5f403bfacf10d929da63fc5a7fd07fc",
+      "historical_label": "C2_closure_only"
+    },
+    {
+      "cohort": "constructive",
+      "model_family": "canonical_srn",
+      "training_objective": "sequence_CE_plus_closure",
+      "family": "High_monotonic",
+      "condition": "C2_closure_only",
+      "seed": 15,
+      "checkpoint_step": 170,
+      "path": "analysis/phase1l/checkpoints/C2_closure_only_High_monotonic_seed_15.pt",
+      "checkpoint_sha256": "128193f5c56d3902ea0e2d4bd559c8a94ff045fdce8f39cd2630c46b09b5a58a",
+      "historical_label": "C2_closure_only"
+    },
+    {
+      "cohort": "constructive",
+      "model_family": "canonical_srn",
+      "training_objective": "sequence_CE_plus_closure",
+      "family": "High_monotonic",
+      "condition": "C2_closure_only",
+      "seed": 16,
+      "checkpoint_step": 170,
+      "path": "analysis/phase1l/checkpoints/C2_closure_only_High_monotonic_seed_16.pt",
+      "checkpoint_sha256": "88f6c410ee9c0bb23e415493a29af8a19967b721352d4e8b30b1e1246507ff57",
+      "historical_label": "C2_closure_only"
+    },
+    {
+      "cohort": "constructive",
+      "model_family": "canonical_srn",
+      "training_objective": "sequence_CE_plus_closure",
+      "family": "High_monotonic",
+      "condition": "C2_closure_only",
+      "seed": 17,
+      "checkpoint_step": 170,
+      "path": "analysis/phase1l/checkpoints/C2_closure_only_High_monotonic_seed_17.pt",
+      "checkpoint_sha256": "1291447895e17b8427e63deb840687d21afabece7b81cbf463d6bc035ee9759b",
+      "historical_label": "C2_closure_only"
+    },
+    {
+      "cohort": "constructive",
+      "model_family": "canonical_srn",
+      "training_objective": "sequence_CE_plus_closure",
+      "family": "High_monotonic",
+      "condition": "C2_closure_only",
+      "seed": 18,
+      "checkpoint_step": 170,
+      "path": "analysis/phase1l/checkpoints/C2_closure_only_High_monotonic_seed_18.pt",
+      "checkpoint_sha256": "601ffa9773879829dfcfd2b3b9293f9aa30990500b5c2c5a09ecaa8808a6ef7c",
+      "historical_label": "C2_closure_only"
+    },
+    {
+      "cohort": "constructive",
+      "model_family": "canonical_srn",
+      "training_objective": "sequence_CE_plus_closure",
+      "family": "High_monotonic",
+      "condition": "C2_closure_only",
+      "seed": 19,
+      "checkpoint_step": 170,
+      "path": "analysis/phase1l/checkpoints/C2_closure_only_High_monotonic_seed_19.pt",
+      "checkpoint_sha256": "d7813b5355ae83e68d3a8a3b38ed7d80be6b65fe7fb93c3ed6ce0de0c3e4aaff",
+      "historical_label": "C2_closure_only"
+    },
+    {
+      "cohort": "constructive",
+      "model_family": "contrast_srn",
+      "training_objective": "sequence_CE_plus_closure",
+      "family": "High_monotonic",
+      "condition": "C3_full",
+      "seed": 0,
+      "checkpoint_step": 170,
+      "path": "analysis/phase1l/checkpoints/C3_full_High_monotonic_seed_0.pt",
+      "checkpoint_sha256": "35d23b7c74ac48a7369f4349daeb5487f51d76eee1aab158ae293f7880ff3c36",
+      "historical_label": "C3_full"
+    },
+    {
+      "cohort": "constructive",
+      "model_family": "contrast_srn",
+      "training_objective": "sequence_CE_plus_closure",
+      "family": "High_monotonic",
+      "condition": "C3_full",
+      "seed": 1,
+      "checkpoint_step": 170,
+      "path": "analysis/phase1l/checkpoints/C3_full_High_monotonic_seed_1.pt",
+      "checkpoint_sha256": "d5a7bf3a54607a353c9302a493588e0dd85c61ef0938a8815a57771c9e3c7b79",
+      "historical_label": "C3_full"
+    },
+    {
+      "cohort": "constructive",
+      "model_family": "contrast_srn",
+      "training_objective": "sequence_CE_plus_closure",
+      "family": "High_monotonic",
+      "condition": "C3_full",
+      "seed": 2,
+      "checkpoint_step": 170,
+      "path": "analysis/phase1l/checkpoints/C3_full_High_monotonic_seed_2.pt",
+      "checkpoint_sha256": "693de5f22c7cc7585181143f0795c557e34cdf5f4c1289525ba231c28f3f8814",
+      "historical_label": "C3_full"
+    },
+    {
+      "cohort": "constructive",
+      "model_family": "contrast_srn",
+      "training_objective": "sequence_CE_plus_closure",
+      "family": "High_monotonic",
+      "condition": "C3_full",
+      "seed": 3,
+      "checkpoint_step": 170,
+      "path": "analysis/phase1l/checkpoints/C3_full_High_monotonic_seed_3.pt",
+      "checkpoint_sha256": "82434c5b383ddb73a8cf2881455f9f66dc6e9b96b526a5745e20e628106063cd",
+      "historical_label": "C3_full"
+    },
+    {
+      "cohort": "constructive",
+      "model_family": "contrast_srn",
+      "training_objective": "sequence_CE_plus_closure",
+      "family": "High_monotonic",
+      "condition": "C3_full",
+      "seed": 4,
+      "checkpoint_step": 170,
+      "path": "analysis/phase1l/checkpoints/C3_full_High_monotonic_seed_4.pt",
+      "checkpoint_sha256": "76d8ac3c592d518c6a223aff690bbf04694e56f45f1c856ba01bfd0a719c7701",
+      "historical_label": "C3_full"
+    },
+    {
+      "cohort": "constructive",
+      "model_family": "contrast_srn",
+      "training_objective": "sequence_CE_plus_closure",
+      "family": "High_monotonic",
+      "condition": "C3_full",
+      "seed": 5,
+      "checkpoint_step": 170,
+      "path": "analysis/phase1l/checkpoints/C3_full_High_monotonic_seed_5.pt",
+      "checkpoint_sha256": "e955dd94a165cfabb6284a16ed9e92da658db4e713bace841913827039e158f0",
+      "historical_label": "C3_full"
+    },
+    {
+      "cohort": "constructive",
+      "model_family": "contrast_srn",
+      "training_objective": "sequence_CE_plus_closure",
+      "family": "High_monotonic",
+      "condition": "C3_full",
+      "seed": 6,
+      "checkpoint_step": 170,
+      "path": "analysis/phase1l/checkpoints/C3_full_High_monotonic_seed_6.pt",
+      "checkpoint_sha256": "4ca43adead76c830ca9d8f309b0d62f14b36fa322b95e914073a7296fff00e51",
+      "historical_label": "C3_full"
+    },
+    {
+      "cohort": "constructive",
+      "model_family": "contrast_srn",
+      "training_objective": "sequence_CE_plus_closure",
+      "family": "High_monotonic",
+      "condition": "C3_full",
+      "seed": 7,
+      "checkpoint_step": 170,
+      "path": "analysis/phase1l/checkpoints/C3_full_High_monotonic_seed_7.pt",
+      "checkpoint_sha256": "40546278ad93a19a8b6a30409bf623b40fe2b7759fc1dde4b5fc5bfb8ef0ec8c",
+      "historical_label": "C3_full"
+    },
+    {
+      "cohort": "constructive",
+      "model_family": "contrast_srn",
+      "training_objective": "sequence_CE_plus_closure",
+      "family": "High_monotonic",
+      "condition": "C3_full",
+      "seed": 8,
+      "checkpoint_step": 170,
+      "path": "analysis/phase1l/checkpoints/C3_full_High_monotonic_seed_8.pt",
+      "checkpoint_sha256": "ad42a098474d13c39aeff4b20c9e293121ab6fa2de39985be6e287f29700705a",
+      "historical_label": "C3_full"
+    },
+    {
+      "cohort": "constructive",
+      "model_family": "contrast_srn",
+      "training_objective": "sequence_CE_plus_closure",
+      "family": "High_monotonic",
+      "condition": "C3_full",
+      "seed": 9,
+      "checkpoint_step": 170,
+      "path": "analysis/phase1l/checkpoints/C3_full_High_monotonic_seed_9.pt",
+      "checkpoint_sha256": "0deefc5635f611bf6bea2e5e1c5d23df5190d6345ce676fdb13bbdf3caa77461",
+      "historical_label": "C3_full"
+    },
+    {
+      "cohort": "constructive",
+      "model_family": "contrast_srn",
+      "training_objective": "sequence_CE_plus_closure",
+      "family": "High_monotonic",
+      "condition": "C3_full",
+      "seed": 10,
+      "checkpoint_step": 170,
+      "path": "analysis/phase1l/checkpoints/C3_full_High_monotonic_seed_10.pt",
+      "checkpoint_sha256": "3aa04c29927f0173291158e5f2e8bd9adc51032d8ee88fcbeb87906863dc6262",
+      "historical_label": "C3_full"
+    },
+    {
+      "cohort": "constructive",
+      "model_family": "contrast_srn",
+      "training_objective": "sequence_CE_plus_closure",
+      "family": "High_monotonic",
+      "condition": "C3_full",
+      "seed": 11,
+      "checkpoint_step": 170,
+      "path": "analysis/phase1l/checkpoints/C3_full_High_monotonic_seed_11.pt",
+      "checkpoint_sha256": "2a478f47b9575507f21b8e7e047ae07d91413cc9a72e0caca880fec1fc045088",
+      "historical_label": "C3_full"
+    },
+    {
+      "cohort": "constructive",
+      "model_family": "contrast_srn",
+      "training_objective": "sequence_CE_plus_closure",
+      "family": "High_monotonic",
+      "condition": "C3_full",
+      "seed": 12,
+      "checkpoint_step": 170,
+      "path": "analysis/phase1l/checkpoints/C3_full_High_monotonic_seed_12.pt",
+      "checkpoint_sha256": "c2450fb90705ed672460ec982496e9f87982523e3111eb8818f0b23ed51099b5",
+      "historical_label": "C3_full"
+    },
+    {
+      "cohort": "constructive",
+      "model_family": "contrast_srn",
+      "training_objective": "sequence_CE_plus_closure",
+      "family": "High_monotonic",
+      "condition": "C3_full",
+      "seed": 13,
+      "checkpoint_step": 170,
+      "path": "analysis/phase1l/checkpoints/C3_full_High_monotonic_seed_13.pt",
+      "checkpoint_sha256": "2df27a66d041e1b2bea62476245a823f5184ab3e675f7d7b5802bae931c569b3",
+      "historical_label": "C3_full"
+    },
+    {
+      "cohort": "constructive",
+      "model_family": "contrast_srn",
+      "training_objective": "sequence_CE_plus_closure",
+      "family": "High_monotonic",
+      "condition": "C3_full",
+      "seed": 14,
+      "checkpoint_step": 170,
+      "path": "analysis/phase1l/checkpoints/C3_full_High_monotonic_seed_14.pt",
+      "checkpoint_sha256": "c8e75d6dda3e047983491665a59009c9793001032cca1cc3740845617088ce23",
+      "historical_label": "C3_full"
+    },
+    {
+      "cohort": "constructive",
+      "model_family": "contrast_srn",
+      "training_objective": "sequence_CE_plus_closure",
+      "family": "High_monotonic",
+      "condition": "C3_full",
+      "seed": 15,
+      "checkpoint_step": 170,
+      "path": "analysis/phase1l/checkpoints/C3_full_High_monotonic_seed_15.pt",
+      "checkpoint_sha256": "8afb9b882a8d1009b48b96860e2c62cbb96c31442971553844e678373a3b72be",
+      "historical_label": "C3_full"
+    },
+    {
+      "cohort": "constructive",
+      "model_family": "contrast_srn",
+      "training_objective": "sequence_CE_plus_closure",
+      "family": "High_monotonic",
+      "condition": "C3_full",
+      "seed": 16,
+      "checkpoint_step": 170,
+      "path": "analysis/phase1l/checkpoints/C3_full_High_monotonic_seed_16.pt",
+      "checkpoint_sha256": "c1ba315c4b40e49d3fe73d36d4f980dff9dc5a73599416685ea3f5c4a1c48f33",
+      "historical_label": "C3_full"
+    },
+    {
+      "cohort": "constructive",
+      "model_family": "contrast_srn",
+      "training_objective": "sequence_CE_plus_closure",
+      "family": "High_monotonic",
+      "condition": "C3_full",
+      "seed": 17,
+      "checkpoint_step": 170,
+      "path": "analysis/phase1l/checkpoints/C3_full_High_monotonic_seed_17.pt",
+      "checkpoint_sha256": "0707ff254fc0efe038f4636816606edcaad1b54c9cc3f4b1b62e283730b24761",
+      "historical_label": "C3_full"
+    },
+    {
+      "cohort": "constructive",
+      "model_family": "contrast_srn",
+      "training_objective": "sequence_CE_plus_closure",
+      "family": "High_monotonic",
+      "condition": "C3_full",
+      "seed": 18,
+      "checkpoint_step": 170,
+      "path": "analysis/phase1l/checkpoints/C3_full_High_monotonic_seed_18.pt",
+      "checkpoint_sha256": "37190f93f100dcc308fc6b91f9e78c718ac2f62cdc5be9538be91307d7184b6e",
+      "historical_label": "C3_full"
+    },
+    {
+      "cohort": "constructive",
+      "model_family": "contrast_srn",
+      "training_objective": "sequence_CE_plus_closure",
+      "family": "High_monotonic",
+      "condition": "C3_full",
+      "seed": 19,
+      "checkpoint_step": 170,
+      "path": "analysis/phase1l/checkpoints/C3_full_High_monotonic_seed_19.pt",
+      "checkpoint_sha256": "bc6ad46fc4d25c0dbcf450356764338e100e17a358af69c8f9515e8caf75cd6e",
+      "historical_label": "C3_full"
+    }
+  ],
+  "outputs": {
+    "tables/e1_transition_dynamics.csv": "0ee62766a4f608e60c51e56cad270567572b001c52eac1a199b622b3271497bb",
+    "tables/e1_grouped_cv_predictions.csv": "47d2a665a62f4750b2ef106f969b48ec077417d4e2d9921dde0acc1a0b83fe8a",
+    "tables/e1_static_convexity_audit.csv": "b90084401a3c65931f6b70c804f2aa8bd2d990fe4bddd05bc169e2ea289a1d78",
+    "tables/e1_single_patch_replay.csv": "09bf63675dbd621648c21d0763ce494ae968fa3e99415b9ad46ba7552fdef885",
+    "tables/e1_canonical_genuine_acquisition.csv": "43be98f3f7f1da2097f5376b535ae47ada0a06ae44553b1fb1ab49d571621bb3",
+    "tables/e1_seed_effects.csv": "353dd5919c4178c24c885320a27e63ca0e4cf318434f79f761e0fb225c6882bf",
+    "tables/e1_seed_summary.csv": "14c9440ea44f8a633e35a11b26dc52796b678a919a8b364997a02e3aeb22c2c9",
+    "tables/e1_constructive_genuine_acquisition.csv": "767eec4d2cc6ed48e80a08c84b53fc2fbee0ca54842c05f26583e277732cddef",
+    "tables/e1_effects_bootstrap.csv": "5efeb794b08fb587e5eea68427c85bdacdedfe81e40a5c0b56a82a02cf9cd6a6",
+    "figures/e1_accessibility.svg": "5c64787569d7b4596078530c0dae1e110d9e638d708e86dfb7e0c343c0b32a2c",
+    "figures/e1_accessibility.png": "91262c841ba13a036840cd214c13f003004d99c551f4dea15cd03d931ad01dcd",
+    "figures/e1_accessibility.pdf": "abfc7b3416e8d26c4e5659ee669275edb4c626dd5ed5197356061200290ff0ab",
+    "audit/e1_bootstrap_indices.npy": "f15ee857cb22661bb430b227010e9d30fe7498c951a14357cf9db47447c181f2",
+    "audit/e1_input_hashes_before.csv": "74f76baffa3e0785de36e135f0548482bde36532b32c5cb116220bcc4b431888",
+    "audit/e1_input_hashes_after.csv": "74f76baffa3e0785de36e135f0548482bde36532b32c5cb116220bcc4b431888",
+    "audit/e1_historical_regression.csv": "bd440cbeaf6306789440e0cfc78ac98eb0196330b0299d445157b1a2ee5b4219",
+    "E1_RESULTS.md": "4c74508eba529b6d708bf7f02ff6c4d678b5ea76426e9dec189a2768834dd8dc"
+  },
+  "runs": [],
+  "implementation_status": "validated",
+  "scientific_status": "completed_mixed",
+  "evidence_status": "completed",
+  "integrity_passed": true,
+  "optimizer_updates": 0,
+  "n_checkpoint_models": 120,
+  "n_transition_rows": 6720,
+  "max_exact_identity_error": 0.0
+}

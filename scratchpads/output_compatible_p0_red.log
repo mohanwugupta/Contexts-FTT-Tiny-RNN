@@ -1,0 +1,49 @@
+
+==================================== ERRORS ====================================
+_ ERROR collecting tests/output_compatible_trajectories/test_output_nullspace.py _
+ImportError while importing test module '/Users/mg9965/Library/CloudStorage/Box-Box/ResearchProjects/RI-EVC/Contexts-FTT-Tiny-RNN/tests/output_compatible_trajectories/test_output_nullspace.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/Users/mg9965/.pyenv/versions/3.11.8/lib/python3.11/importlib/__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/output_compatible_trajectories/test_output_nullspace.py:3: in <module>
+    from experiments.output_compatible_trajectories.state_geometry import output_spaces, assert_equivalent, output_values
+E   ModuleNotFoundError: No module named 'experiments.output_compatible_trajectories.state_geometry'
+_ ERROR collecting tests/output_compatible_trajectories/test_source_and_replay.py _
+ImportError while importing test module '/Users/mg9965/Library/CloudStorage/Box-Box/ResearchProjects/RI-EVC/Contexts-FTT-Tiny-RNN/tests/output_compatible_trajectories/test_source_and_replay.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/Users/mg9965/.pyenv/versions/3.11.8/lib/python3.11/importlib/__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/output_compatible_trajectories/test_source_and_replay.py:4: in <module>
+    from experiments.output_compatible_trajectories.source_audit import load_sources, verify_checkpoint, require_parity
+E   ModuleNotFoundError: No module named 'experiments.output_compatible_trajectories.source_audit'
+_ ERROR collecting tests/output_compatible_trajectories/test_state_index_and_teacher_forcing.py _
+ImportError while importing test module '/Users/mg9965/Library/CloudStorage/Box-Box/ResearchProjects/RI-EVC/Contexts-FTT-Tiny-RNN/tests/output_compatible_trajectories/test_state_index_and_teacher_forcing.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/Users/mg9965/.pyenv/versions/3.11.8/lib/python3.11/importlib/__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/output_compatible_trajectories/test_state_index_and_teacher_forcing.py:3: in <module>
+    from experiments.output_compatible_trajectories.continuation import continue_from, natural_trace, future_summary, validate_timeline
+E   ModuleNotFoundError: No module named 'experiments.output_compatible_trajectories.continuation'
+_ ERROR collecting tests/output_compatible_trajectories/test_valid_hidden_state.py _
+ImportError while importing test module '/Users/mg9965/Library/CloudStorage/Box-Box/ResearchProjects/RI-EVC/Contexts-FTT-Tiny-RNN/tests/output_compatible_trajectories/test_valid_hidden_state.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/Users/mg9965/.pyenv/versions/3.11.8/lib/python3.11/importlib/__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/output_compatible_trajectories/test_valid_hidden_state.py:3: in <module>
+    from experiments.output_compatible_trajectories.state_geometry import bounded_step, valid_state, output_spaces, assert_equivalent
+E   ModuleNotFoundError: No module named 'experiments.output_compatible_trajectories.state_geometry'
+=========================== short test summary info ============================
+ERROR tests/output_compatible_trajectories/test_output_nullspace.py
+ERROR tests/output_compatible_trajectories/test_source_and_replay.py
+ERROR tests/output_compatible_trajectories/test_state_index_and_teacher_forcing.py
+ERROR tests/output_compatible_trajectories/test_valid_hidden_state.py
+!!!!!!!!!!!!!!!!!!! Interrupted: 4 errors during collection !!!!!!!!!!!!!!!!!!!!
+4 errors in 0.15s

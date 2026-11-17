@@ -1,0 +1,65 @@
+---
+title: "Corrected Mixed / Novel Retrieval"
+output: html_document
+params:
+  combined: "data/mixedBreak_clean.csv"
+  novel: "data/threeContextsBreak_clean.csv"
+  familiar_dir: "outputs/human_state_space_adjudication"
+  output: "outputs/mixed_novel_retrieval_corrected"
+  profile: "final"
+  workers: 6
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo=TRUE)
+```
+
+This document is deliberately separate from the corrected familiar state-space analysis. It calls the tested Python retrieval implementation and then reads its immutable outputs. Mixed, Novel, and NoContextProbe never update familiar states.
+
+```{r input-contract}
+required_inputs <- c(
+  params$combined,
+  params$novel,
+  file.path(params$familiar_dir, "familiar_model_selection.json"),
+  file.path(params$familiar_dir, "familiar_model_selection.sha256"),
+  file.path(params$familiar_dir, "historical_state_space_reproduction.csv"),
+  file.path(params$familiar_dir, "human_state_space_parameter_estimates.csv")
+)
+missing_inputs <- required_inputs[!file.exists(required_inputs)]
+if (length(missing_inputs)) {
+  stop("Missing immutable retrieval inputs: ", paste(missing_inputs, collapse=", "))
+}
+```
+
+```{r run, eval=FALSE}
+args <- c(
+  "scripts/run_mixed_novel_retrieval_corrected.py",
+  "--combined", params$combined,
+  "--novel", params$novel,
+  "--familiar-dir", params$familiar_dir,
+  "--output", params$output,
+  "--profile", params$profile,
+  "--workers", as.character(params$workers)
+)
+status <- system2("python", args)
+stopifnot(status == 0)
+```
+
+```{r results}
+comparison_path <- file.path(params$output, "first_mixed_model_comparison.csv")
+if (file.exists(comparison_path)) {
+  knitr::kable(read.csv(comparison_path))
+} else {
+  stop("Retrieval outputs are absent. Run the Python command in the preceding chunk first.")
+}
+```
+
+```{r absolute-fit-gate}
+config_path <- file.path(params$output, "retrieval_run_config.json")
+if (!file.exists(config_path)) stop("Missing retrieval run configuration.")
+run_config <- jsonlite::fromJSON(config_path)
+if (!isTRUE(run_config$FIT_DIAGNOSTICS_COMPLETE)) {
+  stop("Absolute-fit diagnostics incomplete; do not interpret model-selection results.")
+}
+knitr::kable(read.csv(file.path(params$output, "posterior_predictive_summary.csv")))
+```

@@ -1,0 +1,79 @@
+{
+  "analysis_version": "probe-prediction-vs-execution-1.0.0",
+  "repo_root": ".",
+  "output_dir": "outputs/probe_prediction_vs_execution",
+  "time_matched_config": "time_matched_probe_config.json",
+  "conditions": [
+    "High_monotonic",
+    "Low_monotonic"
+  ],
+  "contexts": [
+    "A",
+    "B",
+    "Mixed",
+    "Novel"
+  ],
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19
+  ],
+  "checkpoints": [
+    20,
+    30,
+    40,
+    50,
+    60,
+    70,
+    80,
+    90,
+    100,
+    110,
+    120,
+    130,
+    140,
+    150,
+    160,
+    170
+  ],
+  "transition_positions": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+  ],
+  "reported_checkpoints": [
+    20,
+    100,
+    170
+  ],
+  "fixed_readout_checkpoint": 20,
+  "sensitivity_checkpoint": 170,
+  "bootstrap_draws": 2000,
+  "random_seed": 54032,
+  "numerical_tolerances": {
+    "RT_reconstruction_absolute": 0.0000005,
+    "NLL_identity_absolute": 0.000005,
+    "previous_sequence_RT_absolute": 0.0000005
+  }
+}

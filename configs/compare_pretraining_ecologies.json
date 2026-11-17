@@ -1,0 +1,53 @@
+{
+  "analysis_version": "compare-pretraining-ecologies-1.0.0",
+  "repo_root": "..",
+  "output_dir": "outputs/compare_pretraining_ecologies",
+  "model_condition": "High_monotonic",
+  "conditions": ["P0", "P1_for_P2", "P1_for_P3", "P1_for_P4", "P1_for_P5", "P2", "P3", "P4", "P5"],
+  "structured_conditions": ["P2", "P3", "P4", "P5"],
+  "world": {
+    "sequence_length": 8,
+    "alphabet_size": 4,
+    "external_sequences_per_world": 40,
+    "smooth_z": [-1.0, -0.5, 0.0, 0.5, 1.0],
+    "boundary_z": [-1.0, -0.5, -0.25, 0.25, 0.5, 1.0],
+    "compositional_contexts": [[0, 0], [1, 0], [0, 1], [1, 1]],
+    "combined_mixture": {"smooth": 0.5, "boundary": 0.25, "compositional": 0.25},
+    "cue_noise_sd": 0.025,
+    "layout_jitter_fraction": 0.025
+  },
+  "validation": {
+    "families_per_seed": 4,
+    "endpoint_training_sequences": 24,
+    "compositional_training_sequences": 24,
+    "v2_probe_z": [-0.75, -0.5, -0.25, 0.0, 0.25, 0.5, 0.75],
+    "familiar_nll_tolerance": 0.05
+  },
+  "pilot": {"worlds": 500, "seeds": [0, 1, 2, 3, 4], "required_direction_fraction": 0.8},
+  "confirmatory": {"worlds": 2000, "seeds": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19], "required_direction_fraction": 0.8},
+  "human_transfer": {
+    "environment": "G2_shared_x",
+    "training_sequences": 170,
+    "block_length": 10,
+    "first_probe_checkpoint": 20,
+    "coordinate_registry": "human_svg_target_coordinates_v3.json",
+    "coordinate_array_assignment": {"A": 0, "B": 1, "Mixed": 2, "Novel": 3},
+    "token_sequence": [0, 1, 2, 0, 3, 1, 2, 3]
+  },
+  "optimizer": {"name": "Adam", "learning_rate": 0.005, "reset_before_human": true},
+  "human_gates": {"seed_fraction": 0.8, "minimum_P0_differentiation_ratio": 0.8, "minimum_RT_sawtooth": 0.0001},
+  "mechanistic_followups": {"enabled_after_structured_human_improvement": true, "retention_checkpoints": [0, 20, 80, 170]},
+  "generator_seed_offset": 91373,
+  "smoke": {
+    "seeds": [0],
+    "pilot_worlds": 2,
+    "confirmatory_worlds": 2,
+    "external_sequences_per_world": 8,
+    "validation_families_per_seed": 1,
+    "endpoint_training_sequences": 4,
+    "compositional_training_sequences": 6,
+    "human_training_sequences": 20,
+    "required_direction_fraction": 1.0,
+    "force_advance_for_integration_test": false
+  }
+}

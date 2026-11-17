@@ -1,0 +1,16 @@
+{
+  "analysis_version": "structural-prior-curriculum-1.0.0",
+  "repo_root": "..",
+  "output_dir": "outputs/structural_prior_curriculum",
+  "model_condition": "High_monotonic",
+  "pilot": {"worlds": 100, "seeds": [0, 1, 2, 3, 4]},
+  "confirmatory": {"worlds": 1000, "seeds": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]},
+  "world": {"observed_combinations": [[0, 0], [1, 0], [0, 1]], "heldout_combination": [1, 1], "sequences_per_observed_context": 10, "sequence_length": 8, "alphabet_size": 4},
+  "factor_transition_positions": {"factor_1": [2, 3], "factor_2": [5, 6]},
+  "optimizer": {"name": "Adam", "learning_rate": 0.005, "retain_during_pretraining": true, "reset_before_human": true},
+  "gate": {"seed_fraction": 0.8, "require_structured_lower_mean_NLL": true, "require_structured_nonlower_overall_accuracy": true, "require_structured_higher_modified_accuracy": true},
+  "human_transfer": {"environment": "G2_shared_x", "training_sequences": 170, "first_probe_checkpoint": 20, "coordinate_registry": "human_svg_target_coordinates_v3.json", "coordinate_array_assignment": {"A": 0, "B": 1, "Mixed": 2, "Novel": 3}},
+  "ablation_interpolation_alphas": [0.0, 0.25, 0.5, 0.75, 1.0],
+  "smoke": {"pilot_worlds": 3, "confirmatory_worlds": 4, "seeds": [0, 1], "sequences_per_observed_context": 2, "human_training_sequences": 20},
+  "generator_seed_offset": 37129
+}

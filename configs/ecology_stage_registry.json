@@ -1,0 +1,6 @@
+{
+  "E0": {"name": "Deterministic compositional", "surface_rule": "direct_binary", "observable_binding": "fixed", "task_role_binding": "fixed", "abstraction_level": 0},
+  "E1": {"name": "Surface-varied", "surface_rule": "vary_within_fixed_subspaces", "observable_binding": "fixed_subspaces", "task_role_binding": "fixed", "abstraction_level": 1},
+  "E2": {"name": "Factor-permuted", "surface_rule": "subspace_permutation_sign_affine", "observable_binding": "permuted", "task_role_binding": "fixed", "abstraction_level": 2},
+  "E3": {"name": "Fully abstract", "surface_rule": "world_specific_dense", "observable_binding": "world_specific", "task_role_binding": "world_specific_permutation", "abstraction_level": 3}
+}

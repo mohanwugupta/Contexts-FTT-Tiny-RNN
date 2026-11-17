@@ -1,0 +1,10 @@
+test,invariant,passed,detail
+T1,no optimizer/training invoked,True,analysis-only pipeline; synthesis_optimizer_steps=0
+T4,C1=0,True,analytic numerical check
+T5,common-logit shift invariance,True,analytic numerical check
+T7,task-path endpoint identities,True,lambda=0 and lambda=1
+T8,output/null projector identities,True,rank=4
+T9,per-seed rescue first,True,2740 rows
+T11/T12,seven-transition sequence aggregates only,True,5 source time-series tables
+T13,exact wrong-path matching,True,880 exact pairs
+T14,markdown values generated from final tables,True,reports written from in-memory exported tables

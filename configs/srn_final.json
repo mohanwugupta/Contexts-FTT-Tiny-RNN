@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0.0",
+  "analysis_order": [
+    "execution_v2_1",
+    "causal_v2_2",
+    "context_sequence_v2_3"
+  ],
+  "outputs": {
+    "execution_v2_1": "outputs/ftt_srn_execution_v2_final_checkpointed",
+    "causal_v2_2": "outputs/ftt_srn_causal_v22_final",
+    "context_sequence_v2_3": "outputs/ftt_srn_context_sequence_v23_final"
+  },
+  "frozen_contract": {
+    "fixed_sequence": [0, 1, 2, 0, 3, 1, 2, 3],
+    "hidden_dim": 8,
+    "cell": "tanh_elman_srn",
+    "block_length": 10,
+    "blocks": 17,
+    "curriculum": "alternating_A10_B10",
+    "training_contexts": ["A", "B"],
+    "probe_contexts": ["A", "B", "Mixed_norm", "Mixed_additive", "Novel"],
+    "conditions": {
+      "High": {"init_scale": 0.5, "execution_objective": true},
+      "Low": {"init_scale": 0.02, "execution_objective": true},
+      "High_seq_only": {"init_scale": 0.5, "execution_objective": false}
+    },
+    "learning_rate": 0.005,
+    "seeds": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19],
+    "primary_checkpoint": "human_matched",
+    "probe_training_updates": 0,
+    "human_tuning_allowed": false
+  }
+}

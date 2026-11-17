@@ -1,0 +1,20 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+_____ test_optional_cloud_placeholder_is_explicit_without_fabricated_hash ______
+
+tmp_path = PosixPath('/private/var/folders/zt/vtsl21k13z9bd24ft4trvf140000gq/T/pytest-of-mg9965/pytest-140/test_optional_cloud_placeholde0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x117d0b450>
+
+    def test_optional_cloud_placeholder_is_explicit_without_fabricated_hash(tmp_path,monkeypatch):
+        from experiments.output_compatible_trajectories import source_audit
+        p=tmp_path/'placeholder.csv';p.write_text('not hydrated')
+        def no_read(*a,**kw):raise AssertionError('Dataless historical source must not be read or fabricated')
+        monkeypatch.setattr(source_audit,'sha256',no_read)
+>       row=source_audit.optional_table_audit(p,'expected-historical-hash',flags=0x40000000)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'experiments.output_compatible_trajectories.source_audit' has no attribute 'optional_table_audit'
+
+tests/output_compatible_trajectories/test_source_and_replay.py:49: AttributeError
+=========================== short test summary info ============================
+FAILED tests/output_compatible_trajectories/test_source_and_replay.py::test_optional_cloud_placeholder_is_explicit_without_fabricated_hash
+1 failed in 1.09s

@@ -1,0 +1,16 @@
+{
+  "analysis_version": "human-state-space-adjudication-1.0.0",
+  "profile": "final",
+  "random_seed": 73191,
+  "multistarts": 8,
+  "cv_multistarts": 2,
+  "recovery_replicates": 100,
+  "recovery_threshold": 0.8,
+  "participant_limit": null,
+  "cv_min_training_blocks": 2,
+  "cv_max_folds_per_participant": null,
+  "m3b_ridge": 1.0,
+  "make_plots": true,
+  "show_progress": true,
+  "workers": 0
+}

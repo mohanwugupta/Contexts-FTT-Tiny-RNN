@@ -1,0 +1,9 @@
+# Frozen decisions and limitations
+
+The prospective implementation choices are logged in [`scratchpads/paper_freeze_todo.md`](../scratchpads/paper_freeze_todo.md). The Novel registry was committed before any new-cue model evaluation. Familiar-only A2 matching, intervention controls, dtype/tolerance, seed bootstrap, four-figure panel plan, and the no-training rule were fixed before the evaluation. The old historical `Novel` cue is never treated as the new graded cue set.
+
+A2 has insufficient common support (one of 20 seed pairs) and the selected Low update 110 checkpoint is unavailable. The pipeline reports this as an evidence limitation; it does not reconstruct weights or relax the caliper. High and Low also differ in familiar performance, so Experiment 1 does not prove a causal generalization cost of splitting. Midpoint placement shows availability, not natural construction or necessity. C1/C3 collapse some physically different cues to identical effective coordinates; no new context-amount channel was added after seeing that result. Historical human analyses are retained but not refit or chosen as a model-validation endpoint here.
+
+Supplement S1 shows large changes in normalized task residual for some seeds because A/B separation in the denominator can be small. The absolute-distance version in Figure 4 is the primary geometry–behavior display; A/B separation remains in the source tables so the normalized sensitivity can be interpreted with its denominator.
+
+The first complete freeze was generated under `v2_20260925_novelty30_60`. Visual inspection found overlapping schematic labels in Figures 2 and 4. Only figure text placement was changed, source and contract hashes were renewed, and the outputs were regenerated as `v2_20260925_novelty30_60_r2`. The earlier output remains preserved.

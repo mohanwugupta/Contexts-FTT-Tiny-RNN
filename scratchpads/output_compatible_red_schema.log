@@ -1,0 +1,18 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+___________________ test_export_schema_cannot_silently_shift ___________________
+
+tmp_path = PosixPath('/private/var/folders/zt/vtsl21k13z9bd24ft4trvf140000gq/T/pytest-of-mg9965/pytest-138/test_export_schema_cannot_sile0')
+
+    def test_export_schema_cannot_silently_shift(tmp_path):
+        import pandas as pd
+        from experiments.output_compatible_trajectories.common import Stream
+        (tmp_path/'tables').mkdir()
+        s=Stream(tmp_path,'test');s.write(pd.DataFrame({'seed':[0],'ce':[.1]}))
+>       with pytest.raises(ValueError):s.write(pd.DataFrame({'seed':[1],'other_metric':[.2]}))
+E       Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/output_compatible_trajectories/test_source_and_replay.py:41: Failed
+=========================== short test summary info ============================
+FAILED tests/output_compatible_trajectories/test_source_and_replay.py::test_export_schema_cannot_silently_shift
+1 failed in 1.28s

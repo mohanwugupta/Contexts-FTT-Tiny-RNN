@@ -1,0 +1,31 @@
+{
+  "analysis_version": "emergent-retrieval-context-inference-1.0.0",
+  "repo_root": "..",
+  "output_dir": "outputs/emergent_retrieval_program",
+  "coordinate_registry": "human_svg_target_coordinates_v3.json",
+  "coordinate_array_assignment": {"A": 0, "B": 1, "Mixed": 2, "Novel": 3},
+  "canonical_motor_sequence": ["S", "A", "F", "S", "D", "A", "F", "D"],
+  "execution_order": ["V0", "C1", "C2", "E1", "E2", "E3", "E4"],
+  "scientific_execution_order": ["V0", "C1", "E1", "E2", "E3", "E4", "C2"],
+  "hidden_size": 8,
+  "latent_size": 2,
+  "encoder_hidden_size": 4,
+  "training_sequences": 170,
+  "block_length": 10,
+  "scales": {"High_monotonic": 2.0, "Low_monotonic": 0.02},
+  "optimizer": {"name": "Adam", "learning_rate": 0.005, "gradient_clip": 1.0},
+  "execution": {"family": "A", "c_time": 0.5, "c_risk": 1.0, "gamma": 2.0, "lambda_execution": 0.2},
+  "seeds": {
+    "screen": [0, 1, 2, 3, 4],
+    "confirmatory": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
+  },
+  "gates": {"seed_fraction": 0.8},
+  "control_bandwidth": {"initial_raw_scale": 0.0, "epsilon": 0.0001, "learning_rate": 0.05, "steps": 200},
+  "history_sequences": 10,
+  "primary_probe_policy": "reset_r",
+  "bootstrap": {"draws": 2000, "seed": 51071},
+  "success": {"minimum_improvement": 0.0, "novel_maximum_NLL_worsening": 0.25},
+  "baseline_reference_dir": "outputs/human_svg_geometry_transfer",
+  "baseline_reproduction_tolerance": 0.0000005,
+  "optional": {"E1_aux_ctx": false, "E4_low_rank": false}
+}

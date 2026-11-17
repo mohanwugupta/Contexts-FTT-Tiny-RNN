@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Context and Sequence Transfer Task</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main>
+    <section id="setup" class="card">
+      <p class="eyebrow">LOCAL RESEARCH TASK</p>
+      <h1>Context and sequence transfer</h1>
+      <p>Enter the stored counterbalance code supplied by the researcher. Responses use A, S, D, and F.</p>
+      <label>Counterbalance code <input id="participant-code" autocomplete="off"></label>
+      <label>Configuration
+        <select id="configuration">
+          <option value="../../outputs/transfer_experiment_program/e4_human_task/configs/e4_task_config.json">E4 action visibility</option>
+          <option value="../../outputs/transfer_experiment_program/e4_human_task/configs/e2_task_config.json">E2 history/practice</option>
+          <option value="../../outputs/transfer_experiment_program/e4_human_task/configs/e3_task_config.json">E3 cue/layout</option>
+        </select>
+      </label>
+      <label><input id="synthetic-mode" type="checkbox"> Simulated participant (testing only)</label>
+      <button id="start">Start / resume</button>
+      <p id="setup-error" role="alert"></p>
+    </section>
+
+    <section id="task" class="card hidden" aria-live="polite">
+      <div class="topline"><span id="phase"></span><span id="progress"></span></div>
+      <div id="context-layer" aria-label="Context display">
+        <span id="context-cue"></span>
+        <div id="layout"></div>
+      </div>
+      <p id="instruction">Respond using A, S, D, or F.</p>
+      <div id="targets" aria-label="Action targets"></div>
+      <p id="feedback"></p>
+      <button id="abort">Abort and save</button>
+    </section>
+
+    <section id="complete" class="card hidden">
+      <h2>Task complete</h2>
+      <p>Download the event file and return it to the researcher.</p>
+      <button id="download-json">Download JSON</button>
+      <button id="download-csv">Download CSV</button>
+    </section>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,6 @@
+table,rows,transition_counts,sequence_level_only
+phase1c_timeseries_finetuning,469200,[7],True
+phase1c_timeseries_midpoint_checkpoints,30360,[7],True
+phase1c_timeseries_familiar_schedule,469200,[7],True
+phase1c_timeseries_full_probe_schedule,477480,[7],True
+phase1c_timeseries_cue_sweep,57960,[7],True

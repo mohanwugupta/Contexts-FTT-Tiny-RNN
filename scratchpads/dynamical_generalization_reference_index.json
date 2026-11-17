@@ -1,0 +1,71 @@
+{
+  "timestamp": "2026-11-04T03:27:28.232650+00:00",
+  "git_commit": "12408831ceac6ae0f9b3181c5a5a4094c6d46889",
+  "references": [
+    {
+      "path": "results/paper/v2_20260925_novelty30_60_r2/FINAL_FOUR_EXPERIMENT_FREEZE_REPORT.md",
+      "sha256": "8ca14d965dcff47a2dcdb5351a22d610998a6ea55fbae704fc6fdc69e9ce4251",
+      "bytes": 20147
+    },
+    {
+      "path": "docs/FINAL_EXPERIMENT_INFRASTRUCTURE.md",
+      "sha256": "c75019cf519e5a36d45054d007509b8ce55344e26c086d2880c30003bf48e8d4",
+      "bytes": 27046
+    },
+    {
+      "path": "docs/FINAL_EXPERIMENT_INVENTORY.json",
+      "sha256": "3ff2be4eca02f1734f00a1d160d0bb414b512b406d4c994999baf15e12725c51",
+      "bytes": 259504
+    },
+    {
+      "path": "archive/research_history/specs/PRD_phase1k_cue_only_composite_generation.md",
+      "sha256": "0d8e1e249e70faab83b0ee0e5465c42e19e888213bbedb438cf720def2219fee",
+      "bytes": 33597
+    },
+    {
+      "path": "analysis/phase1k/PHASE1K_CUE_GENERATION_REPORT.md",
+      "sha256": "c49d9efdb0d1ed5ab219a3290d03c059f902e3eb40a2c1f473cb94921e0422e3",
+      "bytes": 3673
+    },
+    {
+      "path": "archive/research_history/specs/PRD_phase1l_contrast_bottleneck_trajectory_closure.md",
+      "sha256": "2ee77aee94a440a6a496722d83dc7c64f1b34a4df5132d3f507505679ee8e13c",
+      "bytes": 31583
+    },
+    {
+      "path": "analysis/phase1l/PHASE1L_CONSTRUCTIVE_RECOVERY_REPORT.md",
+      "sha256": "dbf48886eea44cc06cda187dc6cd9a7e84235f9fe68fc099005408df5602a6fe",
+      "bytes": 4299
+    },
+    {
+      "path": "analysis/phase1i_context_composition/PHASE1I_CONTEXT_COMPOSITION_REPORT.md",
+      "sha256": "58abf189cc512a936dd3a9351bbb7e875f8b2d2b122cd75a4e2ebbdcb46c1fc2",
+      "bytes": 6826
+    },
+    {
+      "path": "analysis/phase1j_single_injection_context_stability/PHASE1J_SINGLE_INJECTION_CONTEXT_STABILITY_REPORT.md",
+      "sha256": "dee300432dc2623aced7dbeb4758ff7de18a3c4ee2dd0ca4ff6c63b6a14e6abe",
+      "bytes": 7697
+    },
+    {
+      "path": "outputs/phase1f_shared_sequence_backbone/PHASE1F_SHARED_SEQUENCE_BACKBONE_REPORT.md",
+      "sha256": "37cffdbe8815616a7221b714a709b6b9aed6bfcd8bb12df46fa1de65cb21835d",
+      "bytes": 8228
+    },
+    {
+      "path": "configs/novelty_registry_v1.json",
+      "sha256": "e622fe0bc727baad9069319c6833d2b1f003ffda81bda1da150966ce2953d7dc",
+      "bytes": 3223
+    },
+    {
+      "path": "configs/paper_freeze_v2.json",
+      "sha256": "63b0fc1368e42d2b0727e92bdcd332214f622c3e573902f779977e250e5c6cb8",
+      "bytes": 61988
+    },
+    {
+      "path": "PRD_RNN_DYNAMICAL_GENERALIZATION_PROGRAM.md",
+      "sha256": "bb3d10ccac23bcab4b3dcb4e86be6d6cdef3d86da7efc6bf5fdbd8363e1b5243",
+      "bytes": 38035
+    }
+  ]
+}

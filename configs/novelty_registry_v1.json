@@ -1,0 +1,136 @@
+{
+  "version": "novelty_registry_v1",
+  "created_at": "2026-09-25T21:14:31.298094+00:00",
+  "definition": "Unit-norm out-of-support cues outside the familiar angular sector; not a novel semantic dimension.",
+  "repository_state": "prospective registry; historical source snapshot in artifacts/manifests/pre_freeze_snapshot.json",
+  "cues": {
+    "A": {
+      "vector": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "angle_degrees": 0.0,
+      "nearest_familiar": "A",
+      "novelty_degrees": 0.0,
+      "norm": 1.0,
+      "in_convex_hull": true,
+      "in_familiar_sector": true
+    },
+    "B": {
+      "vector": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "angle_degrees": 90.0,
+      "nearest_familiar": "B",
+      "novelty_degrees": 0.0,
+      "norm": 1.0,
+      "in_convex_hull": true,
+      "in_familiar_sector": true
+    },
+    "Mixed": {
+      "vector": [
+        0.5,
+        0.5,
+        0.0
+      ],
+      "angle_degrees": 45.0,
+      "nearest_familiar": "A",
+      "novelty_degrees": 45.00000000000001,
+      "norm": 0.7071067811865476,
+      "in_convex_hull": true,
+      "in_familiar_sector": true
+    },
+    "NoContext": {
+      "vector": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "angle_degrees": null,
+      "nearest_familiar": null,
+      "novelty_degrees": null,
+      "norm": 0.0,
+      "in_convex_hull": false,
+      "in_familiar_sector": false
+    },
+    "Novel30_A": {
+      "vector": [
+        0.8660254037844386,
+        -0.5,
+        0.0
+      ],
+      "angle_degrees": -30.000000000000004,
+      "nearest_familiar": "A",
+      "novelty_degrees": 29.999999999999996,
+      "norm": 0.9999999999999999,
+      "in_convex_hull": false,
+      "in_familiar_sector": false
+    },
+    "Novel30_B": {
+      "vector": [
+        -0.5,
+        0.8660254037844386,
+        0.0
+      ],
+      "angle_degrees": 120.00000000000001,
+      "nearest_familiar": "B",
+      "novelty_degrees": 29.999999999999996,
+      "norm": 0.9999999999999999,
+      "in_convex_hull": false,
+      "in_familiar_sector": false
+    },
+    "Novel60_A": {
+      "vector": [
+        0.5,
+        -0.8660254037844386,
+        0.0
+      ],
+      "angle_degrees": -59.99999999999999,
+      "nearest_familiar": "A",
+      "novelty_degrees": 59.99999999999999,
+      "norm": 0.9999999999999999,
+      "in_convex_hull": false,
+      "in_familiar_sector": false
+    },
+    "Novel60_B": {
+      "vector": [
+        -0.8660254037844386,
+        0.5,
+        0.0
+      ],
+      "angle_degrees": 150.0,
+      "nearest_familiar": "B",
+      "novelty_degrees": 59.99999999999999,
+      "norm": 0.9999999999999999,
+      "in_convex_hull": false,
+      "in_familiar_sector": false
+    }
+  },
+  "aggregates": {
+    "Novel30Mean": [
+      "Novel30_A",
+      "Novel30_B"
+    ],
+    "Novel60Mean": [
+      "Novel60_A",
+      "Novel60_B"
+    ],
+    "NovelMean": [
+      "Novel30_A",
+      "Novel30_B",
+      "Novel60_A",
+      "Novel60_B"
+    ]
+  },
+  "legacy_label_map": {
+    "Novel1": "LegacyNovel1",
+    "Novel2": "LegacyNovel2",
+    "Novel3": "LegacyNovel3",
+    "Novel4": "LegacyNovel4",
+    "NovelMean": "LegacyNovelMean"
+  },
+  "registry_sha256": "2b28095562ea69a33d96c521817dcd0743f3d66658385ac425212f6951e00727"
+}

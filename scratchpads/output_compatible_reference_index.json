@@ -1,0 +1,134 @@
+{
+  "created_utc": "2026-11-11T21:23:56.014751+00:00",
+  "git_commit": "ef43aedaad2009cd168801faa0cfa7150c271d88",
+  "references": [
+    {
+      "path": "PRD_OUTPUT_COMPATIBLE_RNN_TRAJECTORIES.md",
+      "sha256": "aa9e2497a3e650fef62af4ec90fb2443f6eb81764857ba7f04ca9829bca9a623",
+      "status": "located",
+      "bytes": 49296
+    },
+    {
+      "path": "OUTPUT_COMPATIBLE_TRAJECTORIES_SCRATCHPAD_TEMPLATE.md",
+      "sha256": "e9af0128e379e394c42d4bdd61109a3e6a6fe37ba5ac1d7ff5c582abc8b1b5be",
+      "status": "located",
+      "bytes": 1299
+    },
+    {
+      "path": "results/paper/v2_20260925_novelty30_60_r2/FINAL_FOUR_EXPERIMENT_FREEZE_REPORT.md",
+      "sha256": "8ca14d965dcff47a2dcdb5351a22d610998a6ea55fbae704fc6fdc69e9ce4251",
+      "status": "located",
+      "bytes": 20147
+    },
+    {
+      "path": "docs/FINAL_EXPERIMENT_INFRASTRUCTURE.md",
+      "sha256": "c75019cf519e5a36d45054d007509b8ce55344e26c086d2880c30003bf48e8d4",
+      "status": "located",
+      "bytes": 27046
+    },
+    {
+      "path": "docs/FINAL_EXPERIMENT_INVENTORY.json",
+      "sha256": "3ff2be4eca02f1734f00a1d160d0bb414b512b406d4c994999baf15e12725c51",
+      "status": "located",
+      "bytes": 259504
+    },
+    {
+      "path": "results/dynamical_generalization/dg_v1_20261103/E1_RESULTS.md",
+      "sha256": "4c74508eba529b6d708bf7f02ff6c4d678b5ea76426e9dec189a2768834dd8dc",
+      "status": "located",
+      "bytes": 13788
+    },
+    {
+      "path": "results/dynamical_generalization/dg_v1_20261103/FINAL_DYNAMICAL_GENERALIZATION_REPORT.md",
+      "sha256": "15b2892e1da56380217748e6fc724d0bfe40fa09e7bdb1cda710c0b234cf021c",
+      "status": "located",
+      "bytes": 19978
+    },
+    {
+      "path": "analysis/phase1i_context_composition/PHASE1I_CONTEXT_COMPOSITION_REPORT.md",
+      "sha256": "58abf189cc512a936dd3a9351bbb7e875f8b2d2b122cd75a4e2ebbdcb46c1fc2",
+      "status": "located",
+      "bytes": 6826
+    },
+    {
+      "path": "analysis/phase1j_single_injection_context_stability/PHASE1J_SINGLE_INJECTION_CONTEXT_STABILITY_REPORT.md",
+      "sha256": "dee300432dc2623aced7dbeb4758ff7de18a3c4ee2dd0ca4ff6c63b6a14e6abe",
+      "status": "located",
+      "bytes": 7697
+    },
+    {
+      "path": "analysis/phase1k/PHASE1K_CUE_GENERATION_REPORT.md",
+      "sha256": "c49d9efdb0d1ed5ab219a3290d03c059f902e3eb40a2c1f473cb94921e0422e3",
+      "status": "located",
+      "bytes": 3673
+    },
+    {
+      "path": "analysis/phase1l/PHASE1L_CONSTRUCTIVE_RECOVERY_REPORT.md",
+      "sha256": "dbf48886eea44cc06cda187dc6cd9a7e84235f9fe68fc099005408df5602a6fe",
+      "status": "located",
+      "bytes": 4299
+    },
+    {
+      "path": "src/context_sequence/evaluation/rollout.py",
+      "sha256": "acda4e7256b78bd8a07a49caace317de2e8bfb34a87de2470e41c9bd16f54861",
+      "status": "located",
+      "bytes": 3547
+    },
+    {
+      "path": "src/context_sequence/dynamics/closure.py",
+      "sha256": "0f57fb1a2d0ed117b7b8920788169a7ac6fc511349a9c25508efb7aeef00146a",
+      "status": "located",
+      "bytes": 5638
+    },
+    {
+      "path": "src/context_sequence/provenance/registry.py",
+      "sha256": "7d0142ff151097134094d6d219bbd820fb29385cd9ef10077152d01dfadbdd16",
+      "status": "located",
+      "bytes": 2856
+    },
+    {
+      "path": "src/context_sequence/provenance/regression.py",
+      "sha256": "e608e962e3f8530af004b0d9eac2fea41b2f04dcb1637458583f55d44ade8eac",
+      "status": "located",
+      "bytes": 3561
+    },
+    {
+      "path": "confirmatory_srn/model.py",
+      "sha256": "49e94c644293caad9d7ce7d1bc232985350e7b06ca4aae44ccbaa0220ab3ac4d",
+      "status": "located",
+      "bytes": 3036
+    },
+    {
+      "path": "phase1l_contrast_closure/model.py",
+      "sha256": "d8222e357b76f331704feae5c2599f64a67f82f8dfd28694603deb79b4e94c7b",
+      "status": "located",
+      "bytes": 3031
+    },
+    {
+      "path": "phase1j_context_stability/evaluation.py",
+      "sha256": null,
+      "status": "resolved_to_actual_source",
+      "bytes": 0,
+      "resolved_path": "phase1j_context_stability/core.py"
+    },
+    {
+      "path": "phase1k_cue_generation/evaluation.py",
+      "sha256": null,
+      "status": "resolved_to_actual_source",
+      "bytes": 0,
+      "resolved_path": "phase1k_cue_generation/interventions.py"
+    },
+    {
+      "path": "phase1j_context_stability/core.py",
+      "sha256": "bc8b5345b83a706fdf05a2ccb6e619f9e0f0b792448d2184443f1187eba2c41a",
+      "status": "located",
+      "bytes": 13707
+    },
+    {
+      "path": "phase1k_cue_generation/interventions.py",
+      "sha256": "24136cb48086248e9a63b2ba78821635c37da4ee8ef6b0f2bd7883cc14ac7eb3",
+      "status": "located",
+      "bytes": 16180
+    }
+  ]
+}

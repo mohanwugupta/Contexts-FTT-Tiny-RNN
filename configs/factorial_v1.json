@@ -1,0 +1,112 @@
+{
+  "version": "factorial_v1",
+  "base_architecture": "source_matched_8_unit_tanh_unrestricted",
+  "scale": 2.0,
+  "learning_rate": 0.005,
+  "gradient_clip": 1.0,
+  "steps": 170,
+  "pilot_seeds": [
+    1000,
+    1001,
+    1002,
+    1003,
+    1004
+  ],
+  "confirmatory_seeds": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19
+  ],
+  "replication_seeds": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19
+  ],
+  "arms": [
+    "F00",
+    "F01",
+    "F10",
+    "F11"
+  ],
+  "candidates": {
+    "lambda_close": [
+      0.03,
+      0.1,
+      0.3,
+      1.0
+    ],
+    "lambda_sep": [
+      0.03,
+      0.1,
+      0.3,
+      1.0
+    ],
+    "margin": [
+      1.5,
+      2.5,
+      3.5
+    ]
+  },
+  "pilot_rules": {
+    "confirmatory_comparability_abs_endpoint_gap": 0.3,
+    "endpoint_mean_ce_bound": 1.5,
+    "familiar_mean_ce_bound": 1.2,
+    "minimum_accuracy": 0.35,
+    "minimum_closure_relative_reduction": 0.01,
+    "minimum_improved_seeds_per_arm": 4,
+    "minimum_strong_minus_weak_hidden_distance": 0.25,
+    "minimum_strong_weak_ratio": 1.25,
+    "require_finite_nonzero_regularizer_gradient": true,
+    "require_nonconstant_argmax": true,
+    "selection_order": [
+      "lambda_sep + lambda_close",
+      "lambda_sep",
+      "lambda_close",
+      "margin"
+    ]
+  },
+  "training_ce": "current A/B context next-token CE only",
+  "closure_normalization": "fixed T times H; detached familiar midpoint; recursively inherited neutral state",
+  "physical_neutral_cue": [
+    0.5,
+    0.5,
+    0.0
+  ],
+  "physical_neutral_equals_Mixed": true,
+  "protected_behavioral_targets_used": false,
+  "config_sha256": "f910ef0b60eb10446ebc44bf94a11831dc5953a1920941b9151e17363d8fbd03"
+}

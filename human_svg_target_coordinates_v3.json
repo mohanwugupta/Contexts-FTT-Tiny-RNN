@@ -1,0 +1,312 @@
+{
+  "coordinate_definition": "Target centers define geometry only. All layouts use the canonical sequence S-A-F-S-D-A-F-D at P1..P8. The originally supplied exampleSequence SVG had different visible letters, but those labels are ignored; only its target coordinates are retained.",
+  "normalization": "x=(x-x_mid)/(x_span/2); y=-(y-y_mean)/(x_span/2); same scale used for both axes",
+  "layouts": {
+    "M0": [
+      {
+        "layout": "M0",
+        "position": 1,
+        "svg_label": "S",
+        "x_raw": 330.5133,
+        "y_raw": 939.7046,
+        "x_norm": -1.0,
+        "y_norm": -0.07118114460759796
+      },
+      {
+        "layout": "M0",
+        "position": 2,
+        "svg_label": "A",
+        "x_raw": 782.1511,
+        "y_raw": 676.0687,
+        "x_norm": -0.7074773598103322,
+        "y_norm": 0.09957398155052974
+      },
+      {
+        "layout": "M0",
+        "position": 3,
+        "svg_label": "F",
+        "x_raw": 1205.0137,
+        "y_raw": 823.0527,
+        "x_norm": -0.43359221514470103,
+        "y_norm": 0.004373474096020587
+      },
+      {
+        "layout": "M0",
+        "position": 4,
+        "svg_label": "S",
+        "x_raw": 1653.5758,
+        "y_raw": 939.7065,
+        "x_norm": -0.14306168430555996,
+        "y_norm": -0.07118237522429204
+      },
+      {
+        "layout": "M0",
+        "position": 5,
+        "svg_label": "D",
+        "x_raw": 2098.3387,
+        "y_raw": 880.5757,
+        "x_norm": 0.14500813129980594,
+        "y_norm": -0.03288377016393788
+      },
+      {
+        "layout": "M0",
+        "position": 6,
+        "svg_label": "A",
+        "x_raw": 2542.7374,
+        "y_raw": 676.0971,
+        "x_norm": 0.4328420571157057,
+        "y_norm": 0.09955558706941818
+      },
+      {
+        "layout": "M0",
+        "position": 7,
+        "svg_label": "F",
+        "x_raw": 2965.9,
+        "y_raw": 822.6564,
+        "x_norm": 0.7069215096804032,
+        "y_norm": 0.004630154830687092
+      },
+      {
+        "layout": "M0",
+        "position": 8,
+        "svg_label": "D",
+        "x_raw": 3418.396,
+        "y_raw": 880.579,
+        "x_norm": 1.0,
+        "y_norm": -0.032885907550827584
+      }
+    ],
+    "M1": [
+      {
+        "layout": "M1",
+        "position": 1,
+        "svg_label": "S",
+        "x_raw": 315.5914,
+        "y_raw": 626.729,
+        "x_norm": -1.0,
+        "y_norm": 0.026068292996314715
+      },
+      {
+        "layout": "M1",
+        "position": 2,
+        "svg_label": "A",
+        "x_raw": 535.3569,
+        "y_raw": 701.0615,
+        "x_norm": -0.6693505185715235,
+        "y_norm": -0.08576910904487112
+      },
+      {
+        "layout": "M1",
+        "position": 3,
+        "svg_label": "F",
+        "x_raw": 731.7622,
+        "y_raw": 652.4842,
+        "x_norm": -0.3738477640681808,
+        "y_norm": -0.012681845328794005
+      },
+      {
+        "layout": "M1",
+        "position": 4,
+        "svg_label": "S",
+        "x_raw": 939.5872,
+        "y_raw": 625.3447,
+        "x_norm": -0.06116343246074859,
+        "y_norm": 0.02815104973994125
+      },
+      {
+        "layout": "M1",
+        "position": 5,
+        "svg_label": "D",
+        "x_raw": 1122.6708,
+        "y_raw": 601.1121,
+        "x_norm": 0.21429607960123856,
+        "y_norm": 0.06461035123932891
+      },
+      {
+        "layout": "M1",
+        "position": 6,
+        "svg_label": "A",
+        "x_raw": 1291.7737,
+        "y_raw": 695.893,
+        "x_norm": 0.4687208468784112,
+        "y_norm": -0.07799281183369339
+      },
+      {
+        "layout": "M1",
+        "position": 7,
+        "svg_label": "F",
+        "x_raw": 1487.9579,
+        "y_raw": 650.3174,
+        "x_norm": 0.7638909440704662,
+        "y_norm": -0.009421773587054687
+      },
+      {
+        "layout": "M1",
+        "position": 8,
+        "svg_label": "D",
+        "x_raw": 1644.8873,
+        "y_raw": 599.5,
+        "x_norm": 1.0,
+        "y_norm": 0.06703584581882781
+      }
+    ],
+    "S0": [
+      {
+        "layout": "S0",
+        "position": 1,
+        "svg_label": "S",
+        "x_raw": 370.9179,
+        "y_raw": 699.7408,
+        "x_norm": -1.0,
+        "y_norm": -0.19562844633554574
+      },
+      {
+        "layout": "S0",
+        "position": 2,
+        "svg_label": "A",
+        "x_raw": 555.4424,
+        "y_raw": 569.8765,
+        "x_norm": -0.716184335101652,
+        "y_norm": 0.004114799959978892
+      },
+      {
+        "layout": "S0",
+        "position": 3,
+        "svg_label": "F",
+        "x_raw": 738.2687,
+        "y_raw": 447.3437,
+        "x_norm": -0.434980658108056,
+        "y_norm": 0.19258152445377927
+      },
+      {
+        "layout": "S0",
+        "position": 4,
+        "svg_label": "S",
+        "x_raw": 928.1916,
+        "y_raw": 625.522,
+        "x_norm": -0.14286175713326704,
+        "y_norm": -0.08147310073126286
+      },
+      {
+        "layout": "S0",
+        "position": 5,
+        "svg_label": "D",
+        "x_raw": 1113.393,
+        "y_raw": 434.3614,
+        "x_norm": 0.141995042267923,
+        "y_norm": 0.21254949676320065
+      },
+      {
+        "layout": "S0",
+        "position": 6,
+        "svg_label": "A",
+        "x_raw": 1300.866,
+        "y_raw": 569.701,
+        "x_norm": 0.43034577155041914,
+        "y_norm": 0.004384735113249292
+      },
+      {
+        "layout": "S0",
+        "position": 7,
+        "svg_label": "F",
+        "x_raw": 1490.0077,
+        "y_raw": 691.4536,
+        "x_norm": 0.7212631150224452,
+        "y_norm": -0.18288196996982964
+      },
+      {
+        "layout": "S0",
+        "position": 8,
+        "svg_label": "D",
+        "x_raw": 1671.2302,
+        "y_raw": 542.4151,
+        "x_norm": 1.0,
+        "y_norm": 0.046352960746429826
+      }
+    ],
+    "exampleSequence": [
+      {
+        "layout": "exampleSequence",
+        "position": 1,
+        "svg_label": "S",
+        "x_raw": 293.3844,
+        "y_raw": 509.5334,
+        "x_norm": -1.0,
+        "y_norm": -0.037549760148343346
+      },
+      {
+        "layout": "exampleSequence",
+        "position": 2,
+        "svg_label": "A",
+        "x_raw": 616.5676,
+        "y_raw": 456.5195,
+        "x_norm": -0.728416554694997,
+        "y_norm": 0.006999887268523894
+      },
+      {
+        "layout": "exampleSequence",
+        "position": 3,
+        "svg_label": "F",
+        "x_raw": 978.655,
+        "y_raw": 333.1029,
+        "x_norm": -0.42414039308285034,
+        "y_norm": 0.11071166880862075
+      },
+      {
+        "layout": "exampleSequence",
+        "position": 4,
+        "svg_label": "S",
+        "x_raw": 1299.479,
+        "y_raw": 509.5126,
+        "x_norm": -0.15453947553350905,
+        "y_norm": -0.03753228109725922
+      },
+      {
+        "layout": "exampleSequence",
+        "position": 5,
+        "svg_label": "D",
+        "x_raw": 1665.2891,
+        "y_raw": 560.0149,
+        "x_norm": 0.15286501605320593,
+        "y_norm": -0.0799713330957135
+      },
+      {
+        "layout": "exampleSequence",
+        "position": 6,
+        "svg_label": "A",
+        "x_raw": 2003.4833,
+        "y_raw": 456.9618,
+        "x_norm": 0.4370627900036132,
+        "y_norm": 0.006628205331287058
+      },
+      {
+        "layout": "exampleSequence",
+        "position": 7,
+        "svg_label": "F",
+        "x_raw": 2360.9125,
+        "y_raw": 333.1224,
+        "x_norm": 0.7374244845119011,
+        "y_norm": 0.1106952821982293
+      },
+      {
+        "layout": "exampleSequence",
+        "position": 8,
+        "svg_label": "D",
+        "x_raw": 2673.3763,
+        "y_raw": 560.0272,
+        "x_norm": 1.0,
+        "y_norm": -0.07998166926534499
+      }
+    ]
+  },
+  "canonical_sequence": [
+    "S",
+    "A",
+    "F",
+    "S",
+    "D",
+    "A",
+    "F",
+    "D"
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "analysis_version": "state-space-bridge-1.0.0",
+  "canonical_state_space_source": "state-space_SRN.Rmd",
+  "canonical_variant": "no-fatigue OLS Lump/Cross/Split",
+  "corrected_srn": {
+    "conditions": {
+      "High": {"init_scale": 2.0, "execution_objective": true},
+      "Low": {"init_scale": 0.02, "execution_objective": true},
+      "High_seq_only": {"init_scale": 2.0, "execution_objective": false}
+    },
+    "seeds": 20,
+    "execution_sanity_gate_required": true
+  },
+  "state_space": {
+    "fit_contexts": ["A", "B"],
+    "primary_human_scope": "pre_probe_AB",
+    "secondary_human_scope": "all_AB_robustness",
+    "human_observable": "sequence mean correct-keypress RT in milliseconds",
+    "srn_observable": "normalized_rt = 1 - execution_speed",
+    "recovery_replicates_per_generating_model": 100
+  },
+  "retrieval_models": [
+    "RET_CATEGORICAL", "RET_SCALAR", "RET_TOKEN", "RET_LOWRANK", "RET_SRN"
+  ],
+  "probe_rows_used_for_state_space_learning": 0,
+  "frozen_outputs_modified": false
+}

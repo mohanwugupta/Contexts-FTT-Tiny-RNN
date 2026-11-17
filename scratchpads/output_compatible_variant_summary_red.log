@@ -1,0 +1,38 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+________ test_raw_direction_summary_precedes_strict_variant_aggregation ________
+
+    def test_raw_direction_summary_precedes_strict_variant_aggregation():
+        import pandas as pd
+        from experiments.output_compatible_trajectories.nullspace import summarize_states,strict_novel_means
+        f=pd.DataFrame([dict(cohort='canonical',condition='High_monotonic',seed=0,cue='Novel30_A',k=1,anchor_kind='midpoint',kind='nullspace',feasible=True,zero_radius=False,future_ce=1.,anchor_future_ce=1.2,future_ce_effect=-.2,absolute_future_ce_effect=.2,relative_radius=.3,viable_continuation=True,far=True,future_softmax_max_difference=.1)])
+>       a=summarize_states(f)
+          ^^^^^^^^^^^^^^^^^^^
+
+tests/output_compatible_trajectories/test_nullspace_intervention.py:61: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+experiments/output_compatible_trajectories/nullspace.py:130: in summarize_states
+    return strict_novel_means(result,[k for k in keys if k!='cue'],metrics)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+frame =       cohort  ... mean_future_softmax_difference
+0  canonical  ...                            0.1
+
+[1 rows x 23 columns]
+keys = ['cohort', 'condition', 'seed', 'k', 'anchor_kind', 'kind']
+metrics = ['n_planned', 'n_valid', 'n_geometry_infeasible', 'n_zero_radius', 'mean_future_ce', 'anchor_future_ce', ...]
+
+    def strict_novel_means(frame,keys,metrics):
+        frames=[frame]
+        for name,variants in [('Novel30Mean',['Novel30_A','Novel30_B']),('Novel60Mean',['Novel60_A','Novel60_B'])]:
+            f=frame[frame.cue.isin(variants)]
+            if not len(f):continue
+>           if not f.groupby(keys,dropna=False).size().eq(2).all():raise ValueError('Incomplete paired Novel direction groups')
+                                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           ValueError: Incomplete paired Novel direction groups
+
+experiments/output_compatible_trajectories/nullspace.py:111: ValueError
+=========================== short test summary info ============================
+FAILED tests/output_compatible_trajectories/test_nullspace_intervention.py::test_raw_direction_summary_precedes_strict_variant_aggregation
+1 failed in 0.87s

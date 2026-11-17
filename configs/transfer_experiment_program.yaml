@@ -1,0 +1,88 @@
+analysis_version: transfer-experiment-program-1.0.0
+repo_root: ..
+output_dir: outputs/transfer_experiment_program
+sources:
+  ordinal_reference: outputs/ordinal_layout_ecology_final
+  time_matched: outputs/time_matched_sequence_probe_overlay
+  prediction_execution: outputs/probe_prediction_vs_execution
+  human_mixed: data/mixedBreak_clean.csv
+  human_novel: data/threeContextsBreak_clean.csv
+reference:
+  conditions: [High_monotonic, Low_monotonic]
+  original_seeds: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
+  additional_seed_rule: "1000 + original_seed"
+  additional_seeds: [1000, 1001, 1002, 1003, 1004, 1005, 1006, 1007, 1008, 1009, 1010, 1011, 1012, 1013, 1014, 1015, 1016, 1017, 1018, 1019]
+  training_caps: [170, 340, 680]
+  checkpoint_interval: 10
+  reference_checkpoints: [20, 100, 170]
+  sequence: [0, 1, 2, 0, 3, 1, 2, 3]
+  block_length: 10
+  endpoint_RT_tolerances: [0.005, 0.010, 0.020]
+e1:
+  anchors: [170, 340, 680]
+  familiar_NLL_thresholds: [2.0, 1.0, 0.5, 0.1]
+  primary_NLL_caliper: 0.05
+  sensitivity_NLL_calipers: [0.025, 0.10]
+  token_accuracy_caliper: 0.14285714285714285
+e2:
+  checkpoints: [20, 100, 170]
+  repetitions: 8
+  late_repetitions: [6, 7, 8]
+  primers: [A, B]
+  probes: [Mixed, Novel]
+  weight_policies: [frozen, learn]
+  state_policies: [reset, carry]
+  retention_blocks: [A, B]
+e3:
+  checkpoints: [20, 100, 170]
+  anchors: [A, B]
+  probe_families: [Mixed, Novel]
+  factorial_cells: ["00", "10", "01", "11"]
+  generalization_grid: [0.0, 0.25, 0.5, 0.75, 1.0]
+  include_mixed_half: true
+  include_familiar_duplication_control: true
+e4:
+  visibility: [full_preview, one_target]
+  first_test_contexts: [A, B, Mixed, Novel]
+  preceding_contexts: [A, B]
+  acquisition_blocks: 14
+  sequences_per_block: 10
+  test_repetitions: 8
+  return_block_sequences: 10
+  recruitment_target: 256
+e5:
+  arms: [P0, P1, P2]
+  prior_sequences: 8
+  prior_layouts: 8
+  pretraining_sequences: 640
+  p1_pair_repetitions: 10
+  p2_pair_repetitions: 80
+  target_training_sequences: 170
+  primary_checkpoint: 170
+human_tasks:
+  response_keys: [a, s, d, f]
+  error_policy: restart_current_sequence
+  acquisition_sequence_repetitions_per_block: 10
+  recruitment_targets:
+    e2: 256
+    e3: 256
+    e4: 256
+power:
+  total_N_options: [64, 128, 256, 384, 512]
+  standardized_effects: [0.0, 0.10, 0.20, 0.35]
+  final_draws: 1000
+  smoke_draws: 200
+  conservative_participant_missingness: 0.10
+  conservative_event_error_rate: 0.05
+  simulation_seed: 73051
+bootstrap:
+  draws: 2000
+  seed: 73052
+numerical_tolerances:
+  replay_absolute: 0.0000005
+  RT_reconstruction_absolute: 0.0000005
+  state_hash_exact: true
+runtime:
+  torch_threads: 1
+  cache_snapshots: true
+  checkpoint_storage: anchors_only

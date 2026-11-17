@@ -1,0 +1,8 @@
+{
+  "hidden_sizes": [8, 16, 32],
+  "confirmatory_policy": "extend_each_phaseB_cell_passing_the_five_seed_AB_gates",
+  "bootstrap": {"draws": 2000, "seed": 92173},
+  "confirmatory_model": "metric ~ shared_fraction * log2_hidden_size + (1|seed)",
+  "primary_model_condition": "High_monotonic",
+  "capacity_change_scope": "hidden_width_and_shape_required_dimensions_only"
+}

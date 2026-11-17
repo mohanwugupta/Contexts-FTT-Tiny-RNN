@@ -1,0 +1,41 @@
+{
+  "analysis_version": "differentiation-transfer-frontier-1.0.0",
+  "repo_root": "..",
+  "output_dir": "outputs/differentiation_transfer_frontier",
+  "coordinate_registry": "human_svg_target_coordinates_v3.json",
+  "coordinate_array_assignment": {"A": 0, "B": 1, "Mixed": 2, "Novel": 3},
+  "reference_geometry": "G2_shared_x",
+  "canonical_motor_sequence": ["S", "A", "F", "S", "D", "A", "F", "D"],
+  "cue_dim": 10,
+  "active_features_per_familiar_context": 5,
+  "sharing_conditions": ["S0", "S1", "S2", "S3", "S4"],
+  "cue_assignments": {
+    "S0": {"shared": [], "A_unique": [0, 1, 2, 3, 4], "B_unique": [5, 6, 7, 8, 9]},
+    "S1": {"shared": [0], "A_unique": [1, 2, 3, 4], "B_unique": [5, 6, 7, 8]},
+    "S2": {"shared": [0, 1], "A_unique": [2, 3, 4], "B_unique": [5, 6, 7]},
+    "S3": {"shared": [0, 1, 2], "A_unique": [3, 4], "B_unique": [5, 6]},
+    "S4": {"shared": [0, 1, 2, 3], "A_unique": [4], "B_unique": [5]}
+  },
+  "probe_cues": {
+    "Mixed": "unit_normalized_A_plus_B",
+    "Novel": "all_zero_unknown_context"
+  },
+  "scales": {"High_monotonic": 2.0, "Low_monotonic": 0.02},
+  "training_sequences": 170,
+  "block_length": 10,
+  "seeds": {
+    "screen": [0, 1, 2, 3, 4],
+    "confirmatory": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
+  },
+  "optimizer": {"name": "Adam", "learning_rate": 0.005, "gradient_clip": 1.0},
+  "initialization": {"base_rule": "normal_std_equals_scale_no_fan_in_normalization"},
+  "gates": {"seed_fraction": 0.8, "sawtooth_minimum": 0.005},
+  "stop_conditions": {"material_NLL_deficit_range": 0.05},
+  "equivalence": {
+    "hidden_separation_ratio_bounds": [0.5, 2.0],
+    "transfer_deficit_magnitude_ratio_bounds": [0.25, 4.0],
+    "near_zero_transfer_deficit_absolute_tolerance": 0.05,
+    "saved_reference_tolerance": 0.0000005,
+    "saved_reference_dir": "outputs/human_svg_geometry_transfer"
+  }
+}

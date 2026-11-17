@@ -1,0 +1,18 @@
+{
+  "contexts_per_family": 6,
+  "z_sampling": "sorted_uniform",
+  "z_minimum_spacing": 0.15,
+  "support_contexts": 3,
+  "support_sequences_per_context": 2,
+  "unseen_query_sequences": 4,
+  "copy_query_sequences": 1,
+  "sequence_length": 8,
+  "alphabet_size": 4,
+  "cue_noise_sd": 0.02,
+  "layout_jitter_fraction": 0.02,
+  "layout_source": "human_svg_coordinate_PCA_manifold",
+  "task_modifier_positions": [2, 3, 5, 6],
+  "task_probability_basis": ["1", "z", "z_squared"],
+  "shuffled_control": "within_family_task_derangement",
+  "asymmetric_query_ratios": [0.1, 0.25, 0.75, 0.9]
+}

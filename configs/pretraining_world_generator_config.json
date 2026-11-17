@@ -1,0 +1,16 @@
+{
+  "sequence_length": 8,
+  "alphabet_size": 4,
+  "factor_counts": [2, 3, 4],
+  "world_types": ["shared_structure", "context_specific", "compositional"],
+  "training_contexts_per_world": 4,
+  "heldout_probes_per_world": 2,
+  "episodes_per_observed_context": 10,
+  "modifier_positions": {"shared_structure": [1, 1], "context_specific": [2, 2], "compositional": [1, 2]},
+  "visible_shared_sd": 0.35,
+  "visible_factor_sd": 0.45,
+  "visible_noise_sd": 0.025,
+  "surface_trap_every_n_worlds": 10,
+  "shuffle_derangement": true,
+  "generator_seed_offset": 19073
+}

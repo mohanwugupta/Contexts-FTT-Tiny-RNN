@@ -1,0 +1,27 @@
+{
+  "analysis_version": "srn-meta-learning-calibration-1.0.0",
+  "repo_root": "..",
+  "output_dir": "outputs/srn_meta_learning_calibration",
+  "hidden_sizes": [8, 32, 64, 128],
+  "initialization_regimes": {
+    "I0_high": {"kind": "normal", "scale": 2.0},
+    "I1_moderate": {"kind": "normal", "scale": 1.0},
+    "I2_low_moderate": {"kind": "normal", "scale": 0.5},
+    "I3_orthogonal": {"kind": "orthogonal_xavier", "target_spectral_radius": 0.9}
+  },
+  "inner_learning_rates": [0.0001, 0.0003, 0.001, 0.003, 0.01],
+  "reported_step_counts": [0, 1, 3, 5, 10],
+  "maximum_inner_steps": 10,
+  "episodes_per_cell": 20,
+  "inner_optimizer": "plain_SGD_no_momentum",
+  "catastrophic": {"episode_fraction": 0.05, "query_NLL": 20.0, "support_NLL_increase": 1.0, "copy_NLL_increase": 1.0, "incorrect_confidence_threshold": 0.95, "incorrect_confidence_fraction": 0.5, "hidden_saturation_fraction": 0.75, "spectral_radius": 5.0},
+  "validity": {"minimum_copy_accuracy": 0.5, "copy_improvement_episode_fraction": 0.8, "relative_tie_tolerance": 0.01, "initialization_preference": ["I0_high", "I1_moderate", "I2_low_moderate", "I3_orthogonal"]},
+  "confirmatory": {"families_per_model_seed": 100, "model_seeds": [0, 1, 2, 3, 4], "required_seed_fraction": 0.8},
+  "clipping_rescue": {"enabled": true, "clip_norms": [1.0, 5.0], "best_learning_rate_count": 2},
+  "meta_batch": {"width_rule": "H8_smallest_larger_largest", "batch_sizes": [1, 8, 16, 25], "outer_updates": 500, "seeds": [0, 1, 2], "outer_learning_rate": 0.001, "selection_CV_multiplier": 1.1},
+  "revised_meta": {"conditions": ["P2_meta", "P1_shuffled_meta", "P2_ordinary"], "families_per_condition": 5000, "seeds": [0, 1, 2, 3, 4], "outer_learning_rate": 0.001, "copy_weight": 0.25, "minimum_copy_accuracy": 0.5, "required_seed_fraction": 0.8},
+  "coordinate_registry": "human_svg_target_coordinates_v3.json",
+  "synthetic_generator_config": "configs/synthetic_family_generator_config.json",
+  "generator_seed_offset": 240119,
+  "smoke": {"hidden_sizes": [8, 64], "initialization_regimes": ["I0_high", "I3_orthogonal"], "inner_learning_rates": [0.001, 0.01], "maximum_inner_steps": 3, "reported_step_counts": [0, 1, 3], "episodes_per_cell": 2, "confirmatory_families_per_seed": 2, "confirmatory_model_seeds": [0, 1], "meta_batch_sizes": [1, 2], "meta_batch_outer_updates": 3, "meta_batch_seeds": [0], "revised_families_per_condition": 12, "revised_seeds": [0], "force_valid_selection_for_integration_test": false}
+}

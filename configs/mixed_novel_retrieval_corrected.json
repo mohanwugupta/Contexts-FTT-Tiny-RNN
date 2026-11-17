@@ -1,0 +1,15 @@
+{
+  "analysis_version": "mixed-novel-retrieval-corrected-1.1.0-absolute-fit",
+  "profile": "final",
+  "bootstrap_replicates": 1000,
+  "random_seed": 91827,
+  "participant_cv_folds": 5,
+  "r2_shrinkage": 10.0,
+  "r3_rank": 2,
+  "familiar_plausibility_delta_bic": 20.0,
+  "posterior_predictive_profiles": 5000,
+  "posterior_summary_replicates": 1000,
+  "workers": 0,
+  "make_plots": true,
+  "show_progress": true
+}

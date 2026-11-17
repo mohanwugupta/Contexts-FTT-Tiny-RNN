@@ -1,0 +1,27 @@
+
+==================================== ERRORS ====================================
+_ ERROR collecting tests/output_compatible_trajectories/test_analysis_and_export.py _
+ImportError while importing test module '/Users/mg9965/Library/CloudStorage/Box-Box/ResearchProjects/RI-EVC/Contexts-FTT-Tiny-RNN/tests/output_compatible_trajectories/test_analysis_and_export.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/Users/mg9965/.pyenv/versions/3.11.8/lib/python3.11/importlib/__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/output_compatible_trajectories/test_analysis_and_export.py:4: in <module>
+    from experiments.output_compatible_trajectories.lag_audit import lag_seed, paired_rows
+E   ModuleNotFoundError: No module named 'experiments.output_compatible_trajectories.lag_audit'
+_ ERROR collecting tests/output_compatible_trajectories/test_patch_and_continuation.py _
+ImportError while importing test module '/Users/mg9965/Library/CloudStorage/Box-Box/ResearchProjects/RI-EVC/Contexts-FTT-Tiny-RNN/tests/output_compatible_trajectories/test_patch_and_continuation.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/Users/mg9965/.pyenv/versions/3.11.8/lib/python3.11/importlib/__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/output_compatible_trajectories/test_patch_and_continuation.py:2: in <module>
+    from experiments.output_compatible_trajectories.lag_audit import replay_pair
+E   ModuleNotFoundError: No module named 'experiments.output_compatible_trajectories.lag_audit'
+=========================== short test summary info ============================
+ERROR tests/output_compatible_trajectories/test_analysis_and_export.py
+ERROR tests/output_compatible_trajectories/test_patch_and_continuation.py
+!!!!!!!!!!!!!!!!!!! Interrupted: 2 errors during collection !!!!!!!!!!!!!!!!!!!!
+2 errors in 0.40s

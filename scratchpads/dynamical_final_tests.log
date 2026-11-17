@@ -1,0 +1,8 @@
+..........................................                               [100%]
+=============================== warnings summary ===============================
+tests/integration/test_factorial_runner_contract.py::test_E3_E4_fixed_run_matrix_sequence_and_evaluator_without_training
+  /Users/mg9965/Library/CloudStorage/Box-Box/ResearchProjects/RI-EVC/Contexts-FTT-Tiny-RNN/src/context_sequence/dynamics/pipeline.py:209: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+    transition=pd.concat(parts,ignore_index=True);summary=seed_summary(transition)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+42 passed, 1 warning in 6.84s

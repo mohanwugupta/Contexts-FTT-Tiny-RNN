@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.0.0",
+  "analysis_order": [
+    "configured_state_v3",
+    "low_rank_interpretation_v3_1"
+  ],
+  "inputs": {
+    "combined": "data/mixedBreak_clean.csv",
+    "novel": "data/threeContextsBreak_clean.csv",
+    "frozen_srn": "outputs/ftt_srn_execution_v2_final_checkpointed"
+  },
+  "outputs": {
+    "configured_state_v3": "outputs/human_configured_state_v3",
+    "low_rank_interpretation_v3_1": "outputs/human_low_rank_interpretation_v31"
+  },
+  "frozen_contract": {
+    "transition_positions": [1, 2, 3, 4, 5, 6, 7],
+    "transition_definition": "response transitions 1->2 through 7->8",
+    "first_sequence_excluded": true,
+    "counterbalance_preserved": true,
+    "pure_profile_contexts": ["A", "B"],
+    "probe_rows_used_for_pure_profiles": 0,
+    "cv_folds": 5,
+    "primary_metric": "heldout_log_likelihood",
+    "candidate_ranks": [1, 2, 3, 7],
+    "selected_rank": 2,
+    "random_seeds": {"configured_state_v3": 30000, "low_rank_v3_1": 31000},
+    "human_tuning_of_srn_allowed": false
+  }
+}

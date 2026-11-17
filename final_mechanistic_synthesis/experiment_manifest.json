@@ -1,0 +1,57 @@
+{
+  "analysis_only": true,
+  "synthesis_optimizer_steps": 0,
+  "new_models_trained": 0,
+  "human_data_used": false,
+  "config": {
+    "source_dir": "outputs/phase1c_pareto_path_sufficiency",
+    "output_dir": "final_mechanistic_synthesis",
+    "checkpoint_dir": "outputs/confirmatory_srn_final/confirmatory_checkpoints",
+    "bootstrap_samples": 2000,
+    "random_seed": 20260920,
+    "endpoint_drift_max": 0.1,
+    "separation_ratio_min": 0.9,
+    "separation_ratio_max": 1.1,
+    "familiar_loss_ratio_max": 1.1,
+    "path_residual_max": 0.35,
+    "rescue_fraction_min": 0.75,
+    "remaining_gap_ratio_max": 0.35,
+    "transitions_per_sequence": 7,
+    "profile": "final"
+  },
+  "source_artifact_sha256": {
+    "phase1c_pareto_grid.csv": "c9460eed1bfef8568d7fad52256932084fb70a0ee26345db82fa111d8dbabef7",
+    "phase1c_seed_metrics.csv": "67079fb76dff87521dc99d4863abbede05071746d79c3ce9877eafb86a0fb5d0",
+    "phase1c_endpoint_metrics.csv": "209124c206bb15250fed89e5cc86481fbf0dfecd85508e74b1f4dd235166a8c7",
+    "phase1c_path_metrics.csv": "c340a9ebf9875dc6451b70b2c730e8851d791e55b25af29d1d5ed6d7939e27de",
+    "phase1c_specificity_controls.csv": "8362206a8c7bcc64cedbabeb13960642b027ca62e55db7fe8551b48e96591d8b",
+    "phase1c_rescue_metrics.csv": "958c9c54416755d905e229cb2bc9783cb3f4799697aa1ab9501fc8f209745716",
+    "phase1c_feasible_frontier.csv": "e42c540c343392697cc047577f8055657aeb26dc62ec4a6726517965cc42780a",
+    "phase1c_timeseries_finetuning.csv": "86efa4b340418e64930c01feda643773fca5ca00ca6b72d4113f0f6ccfa1d788",
+    "phase1c_timeseries_midpoint_checkpoints.csv": "170419909b3f22e82510d383de401d3a4fef04082e89669a64307742044affb3",
+    "phase1c_timeseries_familiar_schedule.csv": "259bec9a87cc4af7e02f6e00491fccc22a5a460d7d278659e17f4690fc33be4f",
+    "phase1c_timeseries_full_probe_schedule.csv": "e2401f04b1732a077994b298fc97dbd8d2e5c24f76f1079ec0ec01681e87aba7",
+    "phase1c_timeseries_cue_sweep.csv": "708821acadb6f1797b67ab63c93ea8225181b0ef969bc16ca02845ddfdf8c2e5",
+    "PHASE1C_PARETO_PATH_SUFFICIENCY_REPORT.md": "94be87d1d9a71f0b9969376aec10f1e09b5ec136a176c6cde48d27a39d898c4d",
+    "experiment_manifest.json": "2e4cac3203d92ff2ada037a594386b8f135c401ebf05a97bea9fb3c1c2b086e8"
+  },
+  "source_phase1c_config_sha256": "3b2cf9421bce7aba7a7c4bae427aba0529d9161495063a46cd3ac275e134d353",
+  "best_stable_aggregate_cell": "P1_correct_logit_alpha_10_anchor_30",
+  "seed_specific_cells_selected_without_Mixed": true,
+  "historical_plot_roles_used_for_inference": false,
+  "claims": {
+    "claim_A_behavioral_usefulness": true,
+    "claim_B_subset_sufficiency": true,
+    "claim_C_directional_specificity": true,
+    "feasible_seed_fraction": 0.2
+  },
+  "heterogeneity": {
+    "classification": "continuous frontier",
+    "largest_gap_fraction": 0.19538489120541733,
+    "largest_gap": 0.1328171951291106,
+    "lower_group_n": 19,
+    "upper_group_n": 1
+  },
+  "invariants_all_passed": true,
+  "final_report": "final_mechanistic_synthesis/FINAL_TASK_SPACE_COMPOSITIONALITY_REPORT.md"
+}

@@ -1,0 +1,86 @@
+{
+  "purpose": "Versioned lightweight reports/manifests; large transition tables and checkpoint histories remain in local immutable result root",
+  "result_root": "results/dynamical_generalization/dg_v1_20261103",
+  "files": [
+    {
+      "source": "results/dynamical_generalization/dg_v1_20261103/manifest.json",
+      "copy": "artifacts/manifests/dynamical_generalization_v1/manifest.json",
+      "sha256": "08688d19702ef8c43839987bfe89d0f10f190ccbb59dc752909d5247ec764dbb"
+    },
+    {
+      "source": "results/dynamical_generalization/dg_v1_20261103/FINAL_DYNAMICAL_GENERALIZATION_REPORT.md",
+      "copy": "artifacts/manifests/dynamical_generalization_v1/FINAL_DYNAMICAL_GENERALIZATION_REPORT.md",
+      "sha256": "15b2892e1da56380217748e6fc724d0bfe40fa09e7bdb1cda710c0b234cf021c"
+    },
+    {
+      "source": "results/dynamical_generalization/dg_v1_20261103/E1_RESULTS.md",
+      "copy": "artifacts/manifests/dynamical_generalization_v1/E1_RESULTS.md",
+      "sha256": "4c74508eba529b6d708bf7f02ff6c4d678b5ea76426e9dec189a2768834dd8dc"
+    },
+    {
+      "source": "results/dynamical_generalization/dg_v1_20261103/E2_RESULTS.md",
+      "copy": "artifacts/manifests/dynamical_generalization_v1/E2_RESULTS.md",
+      "sha256": "460c280ab8669d314aa188a48920e097dcbb397fd9f8323802e220138b1b4ee2"
+    },
+    {
+      "source": "results/dynamical_generalization/dg_v1_20261103/E3_RESULTS.md",
+      "copy": "artifacts/manifests/dynamical_generalization_v1/E3_RESULTS.md",
+      "sha256": "5d5b69e6e7728fe938fcb65c91ad722520c4a0dac2b274eadac655e29191b149"
+    },
+    {
+      "source": "results/dynamical_generalization/dg_v1_20261103/E3_PILOT_RESULTS.md",
+      "copy": "artifacts/manifests/dynamical_generalization_v1/E3_PILOT_RESULTS.md",
+      "sha256": "ed9348c5812fb2ae1b837c58506149620a54e4c49a2dacb1e980c5a388cd56fe"
+    },
+    {
+      "source": "results/dynamical_generalization/dg_v1_20261103/E4_RESULTS.md",
+      "copy": "artifacts/manifests/dynamical_generalization_v1/E4_RESULTS.md",
+      "sha256": "28df7be3efaf917faafa5a3a30d0516374bdc4369e8ddf8180e71c26d7fe5aa3"
+    },
+    {
+      "source": "results/dynamical_generalization/dg_v1_20261103/PILOT_FEASIBILITY_SUMMARY.md",
+      "copy": "artifacts/manifests/dynamical_generalization_v1/PILOT_FEASIBILITY_SUMMARY.md",
+      "sha256": "dd9156fb9caffec8b923eee92b9333685bb9bde211fe92c1f3f95ab1e76f7c60"
+    },
+    {
+      "source": "results/dynamical_generalization/dg_v1_20261103/FIGURE_CAPTIONS.md",
+      "copy": "artifacts/manifests/dynamical_generalization_v1/FIGURE_CAPTIONS.md",
+      "sha256": "5a41a583e70809435b29d4bc65cbc12657d20f2c0160c1ca1923f557e44e7775"
+    },
+    {
+      "source": "results/dynamical_generalization/dg_v1_20261103/manifests/e1.json",
+      "copy": "artifacts/manifests/dynamical_generalization_v1/manifests/e1.json",
+      "sha256": "391168f6fc518b891e5550f1ebd2ad04ce030fb961efdd0cb3f106cc0a5dbda5"
+    },
+    {
+      "source": "results/dynamical_generalization/dg_v1_20261103/manifests/e2.json",
+      "copy": "artifacts/manifests/dynamical_generalization_v1/manifests/e2.json",
+      "sha256": "b4fd91a27949490e032380f8a2ebaa2abbddf78049ce3822068a29fcc074d54f"
+    },
+    {
+      "source": "results/dynamical_generalization/dg_v1_20261103/manifests/e3_pilot.json",
+      "copy": "artifacts/manifests/dynamical_generalization_v1/manifests/e3_pilot.json",
+      "sha256": "d55f1e896f9d7691083052970b92543adc285f0bf4906e90f8718b697982a8d3"
+    },
+    {
+      "source": "results/dynamical_generalization/dg_v1_20261103/manifests/e3.json",
+      "copy": "artifacts/manifests/dynamical_generalization_v1/manifests/e3.json",
+      "sha256": "d024b5ca5f6fe38a0c0749ddf65b86f1950cda24afb3733dc04351beb7ea0575"
+    },
+    {
+      "source": "results/dynamical_generalization/dg_v1_20261103/manifests/e4.json",
+      "copy": "artifacts/manifests/dynamical_generalization_v1/manifests/e4.json",
+      "sha256": "81db0ccdbf0c99a09f37a250e8f2b27543c0de90d3f5f0d3bb20e846e0b391f4"
+    },
+    {
+      "source": "results/dynamical_generalization/dg_v1_20261103/manifests/e3_selected_config_manifest.json",
+      "copy": "artifacts/manifests/dynamical_generalization_v1/manifests/e3_selected_config_manifest.json",
+      "sha256": "9a66b4be822551754a7aa80fb63b40999cbe9a67be18e81bc2d34fa6a27a3a45"
+    },
+    {
+      "source": "results/dynamical_generalization/dg_v1_20261103/tables/e3_pilot_candidate_audit.csv",
+      "copy": "artifacts/manifests/dynamical_generalization_v1/tables/e3_pilot_candidate_audit.csv",
+      "sha256": "1568ef8480289b9ad4d98f3cefc6b7c9a742e3884f28966e5e3bbd90c2040f7a"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "analysis_version": "hierarchical-compositional-pretraining-1.0.0",
+  "repo_root": "..",
+  "output_dir": "outputs/hierarchical_compositional_pretraining",
+  "primary_model_condition": "High_monotonic",
+  "pretraining_conditions": ["P0_none", "P1_shuffled", "P2_structured"],
+  "pilot": {"worlds": 100, "seeds": [0, 1, 2, 3, 4]},
+  "confirmatory": {"worlds": 1000, "seeds": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]},
+  "smoke": {"pilot_worlds": 3, "confirmatory_worlds": 4, "seeds": [0, 1], "episodes_per_context": 2, "human_training_sequences": 20},
+  "optimizer": {"name": "Adam", "learning_rate": 0.005, "reset_before_human_task": true},
+  "bootstrap": {"draws": 2000, "seed": 84117},
+  "gates": {"seed_fraction": 0.8, "P2_minimum_P0_differentiation_ratio": 0.8, "minimum_RT_sawtooth": 0.0001},
+  "pilot_gate": {"require_lower_mean_NLL": true, "require_nonlower_accuracy": true},
+  "mechanistic_followups": {"enabled": false, "reason": "PRD requires M1-M4 only after primary P2 success"}
+}

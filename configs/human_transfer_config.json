@@ -1,0 +1,17 @@
+{
+  "environment": "G2_shared_x",
+  "coordinate_registry": "human_svg_target_coordinates_v3.json",
+  "coordinate_array_assignment": {"A": 0, "B": 1, "Mixed": 2, "Novel": 3},
+  "motor_sequence": ["S", "A", "F", "S", "D", "A", "F", "D"],
+  "token_sequence": [0, 1, 2, 0, 3, 1, 2, 3],
+  "training_sequences": 170,
+  "block_length": 10,
+  "probe_checkpoints": {"first": 20, "late": 170},
+  "hidden_size": 8,
+  "initialization_scale": 2.0,
+  "execution_weight": 0.2,
+  "rt_definition": "1 - execution_speed",
+  "primary_optimizer_policy": "fresh_optimizer_after_pretraining",
+  "mixed_training_steps": 0,
+  "novel_training_steps": 0
+}

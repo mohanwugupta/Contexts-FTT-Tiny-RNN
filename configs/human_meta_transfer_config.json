@@ -1,0 +1,67 @@
+{
+  "analysis_version": "human-meta-prior-transfer-1.0.0",
+  "repo_root": "..",
+  "output_dir": "outputs/human_meta_prior_transfer",
+  "upstream_output_dir": "outputs/srn_meta_learning_calibration",
+  "upstream_config": "configs/inner_loop_calibration_config.json",
+  "coordinate_registry": "human_svg_target_coordinates_v3.json",
+  "coordinate_array_assignment": {"A": 0, "B": 1, "Mixed": 2, "Novel": 3},
+  "human_profile_source": "data/mixedBreak_clean.csv",
+  "locked_synthetic": {
+    "hidden_size": 128,
+    "initialization_regime": "I3_orthogonal",
+    "inner_alpha": 0.01,
+    "inner_steps": 10,
+    "meta_batch": 16,
+    "families_per_condition": 5000,
+    "conditions": ["P2_meta", "P1_shuffled_meta", "P2_ordinary"],
+    "checkpoint_seeds": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
+  },
+  "locked_initialization_regimes": {
+    "I0_high": {"kind": "normal", "scale": 2.0},
+    "I3_orthogonal": {"kind": "orthogonal_xavier", "target_spectral_radius": 0.9}
+  },
+  "groups": [
+    {"group": "G1", "label": "H128 P2_meta", "hidden_size": 128, "source": "P2_meta", "primary_causal": true},
+    {"group": "G2", "label": "H128 P1_shuffled_meta", "hidden_size": 128, "source": "P1_shuffled_meta", "primary_causal": true},
+    {"group": "G3", "label": "H128 P2_ordinary", "hidden_size": 128, "source": "P2_ordinary", "primary_causal": true},
+    {"group": "G4", "label": "H128 random-init", "hidden_size": 128, "source": "random_I3", "primary_causal": true},
+    {"group": "G5", "label": "H8 original", "hidden_size": 8, "source": "random_I0_high", "primary_causal": false}
+  ],
+  "target_task": {
+    "environment": "G2_shared_x",
+    "token_sequence": [0, 1, 2, 0, 3, 1, 2, 3],
+    "motor_sequence": ["S", "A", "F", "S", "D", "A", "F", "D"],
+    "training_sequences": 170,
+    "block_length": 10,
+    "probe_checkpoints": [20, 50, 90, 170],
+    "optimizer": "Adam",
+    "learning_rate": 0.001,
+    "gradient_clip": 1.0,
+    "lambda_execution": 0.2,
+    "rt_readout": "monotonic_stop_gradient_confidence",
+    "rt_definition": "1 - execution_speed",
+    "probe_contexts": ["A", "B", "Mixed", "Novel", "Neutral"]
+  },
+  "familiar_gates": {
+    "required_seed_fraction": 0.8,
+    "hidden_separation_growth_ratio": 1.0,
+    "minimum_mean_absolute_AB_RT_gap": 0.005,
+    "state_space_winners": ["Cross", "Split"],
+    "maximum_settled_NLL": 20.0,
+    "minimum_settled_accuracy_exclusive": 0.25
+  },
+  "synthetic_prior_retention_families": 20,
+  "bootstrap": {"draws": 10000, "seed": 20260909},
+  "weight_ablations": {"enabled_if_primary_success": true, "subsystems": ["input", "recurrent", "output"]},
+  "smoke": {
+    "seeds": [0, 1, 2],
+    "checkpoint_materialization_families": 2,
+    "training_sequences": 20,
+    "probe_checkpoints": [20],
+    "synthetic_prior_retention_families": 1,
+    "bootstrap_draws": 200,
+    "run_weight_ablations": false,
+    "force_familiar_gate_for_integration_test": false
+  }
+}

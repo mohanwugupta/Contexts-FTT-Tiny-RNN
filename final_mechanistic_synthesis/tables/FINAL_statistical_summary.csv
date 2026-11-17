@@ -1,0 +1,4 @@
+analysis,estimate,SE,CI_low,CI_high,pearson_r,spearman_rho,fraction_positive,unit,median
+P1 task-path dose response,1.0346165925848345,0.2935162548978541,0.3668699400168915,2.2037074183427046,0.4000655406093578,0.3997504633798714,,seed x alpha x anchor cell,
+Exact-matched wrong minus correct Mixed loss,0.3338384871284413,,0.08986788085965429,0.5725700739151719,,,0.6125,exact seed x alpha x anchor pair,0.09027745546638416
+Seed-specific stable-cell feasible fraction,0.2,,,,,,,seed,

@@ -1,0 +1,95 @@
+{
+  "analysis_version": "mechanism-first-probe-diagnostics-1.0.0",
+  "repo_root": "..",
+  "output_dir": "outputs/mechanism_first_probe_diagnostics",
+  "inputs": {
+    "human_combined_clean": "data/mixedBreak_clean.csv",
+    "human_novel_clean": "data/threeContextsBreak_clean.csv",
+    "human_ab_profiles": "outputs/human_configured_state_v3/pure_ab_token_profiles.csv",
+    "scalar_q_mixed": "outputs/human_configured_state_v3/mixed_midpoint_deviation.csv",
+    "scalar_q_novel": "outputs/human_configured_state_v3/novel_midpoint_deviation.csv",
+    "existing_model_predictions": "outputs/probe_fit_diagnostics/retrieval_predictions_used.csv",
+    "existing_mixed_comparison": "outputs/human_configured_state_v3/mixed_model_comparison.csv",
+    "existing_novel_comparison": "outputs/human_configured_state_v3/novel_model_comparison.csv",
+    "rank2_predictions": "outputs/probe_fit_diagnostics/rank2_predictions_reconstructed.csv",
+    "rank2_frozen_scores": "outputs/human_low_rank_interpretation_v31/shared_vs_separate_basis_predictions.csv",
+    "rank2_loadings": "outputs/human_low_rank_interpretation_v31/component_loadings.csv",
+    "categorical_reference": "archive/old_outputs/retrieval_analysis_full/continuous_vs_categorical.csv",
+    "srn_mixed_probe": "outputs/ordinal_layout_ecology_final/stage3_mixed_probe.csv",
+    "srn_novel_probe": "outputs/ordinal_layout_ecology_final/stage5_novel_probe.csv",
+    "srn_mixed_geometry": "outputs/ordinal_layout_ecology_final/stage3_mixed_geometry.csv",
+    "srn_novel_geometry": "outputs/ordinal_layout_ecology_final/stage5_novel_geometry.csv",
+    "srn_canonical_map": "outputs/posthoc_frozen_high_AB_label_canonicalization/canonical_seed_labels.csv"
+  },
+  "input_registry": [
+    {"key": "human_combined_clean", "purpose": "cleaned human Mixed trial table", "branch": "human_all", "required": true},
+    {"key": "human_novel_clean", "purpose": "cleaned human Novel and no-context trial table", "branch": "human_all", "required": true},
+    {"key": "human_ab_profiles", "purpose": "frozen participant A/B endpoint profiles", "branch": "stage0_audit", "required": true},
+    {"key": "scalar_q_mixed", "purpose": "existing scalar-q Mixed result and fold rows", "branch": "stage0_audit", "required": true},
+    {"key": "scalar_q_novel", "purpose": "existing scalar-q Novel result and fold rows", "branch": "stage0_audit", "required": true},
+    {"key": "existing_model_predictions", "purpose": "existing scalar, transition-specific, and low-rank held-out predictions", "branch": "stage2", "required": true},
+    {"key": "existing_mixed_comparison", "purpose": "existing Mixed model comparison", "branch": "stage0_audit", "required": true},
+    {"key": "existing_novel_comparison", "purpose": "existing Novel model comparison", "branch": "stage0_audit", "required": true},
+    {"key": "rank2_predictions", "purpose": "reconstructed signed rank-2 held-out predictions verified against frozen errors", "branch": "stage2", "required": true},
+    {"key": "rank2_frozen_scores", "purpose": "frozen rank-2 likelihood and error rows", "branch": "stage2", "required": true},
+    {"key": "rank2_loadings", "purpose": "independently estimated A/B-only rank-2 basis", "branch": "stage2", "required": true},
+    {"key": "categorical_reference", "purpose": "existing categorical-switching reference summary; never refit", "branch": "stage2_reference", "required": true},
+    {"key": "srn_mixed_probe", "purpose": "frozen 20-seed High-scale A/B/Mixed transition RT", "branch": "srn_all", "required": true},
+    {"key": "srn_novel_probe", "purpose": "frozen 20-seed High-scale A/B/Novel and sequence-only outputs", "branch": "srn_all", "required": true},
+    {"key": "srn_mixed_geometry", "purpose": "frozen Mixed hidden-state geometry", "branch": "stage5", "required": true},
+    {"key": "srn_novel_geometry", "purpose": "frozen Novel hidden-state geometry", "branch": "stage5", "required": true},
+    {"key": "srn_canonical_map", "purpose": "frozen whole-profile A/B-only Fast/Slow map", "branch": "stage1_sensitivity", "required": true}
+  ],
+  "condition_aliases": {
+    "A": "A",
+    "B": "B",
+    "Both": "Mixed",
+    "Combined": "Mixed",
+    "Mixed": "Mixed",
+    "Mixed_norm": "Mixed",
+    "Novel": "Novel",
+    "Third": "Novel",
+    "Default": "Default",
+    "No Context": "Default"
+  },
+  "transition": {
+    "column": "transition_position",
+    "valid_values": [1, 2, 3, 4, 5, 6, 7],
+    "definition": "SRN-aligned ordinal transitions 1->2 through 7->8"
+  },
+  "identifiers": {
+    "human": "participant_uid",
+    "srn": "seed",
+    "trial": "unit_id",
+    "sequence": "original_sequence_in_block",
+    "block": "block_id",
+    "order": "block_order"
+  },
+  "existing_folds": {
+    "participant_folds": 5,
+    "source": "embedded fold column in existing held-out prediction artifacts",
+    "probe_repetition_split": "odd train/even test",
+    "additive_nested_split": "test repetitions 2/6 calibration; 4/8 evaluation"
+  },
+  "human_rt": {
+    "primary": "mean_rt_ms",
+    "robustness": "log_rt",
+    "error_trials": "canonical retrieval_v1 correct-only contract",
+    "new_outlier_rule": false
+  },
+  "bootstrap": {"draws": 2000, "unit": "participant_or_seed", "interval": 0.95},
+  "weak_contrast_epsilon": {
+    "mean_rt_ms": 1.0,
+    "log_rt": 0.001,
+    "normalized_srn_rt": 0.000001
+  },
+  "history_thresholds": {
+    "categorical_min_sequences_per_level": 5,
+    "continuous_min_distinct_values": 5,
+    "participant_fraction": 0.5,
+    "max_abs_correlation": 0.8,
+    "max_vif": 5.0
+  },
+  "decision_thresholds": {"good_centered_r2": 0.5},
+  "random_seed": 41027
+}
