@@ -1,0 +1,23 @@
+"""Frozen nonzero-C decomposition with independent operator/numerical controls."""
+from .core import *
+from experiments.nonzero_context_generalization.core import operators,baseline64
+
+def measure_model(m,obs):
+ d=m.state_dict();s,k=operators(d);z0d,h0d=baseline64(d);mm=copy.deepcopy(m).double();double={c:trace(mm,c) for c in CUES};wi=m.recurrent.weight_ih_l0.detach().numpy().astype(float);wh=m.recurrent.weight_hh_l0.detach().numpy().astype(float);wo=m.sequence_head.weight.detach().numpy().astype(float);bi=m.recurrent.bias_ih_l0.detach().numpy().astype(float);bh=m.recurrent.bias_hh_l0.detach().numpy().astype(float);bo=m.sequence_head.bias.detach().numpy().astype(float);tol=1e-10+1e-12*max(abs(o[field]).max() for o in double.values() for field in ['hidden','logits']);eps=64*np.finfo(np.float32).eps;bound={};controls=[dict(position=t+1,double_tolerance=tol,double_operator_logit_error=0.,double_operator_hidden_error=0.,float32_logit_error=0.,float32_logit_allowance=0.,passed=True) for t in range(7)]
+ for c,vec in CUES.items():
+  vec=np.asarray(vec,float);drive=wi[:,4:]@vec;zh=z0d+np.einsum('tcj,j->tc',k,drive);hh=h0d+np.einsum('tij,j->ti',s,drive);errz=abs(double[c]['logits']-zh).max(1);errh=abs(double[c]['hidden']-hh).max(1);assert np.all(errz<=tol) and np.all(errh<=tol);b=np.zeros(8);zb=[]
+  for t,token in enumerate(TARGET_PATH[:-1]):
+   prev=np.zeros(8) if not t else obs[c]['hidden'][t-1];b=abs(wh)@b+eps*(1+abs(wi[:,token])+abs(wi[:,4:])@abs(vec)+abs(bi)+abs(bh)+abs(wh)@abs(prev));zz=abs(wo)@b+eps*(1+abs(wo)@abs(obs[c]['hidden'][t])+abs(bo));zb.append(zz);assert np.all(abs(obs[c]['hidden'][t]-hh[t])<=b+tol) and np.all(abs(obs[c]['logits'][t]-zh[t])<=zz+tol)
+   controls[t]['double_operator_logit_error']=max(controls[t]['double_operator_logit_error'],float(errz[t]));controls[t]['double_operator_hidden_error']=max(controls[t]['double_operator_hidden_error'],float(errh[t]));controls[t]['float32_logit_error']=max(controls[t]['float32_logit_error'],float(abs(obs[c]['logits'][t]-zh[t]).max()));controls[t]['float32_logit_allowance']=max(controls[t]['float32_logit_allowance'],float(zz.max()))
+  bound[c]=np.array(zb)
+ for t in range(7):
+  for prec,o in [('double',double),('float32',obs)]:
+   avg=o['Mixed-average']['logits'][t]-(o['A']['logits'][t]+o['B']['logits'][t])/2;both=o['Mixed-both']['logits'][t]-o['A']['logits'][t]-o['B']['logits'][t]+o['NoContext']['logits'][t];ab=bound['Mixed-average'][t]+(bound['A'][t]+bound['B'][t])/2;bb=bound['Mixed-both'][t]+bound['A'][t]+bound['B'][t]+bound['NoContext'][t];assert np.all(abs(avg)<=(tol if prec=='double' else ab+tol)) and np.all(abs(both)<=(tol if prec=='double' else bb+tol));gap=o['Mixed-average']['ce'][t]-(o['A']['ce'][t]+o['B']['ce'][t])/2;assert gap<=2*(tol if prec=='double' else ab.max()+tol);controls[t][prec+'_avg_error']=float(abs(avg).max());controls[t][prec+'_both_error']=float(abs(both).max());controls[t][prec+'_Jensen_gap']=float(gap)
+ z0=obs['NoContext']['logits'];u=(obs['A']['logits']+obs['B']['logits'])/2-z0;v=(obs['A']['logits']-obs['B']['logits'])/2;cc=obs['C']['logits']-z0;center=lambda z:z-z.mean(-1,keepdims=True);rows=[];pk=k-k.mean(1,keepdims=True)
+ for t in range(7):
+  r=dict(position=t+1,target=int(TARGET[t]),u_norm=float(np.linalg.norm(center(u[t]))),v_norm=float(np.linalg.norm(center(v[t]))),C_response_norm=float(np.linalg.norm(center(cc[t]))),K_centered_norm=float(np.linalg.norm(pk[t],2)),K_raw_norm=float(np.linalg.norm(k[t],2)),baseline_ce=obs['NoContext']['ce'][t],C_ce=obs['C']['ce'][t],baseline_margin=obs['NoContext']['margin'][t],C_margin=obs['C']['margin'][t])
+  for name,z in [('z0',z0),('u',u),('v',v),('C_response',cc)]:
+   for j in range(4):r[f'{name}_raw_{j}']=z[t,j];r[f'{name}_centered_{j}']=center(z[t])[j]
+  rows.append(r)
+ dh=obs['A']['hidden']-obs['B']['hidden'];dz=center(obs['A']['logits'])-center(obs['B']['logits']);g=dict(hidden_separation=float(np.linalg.norm(dh,axis=1).mean()),centered_logit_separation=float(np.linalg.norm(dz,axis=1).mean()),hidden_centroid_distance=float(np.linalg.norm(dh.mean(0))),recurrent_spectral_norm=float(np.linalg.norm(wh,2)),A_norm=float(np.linalg.norm(wi[:,4])),B_norm=float(np.linalg.norm(wi[:,5])),C_norm=float(np.linalg.norm(wi[:,6])),g_norm=float(np.linalg.norm((wi[:,4]+wi[:,5])/2)),d_norm=float(np.linalg.norm((wi[:,4]-wi[:,5])/2)),C_NoContext_first_hidden_difference=float(np.linalg.norm(obs['C']['hidden'][0]-obs['NoContext']['hidden'][0])),**{metric:float(np.mean([r[metric] for r in rows])) for metric in ['u_norm','v_norm','C_response_norm','K_centered_norm','K_raw_norm','baseline_ce','C_ce','baseline_margin','C_margin']});assert g['C_norm']>0 and g['C_NoContext_first_hidden_difference']>0
+ return g,controls,rows

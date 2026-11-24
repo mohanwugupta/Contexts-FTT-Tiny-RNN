@@ -1,0 +1,7 @@
+{
+  "program": "high_scale_meta_progression/v1", "scales": [4,5,6], "seeds": [0,1,2,3,4,5],
+  "meta_episodes": 1920, "meta_doses": [240,960,1920], "target_intermediate": 330,
+  "target_final": 990, "arms": ["T","B","O1","O2"], "bootstrap": 10000,
+  "bootstrap_rng": 20260925, "workers": 6, "recovery_every": 60,
+  "trace_episodes": [1,240,960,1920]
+}

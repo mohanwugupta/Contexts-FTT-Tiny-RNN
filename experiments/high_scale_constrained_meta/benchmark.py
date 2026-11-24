@@ -1,0 +1,12 @@
+"""Fixed two supervised fixture steps, CPU1/2 parity and measured I/O."""
+import io
+from .common import *
+from experiments.context_experience_prior.measures import measure_model
+from experiments.heldout_context_meta.mechanisms import extra_measures
+
+def main():
+ assert json.loads((OUT/'audit/source_audit.json').read_text())['passed'];dump(OUT/'audit/benchmark_fixture_registration.json',dict(optimizer_steps=2,threads=[1,2],same_initial_seed=0,one_A_step_each=True,no_scientific_model_update=True));results=[];states=[]
+ for threads in [1,2]:
+  torch.set_num_threads(threads);t=time.monotonic();state,path=initial(0,'P2','I','High',0);load=time.monotonic()-t;m=source_model(state);p=core.policy();o=core.optimizer(m,p);t=time.monotonic();r=core.step(m,p,o,'A');step=time.monotonic()-t;assert r['optimizer_step_executed'] and r['status']=='completed';t=time.monotonic();obs={c:core.trace(m,c) for c in CUES};g,cc,dc=measure_model(m,obs);extra_measures(m,obs,cc);measure=time.monotonic()-t;t=time.monotonic();buf=io.BytesIO();torch.save(dict(model=m.state_dict(),policy=p.state_dict(),optimizer=o.state_dict()),buf);ser=time.monotonic()-t;path=OUT/f'audit/benchmark_cpu{threads}.pt';t=time.monotonic();atomic_save(path,dict(model=m.state_dict(),policy=p.state_dict(),optimizer=o.state_dict()));disk=time.monotonic()-t;states.append((copy.deepcopy(m.state_dict()),copy.deepcopy(p.state_dict())));results.append(dict(threads=threads,load_seconds=load,optimizer_step_seconds=step,six_cue_geometry_seconds=measure,serialization_seconds=ser,atomic_disk_seconds=disk,native_optimizer_steps=1,measured_compute_seconds=step+measure))
+ assert all(torch.equal(a[k],b[k]) for a,b in zip(states[0],states[1]) for k in a);best=min(results,key=lambda r:r['measured_compute_seconds']);dump(OUT/'audit/benchmark.json',dict(passed=True,hardware=platform.platform(),cpu_count=os.cpu_count(),python=sys.version,torch=torch.__version__,numpy=np.__version__,trials=results,selected=best,bitwise_prediction_policy_parity=True,implementation_fixture_optimizer_steps=2));append('## CPU benchmark complete\nTwo preregistered A-update fixtures (CPU1/2) are bitwise equivalent. Actual source I/O, original optimizer step, allsixcue/double geometry, serialization and atomic disk save measured; fastest equivalent thread configuration frozen before preflight. Scientific preflight models remain original initial copies. Total optimizer fixture count2.')
+if __name__=='__main__':main()

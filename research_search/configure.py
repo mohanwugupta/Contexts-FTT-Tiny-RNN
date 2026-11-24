@@ -1,0 +1,13 @@
+"""Versioned, measured campaign defaults. Configuration is JSON-valid YAML."""
+import copy
+from .common import *
+from .runners.candidate import DEFAULT
+
+def create():
+    measured=read(PACKAGE/'audit/native_benchmark.json');cpu=129600;updates=min(1000000,int(cpu*measured['steps_per_cpu_second']*.8))
+    budgets=dict(tokens=1000000,cpu_seconds=cpu,optimizer_steps=updates,wall_seconds=72*3600,proposals=30,active_branches=8)
+    write(PACKAGE/'config/budgets.yaml',budgets,True)
+    write(PACKAGE/'config/campaign.yaml',dict(version=1,database='research_search/database/campaign',budgets='research_search/config/budgets.yaml',development_bank='research_search/database/benchmark_banks/development.json',confirmation_bank='research_search/database/benchmark_banks/sealed/confirmation.json',manual_checkpoints=True,live_agent_calls_during_implementation=0,automatic_campaign_start=False,training_tiers=dict(pilot_seeds=2,development_seeds=6),initial_candidate=DEFAULT,report_interval_seconds=86400,agent_backend='codex_subscription',unattended_token_guarantee=False),True)
+    write(PACKAGE/'config/evaluation.yaml',dict(version=1,target_updates=330,blocks='A10/B10 first roleA',strong_familiar=dict(ce_max=.5,correct_count_min=6),strict=dict(ce_max=.1,correct_count=7),floor_ce=.05,original_early_gate='unchanged joint-screen seed_summary.original_early_phenotype',late_functional_gate='unassessed without separately registered counterfactual updates',development_routing='original_early && net_A>0 && net_B>0 && usefulC && usefulMixed && AtoB_adjusted>0 && BtoA_adjusted>0 && sustained>=0; all planned tasks/seeds',matched_bins='native meta_learning_scaling.analysis.MATCH_BINS',bootstrap=dict(seed=20260925,draws=10000,unit='trained seed; average tasks within seed first'),no_context_required=False,mixed_both_required=False,confirmation_once_per_frozen_family=True),True)
+    write(PACKAGE/'config/search_space.yaml',dict(version=1,default=DEFAULT,registered_operators=['linear/tanh native forward','hidden8/32 with analytic sqrt(8/h) readout factor','bounded token-drive gate','continuous/onset cue','initial recurrent norm/nominal scale/centering','target readout multiplier','native/slow recurrence/first moment reset/context freeze/readout-only target updates','ordinary P1/P2 Reptile0..1920','episodewise cue rotation'],arbitrary_agent_code='quarantine; requires versioned trusted operator extension and tests',forbidden=['targetC/Mixed/NoContext gradients','splitting/transfer rewards','changed scorer','post-outcome threshold or budget change','unreported additional optimizer work']),True)
+    return budgets

@@ -1,0 +1,11 @@
+{
+ "analysis_id":"ab_update_transfer_analysis_v1",
+ "source_release":"results/high_scale_constrained_scaling_10k/v1",
+ "output_dir":"results/ab_update_transfer_analysis/v1",
+ "cohort":{"scales":[4,5,6],"regimes":["U","P"],"objectives":["T","B","O1","O2"],"seeds":[0,1,2,3,4,5],"primary_meta_episodes":10000,"historical_references":["fresh","reptile_1920","fomaml_1920"]},
+ "checkpoints":{"primary":[0,10,20,40,60],"secondary":[100,170,330,990],"primary_branch_steps":10,"secondary_branch_steps":1,"reference_branch_steps":1},
+ "contexts":{"update_sources":["A","B"],"primary_probes":["A","B","C","NoContext"],"control_probes":["Mixed-average"]},
+ "interventions":{"parameter_replacements_at_primary_step_one":true,"zero_gradient_adam_checkpoints":[10,20],"train_C":false,"train_NoContext":false,"target_norm_projection":false},
+ "statistics":{"bootstrap_unit":"paired_seed","bootstrap_draws":10000,"bootstrap_seed":20261122},
+ "execution":{"workers":1,"numerical_threads":1,"max_diagnostic_optimizer_steps":20000,"max_reconstruction_optimizer_steps":21000,"max_fixture_optimizer_steps":64,"max_new_meta_steps":0,"max_reconstruction_prefix":60,"allow_early_target_prefix_reconstruction":true,"optional_wall_time_limit_minutes":null,"resume":true}
+}

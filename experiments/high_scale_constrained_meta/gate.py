@@ -1,0 +1,6 @@
+"""Immutable pre-outcome operational criterion; no late-gate retuning."""
+from .common import *
+def decide(f):
+ if set(f.arm)!={'High','Low'} or any(sorted(g.seed)!=SEEDS for _,g in f.groupby('arm')):raise ValueError('All12 fixed seed/scale cases required')
+ q=f.copy();q['early_phenotype']=q.complete&q.strong&~q.floor_A&~q.floor_B&q.own_A.gt(.05)&q.own_B.gt(.05)&q.D_A.gt(.05)&q.D_B.gt(.05)&q.cycle.gt(.05);h=q[q.arm.eq('High')].set_index('seed').sort_index();l=q[q.arm.eq('Low')].set_index('seed').sort_index();da=h.D_A-l.D_A;db=h.D_B-l.D_B;cycle=h.cycle-l.cycle
+ checks=dict(all_numerically_complete=bool(q.complete.all()),majority_high_joint=int(h.early_phenotype.sum())>=4,mean_paired_A_at_least_point1=bool(da.mean()>=.1),mean_paired_B_at_least_point1=bool(db.mean()>=.1),majority_paired_bidirectional=int(((da>0)&(db>0)).sum())>=4,mean_switch_cycle_stronger=bool(cycle.mean()>0));return dict(passed=all(checks.values()),checks=checks,high_joint_count=int(h.early_phenotype.sum()),low_joint_count=int(l.early_phenotype.sum()),paired_bidirectional_count=int(((da>0)&(db>0)).sum()),paired_mean_D_A=float(da.mean()),paired_mean_D_B=float(db.mean()),paired_mean_cycle=float(cycle.mean()),planned_seeds=SEEDS,thresholds_frozen=True,meta_training_allowed=all(checks.values()))

@@ -1,0 +1,134 @@
+{
+  "experiment": "joint_phenotype_hypothesis_screen",
+  "version": "v1",
+  "source": {
+    "resolve_from_existing_manifests": true,
+    "ordinary_parent_stage": "Reptile1920",
+    "regime": "U",
+    "scale": 5,
+    "require_pre_transfer_objective_lineage": true
+  },
+  "cohort": {
+    "seed_order": "source_registered_order",
+    "pilot_count": 2,
+    "confirmation_count": 4,
+    "maximum_selected_candidates": 2,
+    "additional_scales": []
+  },
+  "target": {
+    "updates": 330,
+    "schedule": "A10_B10",
+    "first_context": "A",
+    "probes": [
+      "A",
+      "B",
+      "C",
+      "Mixed_average",
+      "NoContext"
+    ],
+    "probe_updates": [
+      0,
+      10,
+      20,
+      30,
+      40,
+      50,
+      60,
+      100,
+      170,
+      330
+    ],
+    "train_probe_contexts": [
+      "A",
+      "B"
+    ],
+    "rms_projection": false
+  },
+  "ordinary_pretraining": {
+    "algorithm": "native_P2_Reptile",
+    "standard_episodes": 240,
+    "standard_inner_updates": 20,
+    "native_support_blocks": [
+      5,
+      5,
+      5,
+      5
+    ],
+    "long_episodes": 80,
+    "long_inner_updates": 60,
+    "outer_epsilon_start": 0.1,
+    "outer_epsilon_end": 0.01,
+    "automatic_dose_extension": false,
+    "target_equivalent_exclusions": "source_native",
+    "background_validation_tasks_per_seed": 6
+  },
+  "checkpoint_candidates": {
+    "A01": "cue_columns_frozen",
+    "A02": "readout_only",
+    "A03": "internal_lr_0p1",
+    "A04": "prediction_sgd_calibrated",
+    "A05": "adam_m1_reset_on_switch",
+    "A06": "output_weight_scale_0p25",
+    "A07": "conditional_separate_clipping"
+  },
+  "pretraining_candidates": {
+    "B01": "onset_cue_energy_matched",
+    "B02": "episodewise_haar_cue_basis",
+    "B03": "shared_task_cue_absence_0p20",
+    "B04": "reptile_80x60",
+    "B05": "width32_gain_matched",
+    "B06": "bounded_token_drive_gate"
+  },
+  "candidate_constants": {
+    "internal_lr_multiplier": 0.1,
+    "output_weight_multiplier": 0.25,
+    "missing_cue_fraction_of_shared_examples": 0.2,
+    "wide_hidden_units": 32,
+    "gate_amplitude": 0.5,
+    "gate_bias": false,
+    "gate_initialization": "zeros",
+    "gate_placement": "token_drive",
+    "sgd_calibration_tasks_per_pilot_seed": 4,
+    "sgd_validation_tasks_per_pilot_seed": 4,
+    "sgd_single_backoff_multiplier": 0.25,
+    "clipping_policy_squared_share_threshold": 0.5,
+    "clipping_active_update_fraction_trigger": 0.2
+  },
+  "screen": {
+    "ce_floor": 0.05,
+    "useful_ce_max": 0.5,
+    "useful_accuracy_min": 0.8571428571428571,
+    "strict_ce_max": 0.1,
+    "strict_accuracy_min": 1.0,
+    "fresh_reference_retention": 0.5,
+    "positive_own_gain_min": 0.0001,
+    "own_gain_fraction_min": 0.05,
+    "transfer_mean_absolute_improvement_min": 0.05,
+    "transfer_mean_relative_improvement_min": 0.2,
+    "splitting_mean_normalized_improvement_min": 0.01,
+    "splitting_mean_relative_improvement_min": 0.2,
+    "c_loss_preservation_tolerance": 0.05,
+    "q_preservation_absolute_tolerance": 0.05,
+    "rescue_existing_seed_switch_retention": 0.8,
+    "require_positive_first_block_familiar_net_gain": true,
+    "no_context_required_for_promotion": false,
+    "mixed_both_required": false,
+    "confirmation_joint_passes_min": 3,
+    "confirmation_familiar_passes_min": 4
+  },
+  "budget": {
+    "max_meta_inner_updates": 124800,
+    "max_target_updates": 15180,
+    "max_auxiliary_updates": 5000
+  },
+  "runtime": {
+    "workers": 1,
+    "cpu_threads": 1,
+    "preserve_native_numerical_environment": true,
+    "invocation_wall_time_limit_minutes": null,
+    "resume": true
+  },
+  "output_dir": "results/joint_phenotype_hypothesis_screen/v1",
+  "registration_date": "2026-11-23",
+  "partial_display_ranking": "same strict-count, minimum-retention, C-CE, registry-order key among finite unpromoted partial signals; no new success claim"
+}
