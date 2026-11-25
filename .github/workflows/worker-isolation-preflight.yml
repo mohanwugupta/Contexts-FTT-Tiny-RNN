@@ -1,0 +1,53 @@
+name: Synthetic worker isolation preflight
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/worker-isolation-preflight.yml'
+      - 'experiments/worker_isolation_preflight_v1/**'
+      - 'tests/worker_isolation_preflight_v1/**'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: synthetic-worker-isolation
+  cancel-in-progress: false
+
+jobs:
+  synthetic-only:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /experiments/worker_isolation_preflight_v1/
+            /tests/worker_isolation_preflight_v1/
+      - name: Contract tests (no research imports)
+        run: python3 -m unittest discover -s tests/worker_isolation_preflight_v1 -v
+      - name: Obtain and pin synthetic runtime
+        run: |
+          docker --host=unix:///var/run/docker.sock pull python:3.12-slim
+          image_ref=$(docker --host=unix:///var/run/docker.sock image inspect python:3.12-slim --format '{{index .RepoDigests 0}}')
+          printf 'PREFLIGHT_IMAGE=%s\n' "$image_ref" >> "$GITHUB_ENV"
+      - name: Actual container denial checks
+        run: |
+          python3 -m experiments.worker_isolation_preflight_v1.preflight --image "$PREFLIGHT_IMAGE" --out "$RUNNER_TEMP/isolation-fixture"
+      - name: Retain synthetic receipt in workflow log
+        if: always()
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import os
+          root = Path(os.environ['RUNNER_TEMP']) / 'isolation-fixture'
+          for name in ['RECEIPT.json', 'ACTUAL_RESTRICTION_CHECKS.json', 'docker_commands.json']:
+              p = root / name
+              if p.is_file():
+                  print(name)
+                  print(p.read_text())
+          PY
