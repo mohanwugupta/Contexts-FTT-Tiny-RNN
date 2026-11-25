@@ -1,0 +1,54 @@
+{
+  "source_commit": "684674b527c0d5b83ebdd2d885a34cf4b8edf574",
+  "ci_run": 45650225702,
+  "job_id": 139332413190,
+  "ci_url": "https://github.com/mohanwugupta/Contexts-FTT-Tiny-RNN/actions/runs/45650225702",
+  "new_tests_passed": 27,
+  "predecessor_tests_passed": 40,
+  "source_and_publication_verification": {
+    "checked": 194,
+    "mismatches": [],
+    "commit": "684674b527c0d5b83ebdd2d885a34cf4b8edf574"
+  },
+  "fixture": {
+    "passed": true,
+    "action": "fixture",
+    "image": "sha256:9e672bd5a15c3f1878c52934d9abbe2c6cf10d0de4cd40147ddb535397ca2f2b",
+    "new_agent_calls": 0,
+    "provider_usage": null,
+    "parent_agent_isolation_certified": false,
+    "effective_configuration_verified": true,
+    "returncode": 0,
+    "worker_exited": true,
+    "image_id": "sha256:9e672bd5a15c3f1878c52934d9abbe2c6cf10d0de4cd40147ddb535397ca2f2b",
+    "container_removed": true,
+    "wall_seconds": 2.3502649179999935,
+    "export": {
+      "passed": true,
+      "action": "export",
+      "image": "sha256:9e672bd5a15c3f1878c52934d9abbe2c6cf10d0de4cd40147ddb535397ca2f2b",
+      "new_agent_calls": 0,
+      "provider_usage": null,
+      "parent_agent_isolation_certified": false,
+      "export_directory": "/home/runner/work/_temp/native-fixture/exports/srn-native-46b09864dd064e9a919a045025ce003f/bundle",
+      "effective_configuration_verified": true,
+      "returncode": 0,
+      "worker_exited": true,
+      "image_id": "sha256:9e672bd5a15c3f1878c52934d9abbe2c6cf10d0de4cd40147ddb535397ca2f2b",
+      "container_removed": true,
+      "wall_seconds": 0.16520139700003256
+    },
+    "verified_export": {
+      "passed": true,
+      "files": 1,
+      "zip_sha256": "25c1b606590600e5d7a7b189ed929aa84b2e9ab9ed074d5f3935572667e0ff07"
+    }
+  },
+  "actual_container_restriction_checks": 19,
+  "new_scientific_model_constructions": 0,
+  "new_optimizer_steps": 0,
+  "scientific_trial_started": false,
+  "full_72h_campaign_started": false,
+  "manual_agent_call_telemetry_verified": false,
+  "parent_agent_isolation_certified": false
+}
