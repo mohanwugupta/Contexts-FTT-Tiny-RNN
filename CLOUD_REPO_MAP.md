@@ -18,3 +18,17 @@ Cloud preparation starts at [CLOUD_SETUP.md](CLOUD_SETUP.md). The original [REPO
 | configs/ | Fixed program configuration; source publication does not authorize launching it |
 
 Original sources, checkpoints, evaluator rules and sealed outputs remain unchanged. The original72-hour campaign must not be launched by cloud setup. Private evidence is restored separately at its original paths; cloud preflight verifies its manifest. Full remote role coordination requires independent cloud isolation validation and actual provider-reported token accounting, with manual approval per call. Prepared source is not evidence of a running cloud task.
+
+## Verified selected cached analysis (November25,2026)
+
+The owner approved public publication of these research results. The exact38-file bundle is [artifacts/selected-analysis-results.zip](artifacts/selected-analysis-results.zip). Its independently verified report, two primary PNG/SVG figure pairs, seed/task tables, claim map and table-only reproduction are in [results/research_search_cloud/selected_analysis_verified_v3_1/REPORT.md](results/research_search_cloud/selected_analysis_verified_v3_1/REPORT.md). The report preserves the export recovery, stale accounting metadata, zero joint success and unresolved parent/critic isolation. It authorizes no further calls or campaign.
+
+| Path | Responsibility |
+| --- | --- |
+| experiments/cloud_confidence_selected_v1/ | Frozen saved-readout table arithmetic, all-four-probability checks and figures |
+| experiments/worker_isolation_preflight_v1/ | Synthetic Docker/seccomp restriction fixtures; no research data |
+| experiments/cloud_confidence_container_v2/ | Explicit frozen-table container adapter, source staging and approval gates |
+| experiments/cloud_runtime_tls_v1/ | Temporary build-CA secret propagation; same scientific worker |
+| results/research_search_cloud/selected_analysis_verified_v3_1/verify_saved_tables.py | Archive-only checksum/table reproduction; optional139-source verification |
+
+Older setup/private-evidence notes describe their original snapshots. The public result ZIP is the selected16-history zero-prior cached study, not all historical checkpoints or a public credential/confirmation package. Keep cohorts separate and restore predecessor evidence only when needed; never retrain for reproduction.

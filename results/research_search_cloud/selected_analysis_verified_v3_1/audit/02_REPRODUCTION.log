@@ -1,0 +1,16 @@
+{
+  "original_native_source_hashes": 139,
+  "passed": true,
+  "archive_entries": 38,
+  "recovered_hashes": 31,
+  "native_hashes": 10,
+  "selected_source_hashes": 5,
+  "all_four_probability_score_positions": 8960,
+  "paired_position_rows_per_comparison": 4480,
+  "derived_tables": 6,
+  "two_seed_intervals_recomputed": true,
+  "native_network_task_rows": 16,
+  "new_model_forwards": 0,
+  "new_optimizer_steps": 0,
+  "new_agent_calls": 0
+}

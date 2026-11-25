@@ -1,0 +1,25 @@
+{
+  "passed": true,
+  "checks": {
+    "recovered_manifest_exact_file_set": 31,
+    "native_manifest_hashes": 10,
+    "pinned_selected_code_hashes": 5,
+    "original_native_source_hashes": 139,
+    "request_identity_matches_owner_selected_packet": true,
+    "all_four_logit_probability_CE_margin_decision_checks": 8960,
+    "paired_category_baseline_tables_recomputed": 6,
+    "task_averaging_and_two_seed_intervals_recomputed": true,
+    "fixed_time_positions_match_original_archived_sources": 8960,
+    "original_native_flag_comparisons": 112,
+    "native_full_trajectories_and_four_outcome_cells": 16,
+    "container_times_within_new_authorized_window": true
+  },
+  "accounting_discrepancy": {
+    "execution_authorization_prior_holds": 87000,
+    "owner_approved_prior_holds": 100000,
+    "additional_hold": 17000,
+    "correct_registered_planning_holds": 117000,
+    "actual_usage": null,
+    "action": "Retain original stale87k field unchanged; do not release13k or claim measured usage"
+  }
+}

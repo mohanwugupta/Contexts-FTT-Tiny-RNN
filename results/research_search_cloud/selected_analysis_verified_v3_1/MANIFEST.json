@@ -1,0 +1,31 @@
+{
+  "version": "selected-analysis-verified-v3.1",
+  "archive_sha256": "26a1d5457b08c9e3633ca291142eafd70428df77f2131e8863833da57dbafb9a",
+  "archive_commit": "c8e130101a32fc04c3a9c376b1fabcc12095e77e",
+  "files": {
+    "verify_saved_tables.py": "a6cb0fe0a227161958c26fa227f50a8c5e8b5bb08252374ed5a8bae6e26d7509",
+    "REPORT.md": "450742f8d4546e42ce1935c8a4fcfb996910e7c9b017f63407416f681293b650",
+    "SOURCE_IDENTITIES.json": "53a2c781f62a880651db35e71d0c8090d54f347bee8fbaa69e3e534463ca28c6",
+    "RESEARCHER_HANDOFF.md": "a4a464aa9c4e38ee327c31480e20d6b4bf3037f112baa8f20c2818afd31b91b3",
+    "REPRODUCE.md": "4fd8221645f88007a3da51085591f0451b04c50d35dfdc04534ee3b6ab370e13",
+    "CLAIM_LEDGER.md": "b1764467e2d0726b60ab3a7b354d0c44b4ee8ea68cb478f3684ea0a7726c99f2",
+    "VERIFICATION.json": "be7c88ee08d10ec6c1e5d9699b782e861b4a9f1f1c097a729f53751e3f33c56f",
+    "tables/verified_seed_time_summary.csv": "fbb246efd82ec19da558d7c6d296a97ebfbd0d0eca8718f411cd8d592330d155",
+    "tables/endpoint_static_accounting.csv": "716f6ea8e3b221e6270ff2b2fbe74bdd93367eccc5376d72fe74c39add18fcd4",
+    "tables/verified_category_summary.csv": "b3c901ed64bdbfe29cc2f3f5a7f17f2d61ea55185570516a54b33c85f2ae35cf",
+    "tables/native_condition_means.csv": "628609e65245e955338de5910a2c27ed6deb6578cbc2ca5faea8cefa08f6b076",
+    "tables/native_seed_task_metrics.csv": "2584db550482ffd92feca0419ee263d36cfd40824f81a90bb07c0d9cf8f6d35e",
+    "tables/verified_checkpoint_summary.csv": "51245d32f15aff63c551b5f40091da91c509c8a5cfb542c0e26bfd0407190a20",
+    "tables/native_outcome_counts.csv": "b7e9bd3336729f3eb864f9189194fe1a06cb6b9d0192c479e374b27f1a99dc49",
+    "audit/01_TABLE_VERIFICATION.log": "cf1f906562e3fd93e141aca5a638ae4a949abb01b48e4ac308890526d0f95748",
+    "audit/02_REPRODUCTION.log": "7705baf08fa051829aa10df628b9566ac37cb5184c9d501d06937a996e238ea0",
+    "figures/native_outcomes.svg": "3d710ff299ef6fefe01eaaf5badbb4d54a73715e41ae69252c48ce34203192d8",
+    "figures/native_outcomes.png": "1dcdce3de867b9ae6fd997f1b7d0552712f75b7b46043514d8640d37eb64efde",
+    "figures/fixed_time_initialization.svg": "410424f76e72accb25ed752fe6d43b88bf54938afb169a35bbaadf944cb00dc6",
+    "figures/fixed_time_initialization.png": "eaa0f57bda8416d626f3e9446055d3d97ec7d63de4f63f4a89b39996a09d7430"
+  },
+  "new_model_forwards": 0,
+  "new_optimizer_steps": 0,
+  "new_research_agent_calls": 0,
+  "publication_owner_approved": true
+}
