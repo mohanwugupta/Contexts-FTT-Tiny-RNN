@@ -1,0 +1,57 @@
+name: Cached container adapter synthetic acceptance
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/cached-container-adapter.yml'
+      - 'experiments/cloud_confidence_container_v2/**'
+      - 'tests/cloud_confidence_container_v2/**'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: cached-container-adapter-synthetic
+  cancel-in-progress: false
+
+jobs:
+  synthetic-runtime:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /experiments/cloud_confidence_container_v2/
+            /experiments/cloud_confidence_selected_v1/
+            /experiments/worker_isolation_preflight_v1/
+            /tests/cloud_confidence_container_v2/
+            /docs/research_search_cloud_v1/requirements-cloud.txt
+      - name: Adapter contracts and frozen scientific body equivalence
+        run: python3 -m unittest discover -s tests/cloud_confidence_container_v2 -v
+      - name: Prepare dependencies-only image context
+        run: python3 -m experiments.cloud_confidence_container_v2.launcher build-context --out "$RUNNER_TEMP/runtime-build"
+      - name: Build pinned CPU runtime without evidence
+        timeout-minutes: 10
+        run: docker --host=unix:///var/run/docker.sock build --iidfile "$RUNNER_TEMP/runtime-id" "$RUNNER_TEMP/runtime-build"
+      - name: Actual guarded dependency and synthetic-table smoke
+        run: |
+          image_id=$(cat "$RUNNER_TEMP/runtime-id")
+          python3 -m experiments.cloud_confidence_container_v2.launcher smoke --image "$image_id" --out "$RUNNER_TEMP/adapter-smoke"
+      - name: Preserve infrastructure receipts in logs
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import os
+          from pathlib import Path
+          root = Path(os.environ['RUNNER_TEMP']) / 'adapter-smoke'
+          for rel in ['EXECUTION_RECEIPT.json','fixture/output/SMOKE.json','fixture/output/WORKER_ISOLATION.json','fixture/output/PROCESS_USAGE.json','fixture/output/BLOCKED.json','docker_commands.json']:
+              p=root/rel
+              if p.is_file():
+                  print(rel)
+                  print(p.read_text())
+          PY
