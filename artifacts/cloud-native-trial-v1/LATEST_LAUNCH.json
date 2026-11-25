@@ -1,0 +1,34 @@
+{
+  "action": "run",
+  "container_removed": true,
+  "effective_configuration_verified": true,
+  "export": {
+    "action": "export",
+    "container_removed": true,
+    "effective_configuration_verified": true,
+    "export_directory": "/tmp/srn-native-trial-v1/exports/srn-native-6c42b1175fa54625ac52b66bde647bd4/bundle",
+    "image": "sha256:fc261e67555456142dc6b3664b6fd1bad73a4e180a3fd9ef9929d6570e03165f",
+    "image_id": "sha256:fc261e67555456142dc6b3664b6fd1bad73a4e180a3fd9ef9929d6570e03165f",
+    "new_agent_calls": 0,
+    "parent_agent_isolation_certified": false,
+    "passed": true,
+    "provider_usage": null,
+    "returncode": 0,
+    "wall_seconds": 34.46981763999975,
+    "worker_exited": true
+  },
+  "image": "sha256:fc261e67555456142dc6b3664b6fd1bad73a4e180a3fd9ef9929d6570e03165f",
+  "image_id": "sha256:fc261e67555456142dc6b3664b6fd1bad73a4e180a3fd9ef9929d6570e03165f",
+  "new_agent_calls": 0,
+  "parent_agent_isolation_certified": false,
+  "passed": true,
+  "provider_usage": null,
+  "returncode": 0,
+  "verified_export": {
+    "files": 361,
+    "passed": true,
+    "zip_sha256": "258bc7f21ac5861b878d9247bca6f4497e7283430386c78b3a29e51915369a81"
+  },
+  "wall_seconds": 5553.06474537,
+  "worker_exited": true
+}

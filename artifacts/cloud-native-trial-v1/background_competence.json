@@ -1,0 +1,254 @@
+[
+  {
+    "job": "competence-58f4c74bd511d7e0d26d2cd5-0",
+    "arm": "control",
+    "seed": 21000,
+    "rows": [
+      {
+        "context": "A",
+        "ce": 5.751373060573238,
+        "correct_count": 5,
+        "useful": false
+      },
+      {
+        "context": "B",
+        "ce": 9.17717444454838,
+        "correct_count": 6,
+        "useful": false
+      }
+    ],
+    "all_practiced_contexts_useful": false,
+    "criterion": "inherited CE<=.5 and integer>=6/7 after20 ordinary unrelated-task updates"
+  },
+  {
+    "job": "competence-58f4c74bd511d7e0d26d2cd5-1",
+    "arm": "control",
+    "seed": 21000,
+    "rows": [
+      {
+        "context": "A",
+        "ce": 7.9723866731404724,
+        "correct_count": 6,
+        "useful": false
+      },
+      {
+        "context": "C",
+        "ce": 31.09964885653926,
+        "correct_count": 3,
+        "useful": false
+      }
+    ],
+    "all_practiced_contexts_useful": false,
+    "criterion": "inherited CE<=.5 and integer>=6/7 after20 ordinary unrelated-task updates"
+  },
+  {
+    "job": "competence-58f4c74bd511d7e0d26d2cd5-2",
+    "arm": "control",
+    "seed": 21000,
+    "rows": [
+      {
+        "context": "B",
+        "ce": 10.349741252437806,
+        "correct_count": 3,
+        "useful": false
+      },
+      {
+        "context": "C",
+        "ce": 12.962744826896541,
+        "correct_count": 4,
+        "useful": false
+      }
+    ],
+    "all_practiced_contexts_useful": false,
+    "criterion": "inherited CE<=.5 and integer>=6/7 after20 ordinary unrelated-task updates"
+  },
+  {
+    "job": "competence-2b081c7d74671c8af0870b89-0",
+    "arm": "control",
+    "seed": 21001,
+    "rows": [
+      {
+        "context": "A",
+        "ce": 2.427095791245743,
+        "correct_count": 5,
+        "useful": false
+      },
+      {
+        "context": "B",
+        "ce": 6.622790419917547,
+        "correct_count": 4,
+        "useful": false
+      }
+    ],
+    "all_practiced_contexts_useful": false,
+    "criterion": "inherited CE<=.5 and integer>=6/7 after20 ordinary unrelated-task updates"
+  },
+  {
+    "job": "competence-2b081c7d74671c8af0870b89-1",
+    "arm": "control",
+    "seed": 21001,
+    "rows": [
+      {
+        "context": "A",
+        "ce": 2.4339169503504836,
+        "correct_count": 4,
+        "useful": false
+      },
+      {
+        "context": "C",
+        "ce": 2.863087824912331,
+        "correct_count": 5,
+        "useful": false
+      }
+    ],
+    "all_practiced_contexts_useful": false,
+    "criterion": "inherited CE<=.5 and integer>=6/7 after20 ordinary unrelated-task updates"
+  },
+  {
+    "job": "competence-2b081c7d74671c8af0870b89-2",
+    "arm": "control",
+    "seed": 21001,
+    "rows": [
+      {
+        "context": "B",
+        "ce": 8.279769755861606,
+        "correct_count": 4,
+        "useful": false
+      },
+      {
+        "context": "C",
+        "ce": 3.671240632038739,
+        "correct_count": 4,
+        "useful": false
+      }
+    ],
+    "all_practiced_contexts_useful": false,
+    "criterion": "inherited CE<=.5 and integer>=6/7 after20 ordinary unrelated-task updates"
+  },
+  {
+    "job": "competence-08fcd4e80c1094766f4049a9-0",
+    "arm": "candidate",
+    "seed": 21000,
+    "rows": [
+      {
+        "context": "A",
+        "ce": 1.2260960069989513,
+        "correct_count": 6,
+        "useful": false
+      },
+      {
+        "context": "B",
+        "ce": 8.958102989708099,
+        "correct_count": 4,
+        "useful": false
+      }
+    ],
+    "all_practiced_contexts_useful": false,
+    "criterion": "inherited CE<=.5 and integer>=6/7 after20 ordinary unrelated-task updates"
+  },
+  {
+    "job": "competence-08fcd4e80c1094766f4049a9-1",
+    "arm": "candidate",
+    "seed": 21000,
+    "rows": [
+      {
+        "context": "A",
+        "ce": 13.667527266913728,
+        "correct_count": 5,
+        "useful": false
+      },
+      {
+        "context": "C",
+        "ce": 5.163594764183963,
+        "correct_count": 5,
+        "useful": false
+      }
+    ],
+    "all_practiced_contexts_useful": false,
+    "criterion": "inherited CE<=.5 and integer>=6/7 after20 ordinary unrelated-task updates"
+  },
+  {
+    "job": "competence-08fcd4e80c1094766f4049a9-2",
+    "arm": "candidate",
+    "seed": 21000,
+    "rows": [
+      {
+        "context": "B",
+        "ce": 8.72856427033919,
+        "correct_count": 5,
+        "useful": false
+      },
+      {
+        "context": "C",
+        "ce": 14.295138573640262,
+        "correct_count": 3,
+        "useful": false
+      }
+    ],
+    "all_practiced_contexts_useful": false,
+    "criterion": "inherited CE<=.5 and integer>=6/7 after20 ordinary unrelated-task updates"
+  },
+  {
+    "job": "competence-2a6d4d20dee6b584d81c8d0b-0",
+    "arm": "candidate",
+    "seed": 21001,
+    "rows": [
+      {
+        "context": "A",
+        "ce": 10.33276567322888,
+        "correct_count": 4,
+        "useful": false
+      },
+      {
+        "context": "B",
+        "ce": 6.493854804268747,
+        "correct_count": 5,
+        "useful": false
+      }
+    ],
+    "all_practiced_contexts_useful": false,
+    "criterion": "inherited CE<=.5 and integer>=6/7 after20 ordinary unrelated-task updates"
+  },
+  {
+    "job": "competence-2a6d4d20dee6b584d81c8d0b-1",
+    "arm": "candidate",
+    "seed": 21001,
+    "rows": [
+      {
+        "context": "A",
+        "ce": 9.47252404017269,
+        "correct_count": 3,
+        "useful": false
+      },
+      {
+        "context": "C",
+        "ce": 3.7857297322836376,
+        "correct_count": 4,
+        "useful": false
+      }
+    ],
+    "all_practiced_contexts_useful": false,
+    "criterion": "inherited CE<=.5 and integer>=6/7 after20 ordinary unrelated-task updates"
+  },
+  {
+    "job": "competence-2a6d4d20dee6b584d81c8d0b-2",
+    "arm": "candidate",
+    "seed": 21001,
+    "rows": [
+      {
+        "context": "B",
+        "ce": 6.826027004906132,
+        "correct_count": 5,
+        "useful": false
+      },
+      {
+        "context": "C",
+        "ce": 3.1247470467031815,
+        "correct_count": 6,
+        "useful": false
+      }
+    ],
+    "all_practiced_contexts_useful": false,
+    "criterion": "inherited CE<=.5 and integer>=6/7 after20 ordinary unrelated-task updates"
+  }
+]
