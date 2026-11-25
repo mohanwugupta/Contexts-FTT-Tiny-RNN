@@ -78,7 +78,8 @@ class ApprovalTests(unittest.TestCase):
    with self.assertRaises(ValueError):prepare_approval(s,'t1',r)
    self.assertIsNone(s.get('started'));s.close()
 
-class LedgerTests(ApprovalTests):
+class LedgerTests(unittest.TestCase):
+ fixture=ApprovalTests.fixture
  def setup_call(self,d):
   s,r=self.fixture(d)
   req=json.loads((s.directory/'requests_agent/t1.json').read_text());req['schema']={'type':'object','properties':{'ok':{'type':'boolean'}},'required':['ok'],'additionalProperties':False};c.save(s.directory/'requests_agent/t1.json',req)
@@ -107,3 +108,50 @@ class LedgerTests(ApprovalTests):
    self.assertFalse(result['passed']);self.assertIsNone(result['reported_tokens']);self.assertEqual(s.totals()['reserved_tokens'],19000);self.assertEqual(s.get('status'),'manual_checkpoint')
    with self.assertRaises(RuntimeError):invoke(s,'t1',p['approval_sha'],r,a)
    s.close()
+
+class ModeTests(unittest.TestCase):
+ def test_live_runtime_can_run_non_networked_model_fixture(self):
+  from experiments.cloud_role_runner_v1.docker import validate_mode
+  validate_mode({'synthetic':False},'fixture')
+  validate_mode({'synthetic':False},'exec')
+  with self.assertRaises(ValueError):validate_mode({'synthetic':True},'exec')
+
+class ExecutableTests(unittest.TestCase):
+ def elf(self,p):
+  p.parent.mkdir(parents=True,exist_ok=True);p.write_bytes(b'\x7fELF\x02\x01'+b'\0'*12+b'\x3e\0');p.chmod(0o755)
+ def test_installed_npm_binary_is_resolved_without_execution(self):
+  from experiments.cloud_role_runner_v1.runtime import resolve_cli
+  with tempfile.TemporaryDirectory() as d:
+   package=Path(d)/'codex';(package/'bin').mkdir(parents=True);(package/'package.json').write_text('{"name":"@openai/codex"}');launcher=package/'bin/codex.js';launcher.write_text('#!/usr/bin/env node\n');launcher.chmod(0o755)
+   binary=package/'vendor/x86_64-unknown-linux-musl/codex/codex';self.elf(binary)
+   found,entry=resolve_cli(launcher);self.assertEqual(found,binary.resolve());self.assertEqual(entry,launcher.resolve())
+ def test_macho_and_ambiguous_binaries_rejected(self):
+  from experiments.cloud_role_runner_v1.runtime import resolve_cli
+  with tempfile.TemporaryDirectory() as d:
+   p=Path(d)/'codex';p.write_bytes(b'\xcf\xfa\xed\xfe'+b'\0'*30)
+   with self.assertRaises(ValueError):resolve_cli(p)
+
+class ProtectedCampaignTests(unittest.TestCase):
+ def test_sealed_campaign_and_results_not_opened(self):
+  from experiments.cloud_role_runner_v1.agent import guard_campaign
+  with self.assertRaises(ValueError):guard_campaign(c.ROOT/'research_search/database/campaign')
+  with self.assertRaises(ValueError):guard_campaign(c.ROOT/'results/research_search_cloud/native_trial_review_v1')
+  guard_campaign(Path('/tmp/my-explicit-rehearsal'))
+
+class DispatchLockTests(unittest.TestCase):
+ fixture=ApprovalTests.fixture
+ setup_call=LedgerTests.setup_call
+ receipts=LedgerTests.receipts
+ def test_transport_can_acquire_its_own_runtime_lock(self):
+  import fcntl
+  from unittest.mock import patch
+  from experiments.cloud_role_runner_v1.agent import invoke
+  with tempfile.TemporaryDirectory() as d:
+   s,r,a,p=self.setup_call(d);receipts=self.receipts();ev=receipts[-1]['stdout'].replace('{\\"wrong\\":true}','{\\"ok\\":true}')
+   # Replace complete message through JSON to avoid text escaping assumptions.
+   parsed=[json.loads(x) for x in receipts[-1]['stdout'].splitlines()];parsed[1]['item']['text']='{"ok":true}';receipts[-1]['stdout']='\n'.join(json.dumps(x) for x in parsed)
+   def transport(*args,**kw):
+    with (Path(r['directory'])/'worker.lock').open('a+') as f:fcntl.flock(f,fcntl.LOCK_EX|fcntl.LOCK_NB)
+    return receipts.pop(0)
+   with patch('experiments.cloud_role_runner_v1.agent.launch',side_effect=transport):result=invoke(s,'t1',p['approval_sha'],r,a)
+   self.assertTrue(result['passed'],result);s.close()

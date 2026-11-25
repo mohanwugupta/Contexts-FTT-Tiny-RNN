@@ -21,7 +21,10 @@ jobs:
         with:
           persist-credentials: false
       - name: Offline role and ledger contracts
-        run: python3 -m unittest discover -s tests/cloud_role_runner_v1 -v
+        run: |
+          python3 -m venv "$RUNNER_TEMP/role-test-env"
+          "$RUNNER_TEMP/role-test-env/bin/pip" install --disable-pip-version-check jsonschema==4.25.1
+          "$RUNNER_TEMP/role-test-env/bin/python" -m unittest discover -s tests/cloud_role_runner_v1 -v
       - name: Pinned Python fixture runtime (no Codex binary or credentials)
         run: docker pull python:3.12-slim@sha256:191083cdf6c7bda8c76158983163ead5d5cf7b77cf3033e805bb0f5296f51b4b
       - name: Actual role filesystem, process, network and synthetic event fixture

@@ -3,14 +3,21 @@
 Does not advance scientific phases, start a clock, initialize budgets or dispatch
 another call. The versioned rehearsal controller must accept the returned reply.
 """
-import json,os,time
+import contextlib,json,os,resource,time
 from pathlib import Path
 from .contract import ROLES,auth_bytes,remaining,sha,save
 from .docker import launch
 from .accounting import assess
 
+def guard_campaign(path):
+ from .contract import ROOT
+ p=Path(path).resolve()
+ protected=[ROOT/'research_search/database/campaign',ROOT/'research_search/database/controlled_pilot_v2',ROOT/'results',ROOT/'artifacts']
+ if any(p==q or p.is_relative_to(q) for q in protected):raise ValueError('Historical/sealed campaign path prohibited; use existing rehearsal ledger')
+
 def approval_value(store,ticket,runtime):
  from research_search.common import identifier
+ guard_campaign(store.directory)
  remaining(store.get('started'),store.limits['wall_seconds'])
  path=store.directory/'requests_agent'/(identifier(ticket)+'.json')
  rtpath=Path(runtime['directory'])/'RUNTIME.json'
@@ -33,7 +40,7 @@ def validate_request(store,ticket,approval,runtime):
  request=json.loads(path.read_text())
  if request['ticket']!=ticket or request['role'] not in ROLES or request['phase']!=store.get('phase'):raise ValueError('Role/phase/ticket changed')
  if request.get('definition_sha')!=sha(store.directory/'definition.json'):raise ValueError('Rehearsal definition changed')
- if request.get('codex_sha256')!=runtime.get('codex_sha256'):raise ValueError('Approved CLI identity changed; no silent upgrade')
+ if request.get('codex_sha256') not in [runtime.get('codex_sha256'),runtime.get('launcher_sha256')]:raise ValueError('Approved CLI identity changed; no silent upgrade')
  if runtime.get('synthetic'):raise ValueError('Fixture runtime cannot make live calls')
  if not isinstance(request.get('prompt'),str) or len(request['prompt'])>16000:raise ValueError('Approved compact prompt required')
  if type(request.get('reservation')) is not int or request['reservation']<=0:raise ValueError('Registered positive reservation required')
@@ -46,12 +53,18 @@ def validate_request(store,ticket,approval,runtime):
  check_schema(request['schema'])
  remaining(store.get('started'),store.limits['wall_seconds'])
  if store.get('confirmation_started') or not store.get('manual_checkpoints'):raise ValueError('Manual pre-confirmation rehearsal required')
+ previous=store.get('agent_inflight')
+ if previous and (previous.get('status')!='completed' or previous.get('phase')==store.get('phase')):raise RuntimeError('Prior role dispatch/reply requires adjudication or controller acceptance before next call')
  if store.db.execute('SELECT 1 FROM calls WHERE id=?',(ticket,)).fetchone():raise RuntimeError('Existing call requires adjudication; no retry')
  if (store.directory/'linux_role_attempts'/ticket).exists():raise RuntimeError('Prior Linux attempt exists; no automatic retry')
  return request
 
 
-def invoke(store,ticket,approval,runtime,auth_file=None):
+def _invoke(store,ticket,approval,runtime=None,auth_file=None):
+ if runtime is None:
+  path=os.environ.get('SRN_LINUX_ROLE_RUNTIME')
+  if not path:raise ValueError('Explicit SRN_LINUX_ROLE_RUNTIME path required; no macOS or unrestricted fallback')
+  runtime=json.loads(Path(path).read_text())
  request=validate_request(store,ticket,approval,runtime)
  from research_search.orchestration.queue import worker_lock
  directory=store.directory/'linux_role_attempts'/ticket
@@ -61,8 +74,8 @@ def invoke(store,ticket,approval,runtime,auth_file=None):
  # Never print or persist authentication. Only its identity is retained.
  auth=auth_bytes(auth_file.read_bytes());before_auth=sha(auth_file)
  save(directory/'APPROVED.json',dict(request_sha256=approval,runtime_sha256=sha(Path(runtime['directory'])/'RUNTIME.json'),codex_sha256=runtime['codex_sha256'],existing_started=store.get('started'),deadline_epoch=store.get('started')+store.limits['wall_seconds'],reservation=request['reservation']))
- cpu_id='linux-'+ticket;start=time.process_time();reserved=False;cpu_reserved=False;measurements=[];result=None
- with worker_lock(Path(runtime['directory'])):
+ cpu_id='linux-'+ticket;start=time.process_time();children_before=resource.getrusage(resource.RUSAGE_CHILDREN);reserved=False;cpu_reserved=False;measurements=[];result=None
+ with contextlib.nullcontext():
   try:
    store.control('running');store.check();store.reserve_cpu(cpu_id,540);cpu_reserved=True
    left=lambda: min(300,remaining(store.get('started'),store.limits['wall_seconds']))
@@ -75,7 +88,7 @@ def invoke(store,ticket,approval,runtime,auth_file=None):
    if not quota['passed'] or value.get('ordinary_usage_allowed') is not True or any(b.get('rateLimitReachedType') or b.get('spendControlReached') for b in value.get('buckets',{}).values()):raise RuntimeError('Ordinary included quota unavailable; no paid fallback')
    save(directory/'QUOTA.json',value)
    store.reserve_call(ticket,'pilot_agent',request['reservation'],speculative=False);reserved=True
-   store.set('agent_inflight',dict(id=ticket,role=request['role'],status='dispatched_or_uncertain'))
+   store.set('agent_inflight',dict(id=ticket,role=request['role'],phase=request['phase'],status='dispatched_or_uncertain'))
    receipt=launch(runtime,directory/'exec','exec',request['schema'],auth,request['prompt'],left(),cancelled);measurements.append(receipt)
    try:events=[json.loads(x) for x in receipt.get('stdout','').splitlines() if x.startswith('{')]
    except ValueError:events=[]
@@ -85,15 +98,16 @@ def invoke(store,ticket,approval,runtime,auth_file=None):
     import jsonschema
     jsonschema.validate(result['reply'],request['schema'])
    result['passed']=bool(result['passed'] and receipt['passed'] and store.get('status')!='budget_exhausted')
-   result.update(call_id=ticket,role=request['role'],new_agent_calls=1,live_usage_verified=result['reported_usage'] is not None,role_isolation_verified=bool(receipt.get('isolation',{}).get('passed')),parent_agent_isolation_certified=False)
-   store.set('agent_inflight',dict(id=ticket,role=request['role'],status='completed' if result['passed'] else 'failed_or_unknown'))
+   result.update(call_id=ticket,role=request['role'],model_dispatch_attempted=True,new_agent_calls=1 if result['reported_usage'] is not None else None,live_usage_verified=result['reported_usage'] is not None,role_isolation_verified=bool(receipt.get('isolation',{}).get('passed')),parent_agent_isolation_certified=False)
+   store.set('agent_inflight',dict(id=ticket,role=request['role'],phase=request['phase'],status='completed' if result['passed'] else 'failed_or_unknown'))
   except BaseException as error:
    if reserved:
     row=store.db.execute('SELECT status FROM calls WHERE id=?',(ticket,)).fetchone()
     if row and row['status']=='reserved':store.reconcile_call(ticket,None)
    result=(result or dict(reported_usage=None,reported_tokens=None))|dict(passed=False,status='stopped_after_error',error_type=type(error).__name__,reason=str(error)[:300],model_dispatch_attempted=reserved,new_agent_calls=1 if result and result.get('reported_usage') else None if reserved else 0,parent_agent_isolation_certified=False)
   finally:
-   actual_cpu=time.process_time()-start
+   children_after=resource.getrusage(resource.RUSAGE_CHILDREN)
+   actual_cpu=time.process_time()-start+children_after.ru_utime+children_after.ru_stime-children_before.ru_utime-children_before.ru_stime
    complete_cpu=True
    for m in measurements:
     if m.get('CPU_seconds') is None or m.get('relay_CPU_seconds') is None:complete_cpu=False
@@ -105,3 +119,11 @@ def invoke(store,ticket,approval,runtime,auth_file=None):
    result.update(original_auth_unchanged=sha(auth_file)==before_auth,CPU_seconds=actual_cpu if complete_cpu else None,ledger=store.state(),requires_manual_checkpoint=True)
    save(directory/'RESULT.json',result)
  return result
+
+
+def invoke(store,ticket,approval,runtime=None,auth_file=None):
+ from research_search.orchestration.queue import worker_lock
+ # Campaign slot spans validation and all login/quota/exec containers. Each
+ # transport separately owns its runtime lock; never acquire it twice.
+ with worker_lock(store.directory/'linux_role_dispatch'):
+  return _invoke(store,ticket,approval,runtime,auth_file)

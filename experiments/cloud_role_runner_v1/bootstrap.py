@@ -73,6 +73,8 @@ def child(mode,proxy,synthetic):
   print(json.dumps(dict(type='turn.started')))
   print(json.dumps(dict(type='item.completed',item=dict(type='agent_message',text='{"ok":true}'))))
   print(json.dumps(dict(type='turn.completed',usage=dict(input_tokens=100,output_tokens=20,cached_input_tokens=80))))
+  if Path('/runtime/codex').is_file():
+   sys.stdout.flush();os.execve('/runtime/codex',['/runtime/codex','exec','--help'],dict(os.environ))
   return
  os.execve('/runtime/codex',codex_argv(mode),dict(os.environ))
 
@@ -128,7 +130,7 @@ def main():
   try:os.killpg(p.pid,signal.SIGKILL)
   except ProcessLookupError:pass
   p.wait(timeout=3)
- after=resource.getrusage(resource.RUSAGE_CHILDREN);r=dict(returncode=0 if quota is not None else p.returncode,timed_out=timed,CPU_seconds=time.process_time()-cpu+after.ru_utime+after.ru_stime-before.ru_utime-before.ru_stime,wall_seconds=time.monotonic()-start,synthetic=synthetic)
+ after=resource.getrusage(resource.RUSAGE_CHILDREN);r=dict(returncode=0 if quota is not None else p.returncode,timed_out=timed,CPU_seconds=time.process_time()+after.ru_utime+after.ru_stime-before.ru_utime-before.ru_stime,wall_seconds=time.monotonic()-start,synthetic=synthetic)
  if quota is not None:
   buckets=quota.get('rateLimitsByLimitId') or {'default':quota.get('rateLimits',{})}
   r['quota']=dict(available=True,ordinary_usage_allowed=quota.get('ordinaryUsageAllowed'),buckets={k:{f:b.get(f) for f in ['primary','secondary','rateLimitReachedType','spendControlReached','individualLimit']} for k,b in buckets.items()})

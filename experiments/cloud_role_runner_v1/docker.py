@@ -1,5 +1,5 @@
 """Fresh internal network, trusted CONNECT relay and nonroot per-role container."""
-import base64,fcntl,json,os,re,selectors,shutil,signal,subprocess,time,uuid
+import base64,fcntl,json,os,re,selectors,shutil,signal,socket,subprocess,time,uuid
 from pathlib import Path
 from .contract import ROOT,sha,save,redact
 SOCKETS=['/var/run/docker.sock','/run/codex-docker/docker.sock']
@@ -10,6 +10,9 @@ def frame(value):
  if len(b)>131072:raise ValueError('Private input frame too large')
  return len(b).to_bytes(4,'big')+b
 
+def validate_mode(runtime,mode):
+ if runtime.get('synthetic') and mode!='fixture':raise ValueError('Synthetic runtime cannot make live calls')
+
 def command(docker,image,job,kind,name,network,proxy_ip=None):
  if kind not in ['role','proxy'] or not IMAGE.fullmatch(image):raise ValueError('Immutable reviewed role runtime required')
  job=Path(job)
@@ -19,6 +22,8 @@ def command(docker,image,job,kind,name,network,proxy_ip=None):
  for key in ['HTTP_PROXY','HTTPS_PROXY','ALL_PROXY','NO_PROXY','http_proxy','https_proxy','all_proxy','no_proxy']:argv+=['--env',key+'=']
  for src,dst,ro in [(job/'source','/runtime',True),(job/'request','/request',True),(job/('output' if kind=='role' else 'relay'),'/work',False)]:
   argv+=['--mount',f'type=bind,src={src},dst={dst}'+(',readonly' if ro else '')]
+ for name in ['requirements.toml','managed_config.toml']:
+  if (job/'source'/name).is_file():argv+=['--mount',f'type=bind,src={job / "source" / name},dst=/etc/codex/{name},readonly']
  return argv+[image,'python','-I','-B','/runtime/'+('bootstrap.py' if kind=='role' else 'proxy.py')]
 
 def verify(configuration,argv,kind,image,network,job):
@@ -30,7 +35,9 @@ def verify(configuration,argv,kind,image,network,job):
  if h.get('Tmpfs')!=expected_tmp or (kind=='role' and h.get('Dns')!=['127.0.0.1']):raise ValueError('Temporary filesystem or DNS policy changed')
  expected={'/runtime':(str(job/'source'),False),'/request':(str(job/'request'),False),'/work':(str(job/('output' if kind=='role' else 'relay')),True)}
  mounts=[m for m in configuration['Mounts'] if m['Type']!='tmpfs']
- if len(mounts)!=3 or {m['Destination'] for m in mounts}!=set(expected):raise ValueError('Unexpected role mount')
+ for name in ['requirements.toml','managed_config.toml']:
+  if (job/'source'/name).is_file():expected['/etc/codex/'+name]=(str(job/'source'/name),False)
+ if len(mounts)!=len(expected) or {m['Destination'] for m in mounts}!=set(expected):raise ValueError('Unexpected role mount')
  for m in mounts:
   if m['Type']!='bind' or (m['Source'],m['RW'])!=expected[m['Destination']]:raise ValueError('Mount permission changed')
  if kind=='role' and set(configuration['NetworkSettings']['Networks'])!={network}:raise ValueError('Role has extra network')
@@ -39,7 +46,7 @@ def verify(configuration,argv,kind,image,network,job):
 def launch(runtime,out,mode,schema,auth=b'{}',prompt='',timeout=300,cancel_check=None):
  out=Path(out).absolute()
  if out.exists() or out.is_symlink() or any(p.is_symlink() for p in out.parents):raise ValueError('New canonical attempt path required; no retry')
- if runtime.get('synthetic')!=(mode=='fixture'):raise ValueError('Synthetic runtime cannot make real calls')
+ validate_mode(runtime,mode)
  for name,h in runtime['source_hashes'].items():
   if sha(Path(runtime['source'])/name)!=h:raise ValueError('Runtime source/binary changed')
  if runtime['socket'] not in SOCKETS or not IMAGE.fullmatch(runtime['image']):raise ValueError('Wrong daemon/image')
@@ -67,7 +74,11 @@ def launch(runtime,out,mode,schema,auth=b'{}',prompt='',timeout=300,cancel_check
   if nc['Internal'] is not True or nc['Driver']!='bridge':raise ValueError('Internal network not enforced')
   pc=command(docker,runtime['image'],job,'proxy',relay,'bridge');call(pc)
   relay_process=subprocess.Popen([*docker,'start','--attach','--interactive',relay],env=env,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE,start_new_session=True)
-  relay_process.stdin.write(frame(dict(synthetic=mode=='fixture',upstream=upstream())));relay_process.stdin.flush()
+  proxy_url=upstream();address=None
+  if proxy_url and mode!='fixture':
+   from urllib.parse import urlsplit
+   u=urlsplit(proxy_url);address=socket.getaddrinfo(u.hostname,u.port or (443 if u.scheme=='https' else 80),socket.AF_INET,socket.SOCK_STREAM)[0][4][0]
+  relay_process.stdin.write(frame(dict(synthetic=mode=='fixture',upstream=proxy_url,upstream_connect_host=address)));relay_process.stdin.flush()
   selector=selectors.DefaultSelector();selector.register(relay_process.stdout,selectors.EVENT_READ)
   if not selector.select(10):raise TimeoutError('Restricted relay did not start')
   ready=json.loads(relay_process.stdout.readline());selector.close()

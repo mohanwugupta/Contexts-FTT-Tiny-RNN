@@ -34,7 +34,7 @@ def connect_upstream(host,port,config):
  if not upstream:return socket.create_connection((host,port),timeout=10)
  u=urlsplit(upstream)
  if u.scheme not in ['http','https'] or not u.hostname or u.path not in ['','/'] or u.query or u.fragment:raise ValueError('Unsupported managed proxy configuration')
- s=socket.create_connection((u.hostname,u.port or (443 if u.scheme=='https' else 80)),timeout=10)
+ s=socket.create_connection((config.get('upstream_connect_host') or u.hostname,u.port or (443 if u.scheme=='https' else 80)),timeout=10)
  if u.scheme=='https':s=ssl.create_default_context(cafile='/runtime/ca.pem').wrap_socket(s,server_hostname=u.hostname)
  auth=''
  if u.username is not None:auth='Proxy-Authorization: Basic '+base64.b64encode((unquote(u.username)+':'+unquote(u.password or '')).encode()).decode()+'\r\n'
@@ -83,5 +83,5 @@ def main():
  try:
   with Server(('0.0.0.0',3128),Handler) as s:
    s.configuration=config;print(json.dumps({'ready':True}),flush=True);s.serve_forever(poll_interval=.1)
- finally:save('/work/PROXY_USAGE.json',dict(CPU_seconds=time.process_time()-start))
+ finally:save('/work/PROXY_USAGE.json',dict(CPU_seconds=time.process_time()))
 if __name__=='__main__':main()

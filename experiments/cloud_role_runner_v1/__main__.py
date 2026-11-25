@@ -18,8 +18,9 @@ def main():
  else:
   if not all([a.runtime,a.campaign,a.ticket]) or (a.action=='call' and not a.approval):p.error('existing runtime/campaign/ticket and exact approval SHA required for call')
   if not (a.campaign/'campaign.sqlite').is_file():p.error('Existing rehearsal ledger required; no new clock or budget is initialized')
+  from .agent import invoke,prepare_approval,guard_campaign
+  guard_campaign(a.campaign)
   from research_search.orchestration.store import Store
-  from .agent import invoke,prepare_approval
   s=Store(a.campaign,json.loads((a.campaign/'budgets.json').read_text()))
   try:result=prepare_approval(s,a.ticket,json.loads(a.runtime.read_text())) if a.action=='approval' else invoke(s,a.ticket,a.approval,json.loads(a.runtime.read_text()),a.auth_file)
   finally:s.close()

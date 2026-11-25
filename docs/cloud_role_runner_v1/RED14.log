@@ -1,0 +1,26 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+______ DispatchLockTests.test_transport_can_acquire_its_own_runtime_lock _______
+
+self = <test_role.DispatchLockTests testMethod=test_transport_can_acquire_its_own_runtime_lock>
+
+    def test_transport_can_acquire_its_own_runtime_lock(self):
+     import fcntl
+     from unittest.mock import patch
+     from experiments.cloud_role_runner_v1.agent import invoke
+     with tempfile.TemporaryDirectory() as d:
+      s,r,a,p=self.setup_call(d);receipts=self.receipts();ev=receipts[-1]['stdout'].replace('{\\"wrong\\":true}','{\\"ok\\":true}')
+      # Replace complete message through JSON to avoid text escaping assumptions.
+      parsed=[json.loads(x) for x in receipts[-1]['stdout'].splitlines()];parsed[1]['item']['text']='{"ok":true}';receipts[-1]['stdout']='\n'.join(json.dumps(x) for x in parsed)
+      def transport(*args,**kw):
+       with (Path(r['directory'])/'worker.lock').open('a+') as f:fcntl.flock(f,fcntl.LOCK_EX|fcntl.LOCK_NB)
+       return receipts.pop(0)
+      with patch('experiments.cloud_role_runner_v1.agent.launch',side_effect=transport):result=invoke(s,'t1',p['approval_sha'],r,a)
+>     self.assertTrue(result['passed'],result);s.close()
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E     AssertionError: False is not true : {'reported_usage': None, 'reported_tokens': None, 'passed': False, 'status': 'stopped_after_error', 'error_type': 'BlockingIOError', 'reason': '[Errno 35] Resource temporarily unavailable', 'model_dispatch_attempted': False, 'new_agent_calls': 0, 'parent_agent_isolation_certified': False, 'original_auth_unchanged': True, 'CPU_seconds': 0.0005149999999999877, 'ledger': {'status': 'manual_checkpoint', 'started': 1795638414.7014542, 'totals': {'tokens': 0, 'cached_input_tokens': 0, 'reserved_tokens': 0, 'unmetered_setup_reserved': 0, 'setup_actual_tokens': None, 'optimizer_steps': 0, 'reserved_optimizer_steps': 0, 'cpu_seconds': 0.0005149999999999877, 'reserved_cpu_seconds': 0, 'proposals': 0}}, 'requires_manual_checkpoint': True}
+
+tests/cloud_role_runner_v1/test_role.py:153: AssertionError
+=========================== short test summary info ============================
+FAILED tests/cloud_role_runner_v1/test_role.py::DispatchLockTests::test_transport_can_acquire_its_own_runtime_lock
+1 failed in 0.10s
