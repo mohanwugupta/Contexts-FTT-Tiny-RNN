@@ -1,0 +1,47 @@
+{
+  "passed": true,
+  "jobs": 32,
+  "kinds": {
+    "prior": 4,
+    "competence": 12,
+    "target": 16
+  },
+  "completed_attempts": 159120,
+  "all_step_cursors_consecutive": true,
+  "last_state_hashes_match": true,
+  "all_configs_and_task_libraries_match_registered_inputs": true,
+  "target_practice_records_checked": 5280,
+  "physical_practice_counts": {
+    "A": 2640,
+    "B": 2640
+  },
+  "linear_control_checkpoint_checks": 128,
+  "calls": 0,
+  "cpu_records": [
+    {
+      "id": "native-1795622866703212713",
+      "reserved": 18000.0,
+      "actual": 5229.950906333999,
+      "status": "reconciled"
+    }
+  ],
+  "status": "stopped",
+  "limits": {
+    "active_branches": 1,
+    "cpu_seconds": 18000,
+    "optimizer_steps": 159120,
+    "proposals": 1,
+    "tokens": 0,
+    "wall_seconds": 21600
+  },
+  "sample_linear_check": {
+    "update": 0,
+    "passed": true,
+    "max_error": 4.263256414560601e-14,
+    "tolerance": 2.754285335702416e-10,
+    "native_max_error": 4.57763671875e-05,
+    "native_max_bound": 0.3499039590386182,
+    "float32_bound_factor": 64,
+    "all4_logits_checked": true
+  }
+}

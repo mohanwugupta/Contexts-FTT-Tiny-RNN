@@ -1,0 +1,26 @@
+{
+  "all_pass": true,
+  "commit": "94e68caa7a792a020d4990e79a86f2feecbeb43f",
+  "zip_sha256": "258bc7f21ac5861b878d9247bca6f4497e7283430386c78b3a29e51915369a81",
+  "verified_members": 361,
+  "direct_readable_artifacts_matched": [
+    "coverage.csv",
+    "plot_values.csv",
+    "RESULT.json",
+    "REPORT.md",
+    "seed_intervals.csv",
+    "seed_task_results.csv",
+    "trial_summary.png",
+    "checkpoint_hashes.json",
+    "budgets.json",
+    "trial_summary.svg",
+    "background_competence.json"
+  ],
+  "verified_checkpoint_hashes": 64,
+  "complete_target_histories": 16,
+  "frozen_states_per_target": 331,
+  "linear_control_files": 16,
+  "models_loaded": 0,
+  "new_model_forwards": 0,
+  "new_optimizer_steps": 0
+}
