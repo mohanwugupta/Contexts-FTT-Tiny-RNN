@@ -1,0 +1,61 @@
+name: Cached runtime TLS and synthetic smoke
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/cached-runtime-tls.yml'
+      - 'experiments/cloud_runtime_tls_v1/**'
+      - 'tests/cloud_runtime_tls_v1/**'
+      - 'cloud_tls_smoke.sh'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: cached-runtime-tls-synthetic
+  cancel-in-progress: false
+
+jobs:
+  verified-tls-build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /experiments/cloud_runtime_tls_v1/
+            /experiments/cloud_confidence_container_v2/
+            /experiments/cloud_confidence_selected_v1/
+            /experiments/worker_isolation_preflight_v1/
+            /tests/cloud_runtime_tls_v1/
+            /tests/cloud_confidence_container_v2/
+            /docs/research_search_cloud_v1/requirements-cloud.txt
+            /cloud_tls_smoke.sh
+      - name: Certificate, real TLS and cleanup tests
+        run: python3 -m unittest discover -s tests/cloud_runtime_tls_v1 -v
+      - name: Original adapter contracts
+        run: python3 -m unittest discover -s tests/cloud_confidence_container_v2 -v
+      - name: Verified file-secret build and guarded synthetic smoke
+        timeout-minutes: 12
+        run: python3 -m experiments.cloud_runtime_tls_v1.build --out "$RUNNER_TEMP/tls-runtime"
+      - name: Preserve synthetic receipts
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import os
+          from pathlib import Path
+          root=Path(os.environ['RUNNER_TEMP'])/'tls-runtime'
+          for name in ['TLS_BUILD_RECEIPT.json','smoke/EXECUTION_RECEIPT.json','smoke/fixture/output/SMOKE.json','smoke/fixture/output/WORKER_ISOLATION.json']:
+              p=root/name
+              if p.is_file():
+                  print(name)
+                  print(p.read_text())
+          p=root/'image-build.log'
+          if p.is_file():
+              print('image-build.log tail')
+              print('\n'.join(p.read_text().splitlines()[-60:]))
+          PY
