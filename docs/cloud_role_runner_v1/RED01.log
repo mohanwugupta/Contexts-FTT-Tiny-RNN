@@ -1,0 +1,21 @@
+test_role (unittest.loader._FailedTest.test_role) ... ERROR
+
+======================================================================
+ERROR: test_role (unittest.loader._FailedTest.test_role)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_role
+Traceback (most recent call last):
+  File "/Users/mg9965/.pyenv/versions/3.11.8/lib/python3.11/unittest/loader.py", line 419, in _find_test_path
+    module = self._get_module_from_name(name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mg9965/.pyenv/versions/3.11.8/lib/python3.11/unittest/loader.py", line 362, in _get_module_from_name
+    __import__(name)
+  File "/Users/mg9965/Library/CloudStorage/Box-Box/ResearchProjects/RI-EVC/Contexts-FTT-Tiny-RNN/tests/cloud_role_runner_v1/test_role.py", line 3, in <module>
+    from experiments.cloud_role_runner_v1 import contract as c
+ImportError: cannot import name 'contract' from 'experiments.cloud_role_runner_v1' (unknown location)
+
+
+----------------------------------------------------------------------
+Ran 1 test in 0.000s
+
+FAILED (errors=1)

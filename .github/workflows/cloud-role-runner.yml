@@ -1,0 +1,42 @@
+name: Linux role isolation synthetic acceptance
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'experiments/cloud_role_runner_v1/**'
+      - 'tests/cloud_role_runner_v1/**'
+      - '.github/workflows/cloud-role-runner.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: cloud-role-runner-synthetic
+  cancel-in-progress: false
+jobs:
+  role-container-isolation:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Offline role and ledger contracts
+        run: python3 -m unittest discover -s tests/cloud_role_runner_v1 -v
+      - name: Pinned Python fixture runtime (no Codex binary or credentials)
+        run: docker pull python:3.12-slim@sha256:191083cdf6c7bda8c76158983163ead5d5cf7b77cf3033e805bb0f5296f51b4b
+      - name: Actual role filesystem, process, network and synthetic event fixture
+        run: |
+          image="$(docker image inspect --format '{{.Id}}' python:3.12-slim@sha256:191083cdf6c7bda8c76158983163ead5d5cf7b77cf3033e805bb0f5296f51b4b)"
+          python3 -m experiments.cloud_role_runner_v1 prepare --synthetic --out "$RUNNER_TEMP/role-runtime" --image "$image"
+          python3 -m experiments.cloud_role_runner_v1 fixture --runtime "$RUNNER_TEMP/role-runtime/RUNTIME.json" --out "$RUNNER_TEMP/role-fixture"
+      - name: Preserve bounded synthetic diagnostics
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import os
+          from pathlib import Path
+          root=Path(os.environ['RUNNER_TEMP'])/'role-fixture'
+          for name in ['RECEIPT.json','DOCKER_COMMANDS.json','stage/output/ISOLATION.json','stage/output/PROCESS.json','stage/output/stderr.log','stage/relay/PROXY_USAGE.json']:
+              p=root/name
+              if p.exists():print(name);print(p.read_text())
+          PY
