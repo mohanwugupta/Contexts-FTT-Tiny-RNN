@@ -207,3 +207,20 @@ class FrozenRuntimeTests(unittest.TestCase):
             with patch('experiments.cloud_native_trial_v1.launcher.launch',return_value=dict(passed=False,container_removed=False)) as start:
                 result=run_and_export(root,'sha256:'+'a'*64,'run','/var/run/docker.sock')
             self.assertFalse(result['passed']);self.assertEqual(start.call_count,1)
+
+class UncertainOperationTests(unittest.TestCase):
+    def test_uncertain_step_does_not_claim_exact_outer_count(self):
+        import torch
+        from research_search.orchestration.store import Store
+        from research_search.orchestration.queue import enqueue
+        from experiments.cloud_native_trial_v1.worker import report
+        with tempfile.TemporaryDirectory() as d:
+            s=Store(d,c.LIMITS);enqueue(s,'prior-test','control',dict(kind='prior',seed=21000,tasks=[{}]))
+            s.charge_step('prior-test',1)
+            folder=Path(d)/'jobs/prior-test';folder.mkdir(parents=True)
+            torch.save(dict(extra=dict(episode=1)),folder/'progress.pt')
+            result=report(s)
+            self.assertIsNone(result['reptile_interpolations'])
+            self.assertEqual(result['confirmed_reptile_interpolations'],1)
+            self.assertIsNone(result['combined_optimizer_and_meta_operations'])
+            s.close()

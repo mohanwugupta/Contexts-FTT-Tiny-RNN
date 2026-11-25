@@ -82,9 +82,10 @@ def report(store):
     pd.DataFrame(intervals).to_csv(store.directory/'seed_intervals.csv',index=False)
     complete=len(rows)==16 and len(competence)==12 and all(r['status']=='completed' for r in coverage)
     adequate=all(r['all_practiced_contexts_useful'] for r in competence) if len(competence)==12 else None
+    uncertain=store.db.execute("SELECT count(*) FROM steps WHERE status!='completed'").fetchone()[0]
     result=dict(complete=complete,background_adequate=adequate,status='completed_development_only' if complete and adequate else 'background_inconclusive' if complete else 'incomplete_inconclusive',
       target_results=len(rows),planned_target_results=16,planned_competence=12,coverage=coverage,
-      actual=store.totals(),reptile_interpolations=meta,combined_optimizer_and_meta_operations=store.totals()['optimizer_steps']+meta,
+      actual=store.totals(),confirmed_reptile_interpolations=meta,reptile_interpolations=None if uncertain else meta,uncertain_optimizer_attempts=uncertain,combined_optimizer_and_meta_operations=None if uncertain else store.totals()['optimizer_steps']+meta,
       new_agent_calls=0,provider_tokens=None,old_token_holds=117000,parent_agent_isolation_certified=False,confirmation_evaluations=0,late_functional_status='unassessed',screen_status='unassessed')
     write(store.directory/'RESULT.json',result)
     (store.directory/'REPORT.md').write_text('# Native Cloud trial\n\n'+json.dumps(clean(result),indent=2)+'\n\nAll target results and missing jobs are retained. Task averages precede seed bootstrap (n=2); intervals are descriptive. The frozen scorer owns historical flags. NoContext is an additional joint requirement, not a replacement for the original measures. Background failure makes mechanism rejection inconclusive. No result triggers more training, confirmation or agent calls.\n')

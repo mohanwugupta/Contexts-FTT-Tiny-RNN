@@ -1,0 +1,31 @@
+2026-11-25T15:57:20.2541744Z ##[group]Run python3 -m experiments.cloud_native_trial_v1 prepare --out "$RUNNER_TEMP/native-fixture"
+2026-11-25T15:57:20.2542388Z [36;1mpython3 -m experiments.cloud_native_trial_v1 prepare --out "$RUNNER_TEMP/native-fixture"[0m
+2026-11-25T15:57:20.2543008Z [36;1mpython3 -m experiments.cloud_native_trial_v1 fixture --out "$RUNNER_TEMP/native-fixture" --image "$(cat "$RUNNER_TEMP/runtime/image-id")"[0m
+2026-11-25T15:57:20.2570259Z shell: /usr/bin/bash -e {0}
+2026-11-25T15:57:20.2570612Z ##[endgroup]
+2026-11-25T15:57:20.6295544Z Traceback (most recent call last):
+2026-11-25T15:57:20.6296300Z   File "<frozen runpy>", line 198, in _run_module_as_main
+2026-11-25T15:57:20.6296887Z   File "<frozen runpy>", line 88, in _run_code
+2026-11-25T15:57:20.6297743Z   File "/home/runner/work/Contexts-FTT-Tiny-RNN/Contexts-FTT-Tiny-RNN/experiments/cloud_native_trial_v1/__main__.py", line 2, in <module>
+2026-11-25T15:57:20.6298786Z     raise SystemExit(main())
+2026-11-25T15:57:20.6299879Z                      ^^^^^^
+2026-11-25T15:57:20.6300525Z   File "/home/runner/work/Contexts-FTT-Tiny-RNN/Contexts-FTT-Tiny-RNN/experiments/cloud_native_trial_v1/launcher.py", line 133, in main
+2026-11-25T15:57:20.6301070Z     if a.action=='prepare':result=prepare(a.out)
+2026-11-25T15:57:20.6301382Z                                   ^^^^^^^^^^^^^^
+2026-11-25T15:57:20.6301845Z   File "/home/runner/work/Contexts-FTT-Tiny-RNN/Contexts-FTT-Tiny-RNN/experiments/cloud_native_trial_v1/control.py", line 89, in prepare
+2026-11-25T15:57:20.6302443Z     hashes=verify_source();assets=json.loads((HERE/'assets/FILES.json').read_text())
+2026-11-25T15:57:20.6302819Z            ^^^^^^^^^^^^^^^
+2026-11-25T15:57:20.6303577Z   File "/home/runner/work/Contexts-FTT-Tiny-RNN/Contexts-FTT-Tiny-RNN/experiments/cloud_native_trial_v1/control.py", line 83, in verify_source
+2026-11-25T15:57:20.6304193Z     if source_files()!=expected:raise ValueError('Pinned source closure changed; do not launch')
+2026-11-25T15:57:20.6304556Z        ^^^^^^^^^^^^^^
+2026-11-25T15:57:20.6305025Z   File "/home/runner/work/Contexts-FTT-Tiny-RNN/Contexts-FTT-Tiny-RNN/experiments/cloud_native_trial_v1/control.py", line 71, in source_files
+2026-11-25T15:57:20.6305608Z     seal=json.loads((ROOT/'research_search/audit/evaluator_seal.json').read_text())
+2026-11-25T15:57:20.6306022Z                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-25T15:57:20.6306374Z   File "/usr/lib/python3.12/pathlib.py", line 1029, in read_text
+2026-11-25T15:57:20.6576096Z     with self.open(mode='r', encoding=encoding, errors=errors) as f:
+2026-11-25T15:57:20.6576790Z          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-25T15:57:20.6577242Z   File "/usr/lib/python3.12/pathlib.py", line 1015, in open
+2026-11-25T15:57:20.6578214Z     return io.open(self, mode, buffering, encoding, errors, newline)
+2026-11-25T15:57:20.6579003Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-25T15:57:20.6580359Z FileNotFoundError: [Errno 2] No such file or directory: '/home/runner/work/Contexts-FTT-Tiny-RNN/Contexts-FTT-Tiny-RNN/research_search/audit/evaluator_seal.json'
+2026-11-25T15:57:20.6732798Z ##[error]Process completed with exit code 1.

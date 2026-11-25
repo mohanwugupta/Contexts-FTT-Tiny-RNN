@@ -40,7 +40,7 @@
   "experiments/cloud_native_trial_v1/export.py": "d06b50f9daea6d43537cf03f361c22baf38372f8cde1d92e02a8f4b8949c1399",
   "experiments/cloud_native_trial_v1/figures.py": "0a7c6986daf8e558659b7eb5b38235a8e6f2ff0a84382a09018eac8a2d248740",
   "experiments/cloud_native_trial_v1/launcher.py": "843ba21e8ede924ff4a0db6c7406985921d0b1a6126d463c1af7ad406fd73501",
-  "experiments/cloud_native_trial_v1/worker.py": "50cc5537a05e9bdbc990c8b97beaf86b3227f74f4dfc9c4b41ed66f7e68ab218",
+  "experiments/cloud_native_trial_v1/worker.py": "e0c400973268288540044ceb34a3cb5af7fb73047a86eb427ce41d0f917569e4",
   "experiments/context_experience_prior/core.py": "57557ac82842d1e2d499bf6f6f74fdd60ffb878f2b344e73a5340400a8496660",
   "experiments/context_experience_prior/registry.py": "bd095e3896dcafccc33ff373d39fa9fd3ae4940a2a0e56e41de72d7e0976c016",
   "experiments/heldout_context_meta/common.py": "1bd3e1fae6f3a9e70e900eb9ccfd29f5848c63618dd642e7386370a5c91148dc",

@@ -1,0 +1,24 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+_ UncertainOperationTests.test_uncertain_step_does_not_claim_exact_outer_count _
+
+self = <test_trial.UncertainOperationTests testMethod=test_uncertain_step_does_not_claim_exact_outer_count>
+
+    def test_uncertain_step_does_not_claim_exact_outer_count(self):
+        import torch
+        from research_search.orchestration.store import Store
+        from research_search.orchestration.queue import enqueue
+        from experiments.cloud_native_trial_v1.worker import report
+        with tempfile.TemporaryDirectory() as d:
+            s=Store(d,c.LIMITS);enqueue(s,'prior-test','control',dict(kind='prior',seed=21000,tasks=[{}]))
+            s.charge_step('prior-test',1)
+            folder=Path(d)/'jobs/prior-test';folder.mkdir(parents=True)
+            torch.save(dict(extra=dict(episode=1)),folder/'progress.pt')
+            result=report(s)
+>           self.assertIsNone(result['reptile_interpolations'])
+E           AssertionError: 1 is not None
+
+tests/cloud_native_trial_v1/test_trial.py:223: AssertionError
+=========================== short test summary info ============================
+FAILED tests/cloud_native_trial_v1/test_trial.py::UncertainOperationTests::test_uncertain_step_does_not_claim_exact_outer_count
+1 failed in 1.66s
