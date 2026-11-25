@@ -1,0 +1,28 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/Users/mg9965/Library/CloudStorage/Box-Box/ResearchProjects/RI-EVC/Contexts-FTT-Tiny-RNN/experiments/cloud_native_trial_v1/register_inputs.py", line 37, in <module>
+    if __name__=='__main__':print(json.dumps(register()))
+                                             ^^^^^^^^^^
+  File "/Users/mg9965/Library/CloudStorage/Box-Box/ResearchProjects/RI-EVC/Contexts-FTT-Tiny-RNN/experiments/cloud_native_trial_v1/register_inputs.py", line 26, in register
+    raw=background(seed+900000,3,extra,'P2');cal=[]
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mg9965/Library/CloudStorage/Box-Box/ResearchProjects/RI-EVC/Contexts-FTT-Tiny-RNN/research_search/runners/tasks.py", line 17, in background
+    while not background_allowed(ep['paths'][1],forbidden) or ep['paths'][1][:3]!=ep['paths'][0][:3] or ep['paths'][1][3]==ep['paths'][0][3]:
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mg9965/Library/CloudStorage/Box-Box/ResearchProjects/RI-EVC/Contexts-FTT-Tiny-RNN/research_search/evaluation/validity.py", line 18, in background_allowed
+    return allowed(path) and not any(equivalent(path,p) for p in forbidden)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mg9965/Library/CloudStorage/Box-Box/ResearchProjects/RI-EVC/Contexts-FTT-Tiny-RNN/research_search/evaluation/validity.py", line 18, in <genexpr>
+    return allowed(path) and not any(equivalent(path,p) for p in forbidden)
+                                     ^^^^^^^^^^^^^^^^^^
+  File "/Users/mg9965/Library/CloudStorage/Box-Box/ResearchProjects/RI-EVC/Contexts-FTT-Tiny-RNN/research_search/evaluation/validity.py", line 22, in equivalent
+    return bool(orbit(a)&orbit(b) or (orbit(a[:-1])|orbit(a[1:]))&(orbit(b[:-1])|orbit(b[1:])))
+                         ^^^^^^^^
+  File "/Users/mg9965/Library/CloudStorage/Box-Box/ResearchProjects/RI-EVC/Contexts-FTT-Tiny-RNN/experiments/context_experience_prior/registry.py", line 8, in orbit
+    x=tuple(x);return {z[i:]+z[:i] for z in [x,x[::-1]] for i in range(len(x))}
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mg9965/Library/CloudStorage/Box-Box/ResearchProjects/RI-EVC/Contexts-FTT-Tiny-RNN/experiments/context_experience_prior/registry.py", line 8, in <setcomp>
+    x=tuple(x);return {z[i:]+z[:i] for z in [x,x[::-1]] for i in range(len(x))}
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyboardInterrupt

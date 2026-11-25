@@ -1,0 +1,16 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/Users/mg9965/Library/CloudStorage/Box-Box/ResearchProjects/RI-EVC/Contexts-FTT-Tiny-RNN/experiments/cloud_native_trial_v1/register_inputs.py", line 56, in <module>
+    if __name__=='__main__':print(json.dumps(register()))
+                                             ^^^^^^^^^^
+  File "/Users/mg9965/Library/CloudStorage/Box-Box/ResearchProjects/RI-EVC/Contexts-FTT-Tiny-RNN/experiments/cloud_native_trial_v1/register_inputs.py", line 45, in register
+    raw=background(seed+900000,3,extra,'P2');cal=[]
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mg9965/Library/CloudStorage/Box-Box/ResearchProjects/RI-EVC/Contexts-FTT-Tiny-RNN/experiments/cloud_native_trial_v1/register_inputs.py", line 26, in cached_background
+    return tasks.background(seed,episodes,forbidden,kind)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mg9965/Library/CloudStorage/Box-Box/ResearchProjects/RI-EVC/Contexts-FTT-Tiny-RNN/research_search/runners/tasks.py", line 19, in background
+    if attempts>100000:raise RuntimeError('Fixed task-generation limit reached; retain unavailable bank')
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: Fixed task-generation limit reached; retain unavailable bank

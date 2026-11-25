@@ -1,0 +1,23 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+_____________ OwnerStopTests.test_stop_checked_before_each_update ______________
+
+self = <test_trial.OwnerStopTests testMethod=test_stop_checked_before_each_update>
+
+    def test_stop_checked_before_each_update(self):
+        from experiments.cloud_native_trial_v1.worker import guarded_runtime
+        from research_search.orchestration.budget import BudgetError
+        class Base:pass
+        with tempfile.TemporaryDirectory() as d:
+            class Store:
+                directory=Path(d)
+                def check(self):pass
+            r=guarded_runtime(Base)();r.store=Store();r.cpu_deadline=float('inf');r.deadline=None
+            (Path(d)/'STOP_REQUESTED').write_text('stop')
+>           with self.assertRaises(BudgetError):r.check()
+E           AssertionError: BudgetError not raised
+
+tests/cloud_native_trial_v1/test_trial.py:193: AssertionError
+=========================== short test summary info ============================
+FAILED tests/cloud_native_trial_v1/test_trial.py::OwnerStopTests::test_stop_checked_before_each_update
+1 failed in 0.11s

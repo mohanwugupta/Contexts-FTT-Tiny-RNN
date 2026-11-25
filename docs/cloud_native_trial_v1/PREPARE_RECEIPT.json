@@ -1,0 +1,15 @@
+{
+  "prepared": true,
+  "training_started": false,
+  "out": "/private/tmp/srn-native-local-prepare-v1",
+  "limits": {
+    "tokens": 0,
+    "cpu_seconds": 18000,
+    "optimizer_steps": 159120,
+    "wall_seconds": 21600,
+    "proposals": 1,
+    "active_branches": 1
+  },
+  "source_files": 149,
+  "next_action": "explicit run using accepted immutable image"
+}

@@ -1,0 +1,25 @@
+test_deadline_guard_does_not_update_or_restore (test_trial.LifecycleTests.test_deadline_guard_does_not_update_or_restore) ... ok
+test_export_attempts_have_distinct_mounts (test_trial.LifecycleTests.test_export_attempts_have_distinct_mounts) ... FAIL
+test_unknown_or_failed_job_not_replayed (test_trial.LifecycleTests.test_unknown_or_failed_job_not_replayed) ... ok
+test_collector_mount_is_readonly (test_trial.TrialTests.test_collector_mount_is_readonly) ... ok
+test_create_timeout_and_protections (test_trial.TrialTests.test_create_timeout_and_protections) ... ok
+test_export_detects_tamper (test_trial.TrialTests.test_export_detects_tamper) ... ok
+test_export_preserves_0600 (test_trial.TrialTests.test_export_preserves_0600) ... ok
+test_export_rejects_symlinks_and_overwrite (test_trial.TrialTests.test_export_rejects_symlinks_and_overwrite) ... ok
+test_fixed_scope (test_trial.TrialTests.test_fixed_scope) ... ok
+test_identity_and_confirmation_not_in_source (test_trial.TrialTests.test_identity_and_confirmation_not_in_source) ... ok
+test_no_agent_or_confirmation_launch (test_trial.TrialTests.test_no_agent_or_confirmation_launch) ... ok
+test_no_threshold_or_scope_edit (test_trial.TrialTests.test_no_threshold_or_scope_edit) ... ok
+
+======================================================================
+FAIL: test_export_attempts_have_distinct_mounts (test_trial.LifecycleTests.test_export_attempts_have_distinct_mounts)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/mg9965/Library/CloudStorage/Box-Box/ResearchProjects/RI-EVC/Contexts-FTT-Tiny-RNN/tests/cloud_native_trial_v1/test_trial.py", line 64, in test_export_attempts_have_distinct_mounts
+    self.assertIn('type=bind,src=/tmp/job/exports/one,dst=/output',a)
+AssertionError: 'type=bind,src=/tmp/job/exports/one,dst=/output' not found in ['docker', 'create', '--name', 'one', '--pull=never', '--read-only', '--network=none', '--cap-drop=ALL', '--user=65534:65534', '--security-opt=no-new-privileges:true', '--pids-limit=32', '--memory=2g', '--memory-swap=2g', '--cpus=1', '--ulimit=cpu=120:120', '--ipc=none', '--tmpfs=/tmp:rw,noexec,nosuid,size=128m', '--workdir=/trial', '--mount', 'type=bind,src=/tmp/job/source,dst=/workspace,readonly', '--mount', 'type=bind,src=/tmp/job/fixture/source,dst=/worker,readonly', '--mount', 'type=bind,src=/tmp/job/fixture/private,dst=/private,readonly', '--mount', 'type=bind,src=/tmp/job/native,dst=/trial,readonly', '--mount', 'type=bind,src=/tmp/job/exports,dst=/output', 'sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'python', '-I', '-B', '/workspace/experiments/cloud_native_trial_v1/worker.py', 'export']
+
+----------------------------------------------------------------------
+Ran 12 tests in 4.248s
+
+FAILED (failures=1)

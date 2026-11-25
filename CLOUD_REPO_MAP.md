@@ -32,3 +32,7 @@ The owner approved public publication of these research results. The exact38-fil
 | results/research_search_cloud/selected_analysis_verified_v3_1/verify_saved_tables.py | Archive-only checksum/table reproduction; optional139-source verification |
 
 Older setup/private-evidence notes describe their original snapshots. The public result ZIP is the selected16-history zero-prior cached study, not all historical checkpoints or a public credential/confirmation package. Keep cohorts separate and restore predecessor evidence only when needed; never retrain for reproduction.
+
+## Supervised full-prior native Cloud trial
+
+Start with [the one-paste Cloud handoff](docs/cloud_native_trial_v1/START_IN_CLOUD.md) and [fixed protocol/source audit](docs/cloud_native_trial_v1/README.md). `cloud_native_trial.sh` reuses the successful Cloud image; `experiments/cloud_native_trial_v1/` wraps native pretraining/target/scoring in a separate restricted Linux worker and read-only same-identity exporter. One registered cue-diversity candidate plus control, two seeds/four tasks, full1920 prior episodes,330 A/B target updates;6h wall/5h CPU ceilings. This is supervised numerical execution with zero automatic agent calls; it does not certify or start the sealed72h autonomous campaign. Original unavailable competence-generation failure and versioned shared-only repair are retained in its scratchpad.

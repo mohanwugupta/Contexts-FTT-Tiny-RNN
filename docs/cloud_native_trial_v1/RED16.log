@@ -1,0 +1,61 @@
+FF                                                                       [100%]
+=================================== FAILURES ===================================
+______ FrozenRuntimeTests.test_failed_cleanup_does_not_collect_live_files ______
+
+self = <test_trial.FrozenRuntimeTests testMethod=test_failed_cleanup_does_not_collect_live_files>
+
+    def test_failed_cleanup_does_not_collect_live_files(self):
+        from experiments.cloud_native_trial_v1.launcher import run_and_export
+        from unittest.mock import patch
+        with tempfile.TemporaryDirectory() as d:
+            root=Path(d)/'trial';root.mkdir()
+            with patch('experiments.cloud_native_trial_v1.launcher.launch',return_value=dict(passed=False,container_removed=False)) as start:
+>               result=run_and_export(root,'sha256:'+'a'*64,'run','/var/run/docker.sock')
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/cloud_native_trial_v1/test_trial.py:208: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+experiments/cloud_native_trial_v1/launcher.py:109: in run_and_export
+    save(Path(job)/'LATEST_LAUNCH.json',receipt)
+experiments/cloud_native_trial_v1/control.py:23: in save
+    path.write_text(json.dumps(obj,sort_keys=True,indent=2,allow_nan=False)+'\n');path.chmod(0o644)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/Users/mg9965/.pyenv/versions/3.11.8/lib/python3.11/json/__init__.py:238: in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+/Users/mg9965/.pyenv/versions/3.11.8/lib/python3.11/json/encoder.py:202: in encode
+    chunks = list(chunks)
+             ^^^^^^^^^^^^
+/Users/mg9965/.pyenv/versions/3.11.8/lib/python3.11/json/encoder.py:432: in _iterencode
+    yield from _iterencode_dict(o, _current_indent_level)
+/Users/mg9965/.pyenv/versions/3.11.8/lib/python3.11/json/encoder.py:406: in _iterencode_dict
+    yield from chunks
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+dct = {'container_removed': False, 'export': {'container_removed': False, 'export': {'container_removed': False, 'export': {...ort': {...}, 'passed': False}, 'passed': False}, 'passed': False}, 'passed': False}, 'passed': False}, 'passed': False}
+_current_indent_level = 1
+
+    def _iterencode_dict(dct, _current_indent_level):
+        if not dct:
+            yield '{}'
+            return
+        if markers is not None:
+            markerid = id(dct)
+            if markerid in markers:
+>               raise ValueError("Circular reference detected")
+E               ValueError: Circular reference detected
+
+/Users/mg9965/.pyenv/versions/3.11.8/lib/python3.11/json/encoder.py:341: ValueError
+____________ FrozenRuntimeTests.test_resume_refuses_different_image ____________
+
+self = <test_trial.FrozenRuntimeTests testMethod=test_resume_refuses_different_image>
+
+    def test_resume_refuses_different_image(self):
+>       from experiments.cloud_native_trial_v1.launcher import pin_runtime
+E       ImportError: cannot import name 'pin_runtime' from 'experiments.cloud_native_trial_v1.launcher' (/Users/mg9965/Library/CloudStorage/Box-Box/ResearchProjects/RI-EVC/Contexts-FTT-Tiny-RNN/experiments/cloud_native_trial_v1/launcher.py)
+
+tests/cloud_native_trial_v1/test_trial.py:197: ImportError
+=========================== short test summary info ============================
+FAILED tests/cloud_native_trial_v1/test_trial.py::FrozenRuntimeTests::test_failed_cleanup_does_not_collect_live_files
+FAILED tests/cloud_native_trial_v1/test_trial.py::FrozenRuntimeTests::test_resume_refuses_different_image
+2 failed in 0.13s

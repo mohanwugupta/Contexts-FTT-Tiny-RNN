@@ -1,0 +1,21 @@
+test_trial (unittest.loader._FailedTest.test_trial) ... ERROR
+
+======================================================================
+ERROR: test_trial (unittest.loader._FailedTest.test_trial)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_trial
+Traceback (most recent call last):
+  File "/Users/mg9965/.pyenv/versions/3.11.8/lib/python3.11/unittest/loader.py", line 419, in _find_test_path
+    module = self._get_module_from_name(name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mg9965/.pyenv/versions/3.11.8/lib/python3.11/unittest/loader.py", line 362, in _get_module_from_name
+    __import__(name)
+  File "/Users/mg9965/Library/CloudStorage/Box-Box/ResearchProjects/RI-EVC/Contexts-FTT-Tiny-RNN/tests/cloud_native_trial_v1/test_trial.py", line 3, in <module>
+    from experiments.cloud_native_trial_v1 import control as c
+ImportError: cannot import name 'control' from 'experiments.cloud_native_trial_v1' (unknown location)
+
+
+----------------------------------------------------------------------
+Ran 1 test in 0.000s
+
+FAILED (errors=1)

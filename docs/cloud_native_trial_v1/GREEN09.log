@@ -1,0 +1,41 @@
+test_shared_competence_is_fixed_and_excludes_background (test_trial.CompetenceRegistrationTests.test_shared_competence_is_fixed_and_excludes_background) ... ok
+test_deadline_guard_does_not_update_or_restore (test_trial.LifecycleTests.test_deadline_guard_does_not_update_or_restore) ... ok
+test_export_attempts_have_distinct_mounts (test_trial.LifecycleTests.test_export_attempts_have_distinct_mounts) ... ok
+test_unknown_or_failed_job_not_replayed (test_trial.LifecycleTests.test_unknown_or_failed_job_not_replayed) ... ok
+test_cached_exclusions_exactly_match_native (test_trial.PureRegistrationTests.test_cached_exclusions_exactly_match_native) ... ok
+test_cached_generator_retains_native_rng_and_order (test_trial.PureRegistrationTests.test_cached_generator_retains_native_rng_and_order) ... ok
+test_create_timeout_cleans_by_name (test_trial.QueueRegistrationTests.test_create_timeout_cleans_by_name) ... ERROR
+test_four_priors_then_exact_remaining_jobs (test_trial.QueueRegistrationTests.test_four_priors_then_exact_remaining_jobs) ... ok
+test_native_default_and_candidate_are_valid (test_trial.ResumeAndBudgetTests.test_native_default_and_candidate_are_valid) ... ok
+test_resource_guard_preserves_store_wall_gate (test_trial.ResumeAndBudgetTests.test_resource_guard_preserves_store_wall_gate) ... ok
+test_source_asset_manifest_is_anchored (test_trial.ResumeAndBudgetTests.test_source_asset_manifest_is_anchored) ... ok
+test_total_job_budget_arithmetic (test_trial.ResumeAndBudgetTests.test_total_job_budget_arithmetic) ... ok
+test_unknown_usage_cannot_dispatch (test_trial.ResumeAndBudgetTests.test_unknown_usage_cannot_dispatch) ... ok
+test_collector_mount_is_readonly (test_trial.TrialTests.test_collector_mount_is_readonly) ... ok
+test_create_timeout_and_protections (test_trial.TrialTests.test_create_timeout_and_protections) ... ok
+test_export_detects_tamper (test_trial.TrialTests.test_export_detects_tamper) ... ok
+test_export_preserves_0600 (test_trial.TrialTests.test_export_preserves_0600) ... ok
+test_export_rejects_symlinks_and_overwrite (test_trial.TrialTests.test_export_rejects_symlinks_and_overwrite) ... ok
+test_fixed_scope (test_trial.TrialTests.test_fixed_scope) ... ok
+test_identity_and_confirmation_not_in_source (test_trial.TrialTests.test_identity_and_confirmation_not_in_source) ... ok
+test_no_agent_or_confirmation_launch (test_trial.TrialTests.test_no_agent_or_confirmation_launch) ... ok
+test_no_threshold_or_scope_edit (test_trial.TrialTests.test_no_threshold_or_scope_edit) ... ok
+
+======================================================================
+ERROR: test_create_timeout_cleans_by_name (test_trial.QueueRegistrationTests.test_create_timeout_cleans_by_name)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/mg9965/Library/CloudStorage/Box-Box/ResearchProjects/RI-EVC/Contexts-FTT-Tiny-RNN/tests/cloud_native_trial_v1/test_trial.py", line 169, in test_create_timeout_cleans_by_name
+    r=launch(root,'sha256:'+'a'*64,'run','/var/run/docker.sock')
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mg9965/Library/CloudStorage/Box-Box/ResearchProjects/RI-EVC/Contexts-FTT-Tiny-RNN/experiments/cloud_native_trial_v1/launcher.py", line 55, in launch
+    (job/'fixture/output').mkdir(exist_ok=True);(job/'fixture/output').chmod(0o777)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mg9965/.pyenv/versions/3.11.8/lib/python3.11/pathlib.py", line 1116, in mkdir
+    os.mkdir(self, mode)
+FileNotFoundError: [Errno 2] No such file or directory: '/private/var/folders/zt/vtsl21k13z9bd24ft4trvf140000gq/T/tmpmlqor35i/fixture/output'
+
+----------------------------------------------------------------------
+Ran 22 tests in 3.869s
+
+FAILED (errors=1)

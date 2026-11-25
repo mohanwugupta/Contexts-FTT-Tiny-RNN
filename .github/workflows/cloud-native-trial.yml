@@ -1,0 +1,39 @@
+name: Native Cloud trial synthetic acceptance
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'experiments/cloud_native_trial_v1/**'
+      - 'tests/cloud_native_trial_v1/**'
+      - '.github/workflows/cloud-native-trial.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: cloud-native-trial-synthetic
+  cancel-in-progress: false
+jobs:
+  restriction-and-export-fixture:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Fixed-dependency runtime (CI only; Cloud reuses its accepted image)
+        run: python3 -m experiments.cloud_runtime_tls_v1.build --out "$RUNNER_TEMP/runtime"
+      - name: Pure preparation and synthetic0600 export under actual container identity
+        run: |
+          python3 -m experiments.cloud_native_trial_v1 prepare --out "$RUNNER_TEMP/native-fixture"
+          python3 -m experiments.cloud_native_trial_v1 fixture --out "$RUNNER_TEMP/native-fixture" --image "$(cat "$RUNNER_TEMP/runtime/image-id")"
+      - name: Preserve fixture receipts
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import os
+          from pathlib import Path
+          p=Path(os.environ['RUNNER_TEMP'])/'native-fixture/LATEST_LAUNCH.json'
+          if p.exists(): print(p.read_text())
+          for p in (Path(os.environ['RUNNER_TEMP'])/'native-fixture/launches').glob('*/docker_commands.json'):
+              print(p.read_text())
+          PY

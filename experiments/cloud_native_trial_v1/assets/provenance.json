@@ -1,0 +1,13 @@
+{
+  "competence_correction": "Original unused conflict-path generation exceeded100000 attempts; failure retained, shared-only generation keeps20 updates and inherited criteria",
+  "confirmation_evaluations": 0,
+  "generation": "Exact native background() with equivalent cached exclusions; fixed shared-only competence registration v1; same paths/order across arms",
+  "model_constructions": 0,
+  "optimizer_steps": 0,
+  "private_confirmation_vectors_included": false,
+  "registered_bank_commitments": {
+    "development.json": "607245a33a24b5abeb1dd62833feb2deadf6d763c972a913f269b29a688b8e94",
+    "sealed/confirmation.json": "6632d9389700a7c493a3143d4f3145917bb4c95bf446f00165b1697485f2de73"
+  },
+  "runner_hash": "7f0ac9dab7c49faf2fdef29660286e86cc98be1d13afaeb5bcf44265e221c908"
+}
